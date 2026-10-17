@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Create Taxi Booking | SwiftRide</title>
+
+    <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 16px;
+            color: #173b65;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px #ddd;
+        }
+
+        h1, h2 {
+            color: #173b65;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 11px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button, .back-link {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 11px 15px;
+            border: 0;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button {
+            background: #198754;
+            color: white;
+        }
+
+        .search-button {
+            background: #173b65;
+        }
+
+        .location-button {
+            background: #ffc629;
+            color: #102a43;
+            font-weight: bold;
+        }
+
+        .location-button:hover {
+            background: #ffdb70;
+        }
+
+        .back-link {
+            background: #555;
+            color: white;
+        }
+
+        #map {
+            height: 350px;
+            margin-top: 18px;
+            border-radius: 8px;
+            z-index: 1;
+        }
+
+        .results {
+            margin-top: 18px;
+            padding: 16px;
+            background: #eef6ff;
+            border-radius: 8px;
+        }
+
+        .big {
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .note {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .error {
+            color: #b00020;
+        }
+
+        .result-item {
+            margin: 8px 0;
+        }
+
+        .search-results {
+            margin-top: 8px;
+        }
+
+        .search-results button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            margin-top: 6px;
+            background: #eef6ff;
+            color: #173b65;
+            border: 1px solid #cbd9e8;
+            overflow-wrap: anywhere;
+        }
+
+        .search-results button:hover {
+            background: #dcecff;
+        }
+
+        .location-status {
+            padding: 10px;
+            margin-top: 8px;
+            background: #f3f7fb;
+            border-radius: 5px;
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .section-divider {
+            margin-top: 25px;
+            border: 0;
+            border-top: 1px solid #e1e7ef;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 8px;
+            }
+
+            .container {
+                padding: 16px;
+                margin: 8px auto;
+            }
+
+            #map {
+                height: 300px;
+            }
+
+            button, .back-link {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🚕 Create New Booking</h1>
+
+    <form id="bookingForm"
+          th:action="@{/bookings/save}"
+          th:object="${booking}"
+          method="post">
+
+        <!-- PASSENGER DETAILS -->
+
+        <label for="passengerName">Passenger Name</label>
+
+        <input id="passengerName"
+               type="text"
+               th:field="*{passengerName}"
+               maxlength="100"
+               required>
+
+        <hr class="section-divider">
+
+        <!-- PICKUP LOCATION -->
+
+        <h2>📍 Pickup Location</h2>
+
+        <p class="note">
+            Use your current location or search for a pickup address.
+        </p>
+
+        <button type="button"
+                id="useCurrentLocation"
+                class="location-button">
+            📍 Use My Current Location
+        </button>
+
+        <p id="locationStatus"
+           class="location-status"
+           role="status"
+           aria-live="polite">
+            Press the button to detect your current location.
+        </p>
+
+        <label for="pickupSearch">
+            Search pickup address or place
+        </label>
+
+        <input id="pickupSearch"
+               type="text"
+               placeholder="Enter pickup location"
+               autocomplete="off">
+
+        <button type="button"
+                class="search-button"
+                id="searchPickup">
+            Search Pickup
+        </button>
+
+        <div id="pickupResults"
+             class="search-results"
+             aria-live="polite"></div>
+
+        <input type="hidden"
+               id="pickupLocation"
+               th:field="*{pickupLocation}">
+
+        <input type="hidden"
+               id="pickupLatitude"
+               th:field="*{pickupLatitude}">
+
+        <input type="hidden"
+               id="pickupLongitude"
+               th:field="*{pickupLongitude}">
+
+        <hr class="section-divider">
+
+        <!-- DESTINATION -->
+
+        <h2>🏁 Destination</h2>
+
+        <label for="destinationSearch">
+            Search destination address or place
+        </label>
+
+        <input id="destinationSearch"
+               type="text"
+               placeholder="Enter destination"
+               autocomplete="off">
+
+        <button type="button"
+                class="search-button"
+                id="searchDestination">
+            Search Destination
+        </button>
+
+        <div id="destinationResults"
+             class="search-results"
+             aria-live="polite"></div>
+
+        <input type="hidden"
+               id="destination"
+               th:field="*{destination}">
+
+        <input type="hidden"
+               id="destinationLatitude"
+               th:field="*{destinationLatitude}">
+
+        <input type="hidden"
+               id="destinationLongitude"
+               th:field="*{destinationLongitude}">
+
+        <!-- MAP -->
+
+        <h2>🗺️ Pickup and Destination Map</h2>
+
+        <div id="map"></div>
+
+        <button type="button"
+                class="search-button"
+                id="calculateRoute">
+            Calculate Route
+        </button>
+
+        <p id="routeMessage"
+           class="note"
+           role="status"
+           aria-live="polite">
+            Select both locations to calculate the route.
+        </p>
+
+        <!-- VEHICLE CATEGORY -->
+
+        <label for="vehicleCategory">Vehicle Category</label>
+
+        <select id="vehicleCategory"
+                th:field="*{vehicleCategory}"
+                required>
+
+            <option value="">-- Select Vehicle --</option>
+            <option value="Tuk Tuk">Tuk Tuk</option>
+            <option value="Mini">Mini</option>
+            <option value="Car">Car</option>
+            <option value="Van">Van</option>
+            <option value="Premium">Premium</option>
+
+        </select>
+
+        <!-- ROUTE DETAILS -->
+
+        <input type="hidden"
+               id="distanceKm"
+               th:field="*{distanceKm}">
+
+        <input type="hidden"
+               id="estimatedMinutes"
+               th:field="*{estimatedMinutes}">
+
+        <div class="results">
+
+            <div class="result-item">
+                Road distance:
+                <strong id="distanceDisplay">—</strong>
+            </div>
+
+            <div class="result-item">
+                Estimated travel time:
+                <strong id="timeDisplay">—</strong>
+            </div>
+
+            <div class="result-item">
+                Estimated fare:
+
+                <div class="big">
+                    Rs. <span id="fareDisplay">—</span>
+                </div>
+            </div>
+
+            <p class="note">
+                Fare is an estimate using the sample rates configured
+                in this page. Actual fares may differ.
+            </p>
+
+        </div>
+
+        <!-- SCHEDULED BOOKING -->
+
+        <label for="scheduledTime">
+            Scheduled Date and Time
+        </label>
+
+        <input type="datetime-local"
+               id="scheduledTime"
+               th:field="*{scheduledTime}">
+
+        <p class="note">
+            Leave empty for a booking requested for now.
+        </p>
+
+        <!-- FORM BUTTONS -->
+
+        <button type="submit">
+            Create Booking
+        </button>
+
+        <a class="back-link"
+           th:href="@{/booking-history}">
+            My Booking History
+        </a>
+
+    </form>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    // --------------------------------------------------
+    // MAP INITIALIZATION
+    // --------------------------------------------------
+
+    const map = L.map('map').setView([7.8731, 80.7718], 7);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    let pickupMarker = null;
+    let destinationMarker = null;
+    let routeLayer = null;
+    let routeCalculated = false;
+
+    const pickupInput = document.getElementById('pickupLocation');
+    const destinationInput = document.getElementById('destination');
+
+    const pickupLat = document.getElementById('pickupLatitude');
+    const pickupLng = document.getElementById('pickupLongitude');
+
+    const destinationLat = document.getElementById('destinationLatitude');
+    const destinationLng = document.getElementById('destinationLongitude');
+
+    const distanceInput = document.getElementById('distanceKm');
+    const minutesInput = document.getElementById('estimatedMinutes');
+
+    const locationStatus = document.getElementById('locationStatus');
+    const routeMessage = document.getElementById('routeMessage');
+
+    // Sample fare rates in Sri Lankan rupees.
+    const baseFares = {
+        'Tuk Tuk': 300,
+        'Mini': 500,
+        'Car': 800,
+        'Van': 1200,
+        'Premium': 1500
+    };
+
+    const perKmRates = {
+        'Tuk Tuk': 50,
+        'Mini': 70,
+        'Car': 100,
+        'Van': 140,
+        'Premium': 180
+    };
+
+
+    // --------------------------------------------------
+    // RESET ROUTE WHEN LOCATION CHANGES
+    // --------------------------------------------------
+
+    function clearRoute() {
+        routeCalculated = false;
+
+        distanceInput.value = '';
+        minutesInput.value = '';
+
+        document.getElementById('distanceDisplay').textContent = '—';
+        document.getElementById('timeDisplay').textContent = '—';
+        document.getElementById('fareDisplay').textContent = '—';
+
+        if (routeLayer) {
+            map.removeLayer(routeLayer);
+            routeLayer = null;
+        }
+    }
+
+
+    // --------------------------------------------------
+    // SET PICKUP OR DESTINATION
+    // --------------------------------------------------
+
+    function showLocation(type, place) {
+        const lat = Number(place.lat);
+        const lng = Number(place.lon);
+        const label = place.display_name;
+
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+            return;
+        }
+
+        clearRoute();
+
+        if (type === 'pickup') {
+            pickupInput.value = label;
+            pickupLat.value = lat;
+            pickupLng.value = lng;
+
+            if (pickupMarker) {
+                map.removeLayer(pickupMarker);
+            }
+
+            pickupMarker = L.marker([lat, lng])
+                .addTo(map)
+                .bindPopup('Pickup Location');
+        } else {
+            destinationInput.value = label;
+            destinationLat.value = lat;
+            destinationLng.value = lng;
+
+            if (destinationMarker) {
+                map.removeLayer(destinationMarker);
+            }
+
+            destinationMarker = L.marker([lat, lng])
+                .addTo(map)
+                .bindPopup('Destination');
+        }
+
+        const points = [];
+
+        if (pickupLat.value && pickupLng.value) {
+            points.push([
+                Number(pickupLat.value),
+                Number(pickupLng.value)
+            ]);
+        }
+
+        if (destinationLat.value && destinationLng.value) {
+            points.push([
+                Number(destinationLat.value),
+                Number(destinationLng.value)
+            ]);
+        }
+
+        if (points.length === 2) {
+            map.fitBounds(points, {
+                padding: [30, 30]
+            });
+        } else {
+            map.setView([lat, lng], 15);
+        }
+    }
+
+
+    // --------------------------------------------------
+    // GET PASSENGER'S CURRENT LOCATION
+    // --------------------------------------------------
+
+    document.getElementById('useCurrentLocation')
+        .addEventListener('click', function () {
+
+            if (!navigator.geolocation) {
+                locationStatus.textContent =
+                    'Your browser does not support location detection.';
+                return;
+            }
+
+            locationStatus.textContent =
+                'Getting your current location...';
+
+            this.disabled = true;
+
+            navigator.geolocation.getCurrentPosition(
+
+                async function (position) {
+
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    // First save the coordinates and show a marker.
+                    const fallbackLabel =
+                        'Current location (' +
+                        lat.toFixed(6) + ', ' +
+                        lng.toFixed(6) + ')';
+
+                    showLocation('pickup', {
+                        lat: lat,
+                        lon: lng,
+                        display_name: fallbackLabel
+                    });
+
+                    locationStatus.textContent =
+                        'Location detected. Looking up the address...';
+
+                    // Try to get a human-readable address.
+                    try {
+                        const reverseUrl =
+                            'https://nominatim.openstreetmap.org/reverse' +
+                            '?format=jsonv2' +
+                            '&lat=' + encodeURIComponent(lat) +
+                            '&lon=' + encodeURIComponent(lng) +
+                            '&zoom=18';
+
+                        const response = await fetch(reverseUrl);
+
+                        if (!response.ok) {
+                            throw new Error('Address lookup failed.');
+                        }
+
+                        const result = await response.json();
+
+                        if (result.display_name) {
+                            pickupInput.value = result.display_name;
+
+                            locationStatus.textContent =
+                                '✅ Current pickup location selected: ' +
+                                result.display_name;
+
+                        } else {
+                            locationStatus.textContent =
+                                '✅ Coordinates captured. Address was not available.';
+                        }
+
+                    } catch (error) {
+
+                        // Coordinates remain available even if the
+                        // address lookup service cannot be reached.
+                        locationStatus.textContent =
+                            '✅ Coordinates captured. Address lookup unavailable; coordinates will be used.';
+                    }
+
+                    document.getElementById('useCurrentLocation').disabled =
+                        false;
+                },
+
+                function (error) {
+
+                    if (error.code === error.PERMISSION_DENIED) {
+                        locationStatus.textContent =
+                            'Location permission was denied. Allow location access in your browser settings and try again.';
+
+                    } else if (error.code === error.POSITION_UNAVAILABLE) {
+                        locationStatus.textContent =
+                            'Your current location is unavailable. Check your device location settings and try again.';
+
+                    } else {
+                        locationStatus.textContent =
+                            'Location request timed out. Please try again.';
+                    }
+
+                    document.getElementById('useCurrentLocation').disabled =
+                        false;
+                },
+
+                {
+                    enableHighAccuracy: true,
+                    timeout: 20000,
+                    maximumAge: 0
+                }
+            );
+        });
+
+
+    // --------------------------------------------------
+    // SEARCH PLACES
+    // --------------------------------------------------
+
+    async function searchPlace(type) {
+
+        const input = document.getElementById(
+            type === 'pickup'
+                ? 'pickupSearch'
+                : 'destinationSearch'
+        );
+
+        const results = document.getElementById(
+            type === 'pickup'
+                ? 'pickupResults'
+                : 'destinationResults'
+        );
+
+        const query = input.value.trim();
+
+        if (!query) {
+            results.textContent =
+                'Please enter a place or address.';
+            return;
+        }
+
+        results.textContent = 'Searching...';
+
+        try {
+            const url =
+                'https://nominatim.openstreetmap.org/search' +
+                '?format=jsonv2' +
+                '&limit=5' +
+                '&countrycodes=lk' +
+                '&q=' + encodeURIComponent(query);
+
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error(
+                    'Place search is temporarily unavailable.'
+                );
+            }
+
+            const places = await response.json();
+
+            results.replaceChildren();
+
+            if (places.length === 0) {
+                results.textContent =
+                    'No results found. Try a more specific address.';
+                return;
+            }
+
+            places.forEach(function (place) {
+
+                const button = document.createElement('button');
+
+                button.type = 'button';
+                button.textContent = place.display_name;
+
+                button.addEventListener('click', function () {
+
+                    showLocation(type, place);
+
+                    results.textContent =
+                        'Selected: ' + place.display_name;
+
+                    if (type === 'pickup') {
+                        locationStatus.textContent =
+                            'Pickup location selected from search.';
+                    }
+                });
+
+                results.appendChild(button);
+            });
+
+        } catch (error) {
+            results.textContent =
+                error.message || 'Could not search for this place.';
+        }
+    }
+
+
+    document.getElementById('searchPickup')
+        .addEventListener('click', function () {
+            searchPlace('pickup');
+        });
+
+    document.getElementById('searchDestination')
+        .addEventListener('click', function () {
+            searchPlace('destination');
+        });
+
+
+    // --------------------------------------------------
+    // CALCULATE SAMPLE FARE
+    // --------------------------------------------------
+
+    function updateFare() {
+
+        const category =
+            document.getElementById('vehicleCategory').value;
+
+        const distance = Number(distanceInput.value);
+
+        if (!routeCalculated || !category ||
+            !Number.isFinite(distance)) {
+
+            document.getElementById('fareDisplay').textContent = '—';
+            return;
+        }
+
+        const fare =
+            (baseFares[category] || 0) +
+            distance * (perKmRates[category] || 0);
+
+        document.getElementById('fareDisplay').textContent =
+            Math.round(fare).toLocaleString('en-US');
+    }
+
+
+    document.getElementById('vehicleCategory')
+        .addEventListener('change', updateFare);
+
+
+    // --------------------------------------------------
+    // CALCULATE ROAD ROUTE
+    // --------------------------------------------------
+
+    document.getElementById('calculateRoute')
+        .addEventListener('click', async function () {
+
+            if (!pickupInput.value ||
+                !pickupLat.value ||
+                !pickupLng.value ||
+                !destinationInput.value ||
+                !destinationLat.value ||
+                !destinationLng.value) {
+
+                routeMessage.textContent =
+                    'Please select both pickup and destination locations first.';
+                return;
+            }
+
+            const pLat = Number(pickupLat.value);
+            const pLng = Number(pickupLng.value);
+            const dLat = Number(destinationLat.value);
+            const dLng = Number(destinationLng.value);
+
+            routeMessage.textContent =
+                'Calculating road route...';
+
+            try {
+                const url =
+                    'https://router.project-osrm.org/route/v1/driving/' +
+                    pLng + ',' + pLat + ';' +
+                    dLng + ',' + dLat +
+                    '?overview=full&geometries=geojson&steps=false';
+
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error(
+                        'Routing service is unavailable.'
+                    );
+                }
+
+                const data = await response.json();
+
+                if (data.code !== 'Ok' ||
+                    !data.routes ||
+                    data.routes.length === 0) {
+
+                    throw new Error(
+                        'No drivable route was found.'
+                    );
+                }
+
+                const route = data.routes[0];
+
+                const km = route.distance / 1000;
+
+                const minutes = Math.max(
+                    1,
+                    Math.round(route.duration / 60)
+                );
+
+                distanceInput.value = km.toFixed(2);
+                minutesInput.value = minutes;
+
+                if (routeLayer) {
+                    map.removeLayer(routeLayer);
+                }
+
+                routeLayer = L.geoJSON(route.geometry, {
+                    style: {
+                        color: '#1769ff',
+                        weight: 6,
+                        opacity: 0.85
+                    }
+                }).addTo(map);
+
+                map.fitBounds(routeLayer.getBounds(), {
+                    padding: [25, 25]
+                });
+
+                document.getElementById('distanceDisplay').textContent =
+                    km.toFixed(2) + ' km';
+
+                document.getElementById('timeDisplay').textContent =
+                    minutes + ' minutes';
+
+                routeCalculated = true;
+
+                updateFare();
+
+                routeMessage.textContent =
+                    'Route calculated. Please review the estimated fare.';
+
+            } catch (error) {
+
+                clearRoute();
+
+                routeMessage.textContent =
+                    error.message || 'Could not calculate the route.';
+            }
+        });
+
+
+    // --------------------------------------------------
+    // VALIDATE FORM BEFORE SUBMISSION
+    // --------------------------------------------------
+
+    document.getElementById('bookingForm')
+        .addEventListener('submit', function (event) {
+
+            if (!pickupInput.value ||
+                !pickupLat.value ||
+                !pickupLng.value ||
+                !destinationInput.value ||
+                !destinationLat.value ||
+                !destinationLng.value ||
+                !routeCalculated) {
+
+                event.preventDefault();
+
+                routeMessage.textContent =
+                    'Please select your pickup and destination locations and calculate the route before booking.';
+
+                return;
+            }
+
+            if (!distanceInput.value || !minutesInput.value) {
+                event.preventDefault();
+
+                routeMessage.textContent =
+                    'Please calculate the route again before booking.';
+            }
+        });
+
+</script>
+
+</body>
+</html>

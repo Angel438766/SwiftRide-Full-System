@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Driver Dashboard | SwiftRide</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 25px 15px;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #102a43;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 30px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 14px;
+            box-shadow: 0 5px 25px #102a4310;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 8px 13px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .online {
+            background: #d9f7e4;
+            color: #176536;
+        }
+
+        .offline {
+            background: #e8edf3;
+            color: #536579;
+        }
+
+        button {
+            border: 0;
+            border-radius: 7px;
+            padding: 12px 17px;
+            margin: 5px 5px 5px 0;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .go-online { background: #168447; color: white; }
+        .go-offline { background: #e0e6ee; color: #102a43; }
+        .logout { background: #071b35; color: white; }
+
+        .detail {
+            padding: 10px 0;
+            border-bottom: 1px solid #edf1f5;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🚘 SwiftRide Driver Dashboard</h1>
+    <p>Welcome, <strong th:text="${driver.fullName}"></strong>!</p>
+
+    <section class="card">
+
+        <h2>Driver Details</h2>
+
+        <div class="detail">
+            <strong>Name:</strong>
+            <span th:text="${driver.fullName}"></span>
+        </div>
+
+        <div class="detail">
+            <strong>Email:</strong>
+            <span th:text="${driver.email}"></span>
+        </div>
+
+        <div class="detail">
+            <strong>Phone:</strong>
+            <span th:text="${driver.phone}"></span>
+        </div>
+
+        <div class="detail">
+            <strong>Vehicle Registration:</strong>
+            <span th:text="${driver.vehicleNumber}"></span>
+        </div>
+
+        <div class="detail">
+            <strong>Vehicle Category:</strong>
+            <span th:text="${driver.vehicleCategory}"></span>
+        </div>
+
+        <div class="detail">
+            <strong>Application Status:</strong>
+            <span th:text="${driver.status}"></span>
+        </div>
+
+    </section>
+
+    <section class="card">
+
+        <h2>Availability</h2>
+
+        <p>
+            Current status:
+            <span class="status"
+                  th:classappend="${driver.availability == 'ONLINE'} ? ' online' : ' offline'"
+                  th:text="${driver.availability}"></span>
+        </p>
+
+        <p>Set whether you are available to receive rides.</p>
+
+        <form th:action="@{/driver-portal/availability}" method="post">
+
+            <button class="go-online"
+                    type="submit"
+                    name="online"
+                    value="true">
+                Go Online
+            </button>
+
+            <button class="go-offline"
+                    type="submit"
+                    name="online"
+                    value="false">
+                Go Offline
+            </button>
+
+        </form>
+
+    </section>
+
+    <form th:action="@{/driver-portal/logout}" method="post">
+        <button class="logout" type="submit">Logout</button>
+    </form>
+
+    <p><a th:href="@{/}">Back to Home</a></p>
+
+</div>
+
+</body>
+</html>

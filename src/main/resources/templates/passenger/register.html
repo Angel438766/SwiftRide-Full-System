@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Passenger Registration</title>
+</head>
+<body>
+
+<h2>Passenger Registration</h2>
+
+<p th:if="${error}" th:text="${error}"></p>
+
+<form th:action="@{/passengers/register}"
+      th:object="${passenger}"
+      method="post">
+
+    <label>Name:</label>
+    <input type="text" th:field="*{name}" required>
+    <br><br>
+
+    <label>Email:</label>
+    <input type="email" th:field="*{email}" required>
+    <br><br>
+
+    <label>Password:</label>
+    <input type="password" th:field="*{password}" required>
+    <br><br>
+
+    <label>Phone:</label>
+    <input type="text" th:field="*{phone}" required>
+    <br><br>
+
+    <label>Favourite Location:</label>
+    <input type="text" th:field="*{favouriteLocation}">
+    <br><br>
+
+    <button type="submit">Register</button>
+
+</form>
+
+<br>
+<a th:href="@{/passengers/login}">Login</a>
+<br>
+<a th:href="@{/}">Home</a>
+
+</body>
+</html>
+```

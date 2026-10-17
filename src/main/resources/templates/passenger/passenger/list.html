@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passenger List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            padding: 30px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #172554;
+            color: white;
+        }
+        a, button {
+            padding: 7px 10px;
+            border: none;
+            border-radius: 4px;
+            background: #172554;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .delete {
+            background: #b91c1c;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Registered Passengers</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="passenger : ${passengers}">
+            <td th:text="${passenger.id}"></td>
+            <td th:text="${passenger.name}"></td>
+            <td th:text="${passenger.email}"></td>
+            <td th:text="${passenger.phone}"></td>
+            <td>
+                <a th:href="@{/passengers/profile/{id}(id=${passenger.id})}">
+                    Edit
+                </a>
+
+                <form th:action="@{/passengers/delete/{id}(id=${passenger.id})}"
+                      method="post"
+                      style="display:inline"
+                      onsubmit="return confirm('Delete this passenger?')">
+                    <button type="submit" class="delete">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p><a th:href="@{/}">Home</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking History</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #173b65;
+        }
+
+        nav {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        nav a {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 14px;
+            background: #173b65;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #173b65;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .empty {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+        }
+
+        .track-button {
+            display: inline-block;
+            padding: 8px 12px;
+            background: #198754;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            white-space: nowrap;
+        }
+
+        .track-button:hover {
+            background: #146c43;
+        }
+
+        .not-assigned {
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Booking History</h1>
+
+<nav>
+    <a th:href="@{/}">Home</a>
+    <a th:href="@{/bookings}">Booking Management</a>
+    <a th:href="@{/trips}">Trip Management</a>
+    <a th:href="@{/passengers}">Passengers</a>
+</nav>
+
+<div class="table-container">
+    <table>
+        <thead>
+        <tr>
+            <th>Booking ID</th>
+            <th>Passenger</th>
+            <th>Pickup</th>
+            <th>Destination</th>
+            <th>Vehicle</th>
+            <th>Fare (Rs.)</th>
+            <th>Driver</th>
+            <th>Status</th>
+            <th>Cancellation Reason</th>
+            <th>Live Tracking</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="booking : ${bookings}">
+            <td th:text="${booking.id}"></td>
+
+            <td th:text="${booking.passengerName}"></td>
+
+            <td th:text="${booking.pickupLocation}"></td>
+
+            <td th:text="${booking.destination}"></td>
+
+            <td th:text="${booking.vehicleCategory}"></td>
+
+            <td th:text="${booking.fare}"></td>
+
+            <td th:text="${booking.driverName != null
+                ? booking.driverName : 'Not assigned'}"></td>
+
+            <td th:text="${booking.status}"></td>
+
+            <td th:text="${booking.cancellationReason != null
+                ? booking.cancellationReason : '-'}"></td>
+
+            <td>
+                <a th:if="${booking.driverId != null}"
+                   th:href="@{/bookings/track-driver(driverId=${booking.driverId})}"
+                   class="track-button">
+                    Track Driver
+                </a>
+
+                <span th:unless="${booking.driverId != null}"
+                      class="not-assigned">
+                    Driver not assigned
+                </span>
+            </td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(bookings)}">
+            <td colspan="10" class="empty">
+                No booking history available.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

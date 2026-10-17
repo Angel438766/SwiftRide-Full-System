@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Driver | Taxi Booking</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f5f9;
+            margin: 0;
+            color: #202938;
+        }
+
+        header {
+            background: #102a43;
+            color: white;
+            padding: 22px;
+            text-align: center;
+        }
+
+        header h1 { margin: 0 0 8px; }
+
+        .container {
+            max-width: 720px;
+            margin: 30px auto;
+            padding: 0 16px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px #00000010;
+        }
+
+        h2 { color: #173b65; }
+
+        .details {
+            background: #f5f7fa;
+            border: 1px solid #e2e8f0;
+            padding: 17px;
+            border-radius: 9px;
+            margin: 20px 0;
+        }
+
+        .details p {
+            margin: 13px 0;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .label {
+            display: block;
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .value {
+            font-weight: bold;
+        }
+
+        .route-point {
+            padding-left: 12px;
+            border-left: 3px solid #198754;
+            margin: 14px 0;
+        }
+
+        .destination {
+            border-left-color: #dc3545;
+        }
+
+        .fare {
+            font-size: 20px;
+            color: #138754;
+        }
+
+        .status {
+            display: inline-block;
+            background: #fff3cd;
+            color: #856404;
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 13px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 18px;
+        }
+
+        select {
+            width: 100%;
+            padding: 13px;
+            margin-top: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background: white;
+        }
+
+        button, .back-link {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 12px 17px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button {
+            background: #198754;
+            color: white;
+        }
+
+        .back-link {
+            background: #173b65;
+            color: white;
+        }
+
+        .error {
+            color: #842029;
+            background: #f8d7da;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .notice {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 500px) {
+            .card { padding: 17px; }
+            button, .back-link { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Assign Driver</h1>
+    <p>Taxi Cab Booking System</p>
+</header>
+
+<div class="container">
+    <div class="card">
+
+        <h2>Booking Details</h2>
+
+        <div class="details">
+
+            <p>
+                <span class="label">Booking ID</span>
+                <span class="value" th:text="${booking.id}"></span>
+            </p>
+
+            <p>
+                <span class="label">Passenger</span>
+                <span class="value" th:text="${booking.passengerName}"></span>
+            </p>
+
+            <div class="route-point">
+                <span class="label">Pickup Location</span>
+                <span class="value" th:text="${booking.pickupLocation}"></span>
+            </div>
+
+            <div class="route-point destination">
+                <span class="label">Destination</span>
+                <span class="value" th:text="${booking.destination}"></span>
+            </div>
+
+            <p>
+                <span class="label">Vehicle Category</span>
+                <span class="value" th:text="${booking.vehicleCategory}"></span>
+            </p>
+
+            <p>
+                <span class="label">Distance</span>
+                <span class="value"
+                      th:if="${booking.distanceKm != null}"
+                      th:text="${#numbers.formatDecimal(booking.distanceKm, 1, 2) + ' km'}"></span>
+                <span class="notice"
+                      th:if="${booking.distanceKm == null}">
+                    Distance not available
+                </span>
+            </p>
+
+            <p>
+                <span class="label">Estimated Travel Time</span>
+                <span class="value"
+                      th:if="${booking.estimatedMinutes != null}"
+                      th:text="${booking.estimatedMinutes + ' minutes'}"></span>
+                <span class="notice"
+                      th:if="${booking.estimatedMinutes == null}">
+                    Time not available
+                </span>
+            </p>
+
+            <p>
+                <span class="label">Estimated Fare</span>
+                <span class="value fare">
+                    Rs. <span th:text="${booking.fare}"></span>
+                </span>
+            </p>
+
+            <p>
+                <span class="label">Current Status</span>
+                <span class="status" th:text="${booking.status}"></span>
+            </p>
+
+            <p>
+                <span class="label">Currently Assigned Driver</span>
+                <span class="value"
+                      th:if="${booking.driverName != null}"
+                      th:text="${booking.driverName}"></span>
+                <span class="notice"
+                      th:if="${booking.driverName == null}">
+                    No driver assigned yet
+                </span>
+            </p>
+        </div>
+
+        <div th:if="${errorMessage != null}" class="error">
+            <p th:text="${errorMessage}"></p>
+        </div>
+
+        <form th:action="@{/bookings/assign/{id}(id=${booking.id})}"
+              method="post">
+
+            <label for="driverId">Select Available Driver</label>
+
+            <select id="driverId" name="driverId" required>
+                <option value="">-- Select Driver --</option>
+
+                <option th:each="driver : ${availableDrivers}"
+                        th:value="${driver.id}"
+                        th:text="${driver.name + ' - ' + driver.phone}">
+                </option>
+            </select>
+
+            <p class="notice">
+                Only approved, online and available drivers are displayed.
+            </p>
+
+            <button type="submit"
+                    onclick="return confirm('Assign this driver to the booking?')">
+                Assign Driver
+            </button>
+
+            <a class="back-link" th:href="@{/bookings}">
+                Back to Bookings
+            </a>
+        </form>
+
+        <p th:if="${#lists.isEmpty(availableDrivers)}" class="notice">
+            No drivers are currently available. Please try again when a driver is online and available.
+        </p>
+
+    </div>
+</div>
+
+</body>
+</html>

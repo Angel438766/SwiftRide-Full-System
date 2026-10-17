@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Management</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        h1 { color: #172554; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #172554;
+            color: white;
+        }
+
+        a, button {
+            display: inline-block;
+            padding: 8px 10px;
+            margin: 3px;
+            border: none;
+            border-radius: 5px;
+            background: #172554;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        form { display: inline-block; }
+
+        .green { background: #15803d; }
+        .red { background: #b91c1c; }
+        .orange { background: #c2410c; }
+        .gray { background: #475569; }
+
+        .yes {
+            color: #15803d;
+            font-weight: bold;
+        }
+
+        .no {
+            color: #b91c1c;
+            font-weight: bold;
+        }
+
+        .actions { min-width: 240px; }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>Driver Management</h1>
+
+    <a th:href="@{/drivers/new}">Add New Driver</a>
+    <a th:href="@{/}">Home</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>License Number</th>
+            <th>Approved</th>
+            <th>Online</th>
+            <th>Available</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="driver : ${drivers}">
+            <td th:text="${driver.id}"></td>
+            <td th:text="${driver.name}"></td>
+            <td th:text="${driver.email}"></td>
+            <td th:text="${driver.phone}"></td>
+            <td th:text="${driver.licenseNumber}"></td>
+
+            <td>
+                <span th:if="${driver.approved}" class="yes">Approved</span>
+                <span th:unless="${driver.approved}" class="no">Not Approved</span>
+            </td>
+
+            <td>
+                <span th:if="${driver.online}" class="yes">Online</span>
+                <span th:unless="${driver.online}" class="no">Offline</span>
+            </td>
+
+            <td>
+                <span th:if="${driver.available}" class="yes">Available</span>
+                <span th:unless="${driver.available}" class="no">Unavailable</span>
+            </td>
+
+            <td class="actions">
+
+                <a th:href="@{/drivers/edit/{id}(id=${driver.id})}">
+                    Edit
+                </a>
+
+                <form th:if="${!driver.approved}"
+                      th:action="@{/drivers/approve/{id}(id=${driver.id})}"
+                      method="post">
+                    <button type="submit" class="green">Approve</button>
+                </form>
+
+                <form th:if="${driver.approved}"
+                      th:action="@{/drivers/reject/{id}(id=${driver.id})}"
+                      method="post"
+                      onsubmit="return confirm('Reject this driver?')">
+                    <button type="submit" class="red">Reject</button>
+                </form>
+
+                <form th:if="${driver.approved and !driver.online}"
+                      th:action="@{/drivers/online/{id}(id=${driver.id})}"
+                      method="post">
+                    <button type="submit" class="green">Go Online</button>
+                </form>
+
+                <form th:if="${driver.online}"
+                      th:action="@{/drivers/offline/{id}(id=${driver.id})}"
+                      method="post">
+                    <button type="submit" class="orange">Go Offline</button>
+                </form>
+
+                <form th:if="${driver.approved and driver.online and !driver.available}"
+                      th:action="@{/drivers/available/{id}(id=${driver.id})}"
+                      method="post">
+                    <button type="submit" class="green">Available</button>
+                </form>
+
+                <form th:if="${driver.available}"
+                      th:action="@{/drivers/unavailable/{id}(id=${driver.id})}"
+                      method="post">
+                    <button type="submit" class="gray">Unavailable</button>
+                </form>
+
+                <form th:action="@{/drivers/delete/{id}(id=${driver.id})}"
+                      method="post"
+                      onsubmit="return confirm('Delete this driver?')">
+                    <button type="submit" class="red">Delete</button>
+                </form>
+
+            </td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(drivers)}">
+            <td colspan="9">No drivers found.</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

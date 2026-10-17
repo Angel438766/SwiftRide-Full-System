@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Vehicle</title>
+</head>
+<body>
+
+<h1>Add Vehicle</h1>
+
+<form th:action="@{/vehicles/save}"
+      th:object="${vehicle}"
+      method="post">
+    <input type="hidden" th:field="*{id}">
+
+    <label>Vehicle Number:</label>
+    <input type="text" th:field="*{vehicleNumber}" required>
+    <br><br>
+
+    <label>Vehicle Type:</label>
+    <select th:field="*{vehicleType}" required>
+        <option value="">Select Vehicle Type</option>
+        <option value="Tuk Tuk">Tuk Tuk</option>
+        <option value="Mini">Mini</option>
+        <option value="Car">Car</option>
+        <option value="Van">Van</option>
+        <option value="Premium">Premium</option>
+    </select>
+    <br><br>
+
+    <label>Brand:</label>
+    <input type="text" th:field="*{brand}" required>
+    <br><br>
+
+    <label>Model:</label>
+    <input type="text" th:field="*{model}" required>
+    <br><br>
+
+    <label>Number of Seats:</label>
+    <input type="number" th:field="*{seats}" min="1" required>
+    <br><br>
+
+    <label>
+        <input type="checkbox" th:field="*{active}">
+        Vehicle Active
+    </label>
+    <br><br>
+
+    <button type="submit">Save Vehicle</button>
+
+</form>
+
+<a th:href="@{/vehicles}">Back to Vehicles</a>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | SwiftRide</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #102a43;
+        }
+        .card {
+            width: 380px;
+            max-width: 92%;
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 5px 22px #102a4320;
+        }
+        h1 { color: #087f8c; text-align: center; }
+        p { text-align: center; }
+        label { display: block; margin-top: 15px; }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #ccd6e0;
+            border-radius: 6px;
+        }
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 13px;
+            border: none;
+            border-radius: 6px;
+            background: #ffc629;
+            color: #102a43;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .error { color: #c62828; }
+        a { color: #087f8c; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>🚖 SwiftRide</h1>
+    <p>Administrator Login</p>
+
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+
+    <form th:action="@{/admin/login}" method="post">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" required>
+
+        <label for="password">Password</label>
+        <input id="password" name="password"
+               type="password" required>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <p><a th:href="@{/}">Back to Home</a></p>
+</div>
+</body>
+</html>

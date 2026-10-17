@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | SwiftRide</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #102a43;
+        }
+
+        header {
+            background: #071b35;
+            color: white;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .brand {
+            color: #ffc629;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px;
+        }
+
+        nav a:hover { color: #ffc629; }
+
+        .hero {
+            background: #102a43;
+            color: white;
+            text-align: center;
+            padding: 65px 20px;
+        }
+
+        .hero h1 {
+            color: #ffc629;
+            font-size: 42px;
+            margin: 0 0 15px;
+        }
+
+        .hero p {
+            max-width: 700px;
+            margin: auto;
+            line-height: 1.8;
+            font-size: 17px;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 28px;
+            margin-bottom: 22px;
+            border-radius: 14px;
+            border-top: 4px solid #ffc629;
+            box-shadow: 0 5px 20px #102a4310;
+        }
+
+        .card h2 { color: #087f8c; }
+
+        .card p, .card li {
+            line-height: 1.8;
+            color: #526579;
+        }
+
+        .buttons {
+            text-align: center;
+            margin: 35px 0;
+        }
+
+        .buttons a {
+            display: inline-block;
+            background: #ffc629;
+            color: #102a43;
+            text-decoration: none;
+            padding: 13px 22px;
+            margin: 6px;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #071b35;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        footer span { color: #ffc629; }
+
+        @media (max-width: 600px) {
+            header { justify-content: center; }
+            nav { justify-content: center; }
+            .hero h1 { font-size: 32px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div>
+        <div class="brand">🚖 SwiftRide</div>
+        <div>Your Journey, Our Priority</div>
+    </div>
+
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/about}">About Us</a>
+        <a th:href="@{/contact}">Contact Us</a>
+        <a th:href="@{/passengers/register}">Sign Up</a>
+        <a th:href="@{/passengers/login}">Passenger Login</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>About SwiftRide</h1>
+    <p>
+        Your journey, our priority. SwiftRide aims to make
+        travelling easier by helping passengers access taxi
+        booking services conveniently.
+    </p>
+</section>
+
+<main>
+
+    <section class="card">
+        <h2>Who We Are</h2>
+        <p>
+            SwiftRide is a taxi booking platform designed to connect
+            passengers with drivers. Our system provides a convenient
+            place to manage passenger accounts, driver information,
+            vehicles, bookings and trips.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>Our Mission</h2>
+        <p>
+            Our mission is to provide a simple and user-friendly
+            platform that helps people organise their journeys
+            while making taxi booking and trip management easier.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>What We Offer</h2>
+        <ul>
+            <li>Passenger registration and login.</li>
+            <li>Driver registration and driver management.</li>
+            <li>Vehicle category and vehicle management.</li>
+            <li>Taxi booking and scheduled booking options.</li>
+            <li>Trip management and booking history.</li>
+            <li>Route and fare calculation features.</li>
+        </ul>
+    </section>
+
+    <section class="card">
+        <h2>Why Choose SwiftRide?</h2>
+        <p>
+            We focus on convenience, a clear booking process and
+            organised journey management through one platform.
+            Our goal is to make your travel experience easier.
+        </p>
+    </section>
+
+    <div class="buttons">
+        <a th:href="@{/}">← Back to Home</a>
+        <a th:href="@{/contact}">Contact Us →</a>
+    </div>
+
+</main>
+
+<footer>
+    <p><span>SwiftRide</span> — Your Journey, Our Priority</p>
+</footer>
+
+</body>
+</html>

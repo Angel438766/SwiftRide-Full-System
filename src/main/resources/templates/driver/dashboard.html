@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftRide - Driver Dashboard</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 22px;
+            color: #263238;
+        }
+
+        .container { max-width: 1150px; margin: auto; }
+
+        .header, .booking-card, .empty {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        h1, h2 { margin-top: 0; }
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 12px;
+        }
+
+        .detail {
+            background: #f4f6f9;
+            padding: 12px;
+            border-radius: 8px;
+            overflow-wrap: anywhere;
+        }
+
+        .status { font-weight: bold; color: #1565c0; }
+
+        button, .link {
+            display: inline-block;
+            border: none;
+            border-radius: 6px;
+            padding: 11px 16px;
+            margin: 8px 6px 0 0;
+            background: #1565c0;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .accept, .complete { background: #16834a; }
+        .reject { background: #c62828; }
+        .muted { color: #59636e; font-size: 14px; }
+        .section-title { margin: 28px 0 15px; }
+
+        @media (max-width: 600px) {
+            body { padding: 12px; }
+            .header, .booking-card, .empty { padding: 16px; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <div class="header">
+        <h1>SwiftRide Driver Dashboard</h1>
+
+        <p>
+            Welcome,
+            <strong th:text="${driver.name}">Driver Name</strong>
+        </p>
+
+        <div class="details">
+            <div class="detail">
+                <strong>Online:</strong>
+                <span th:text="${driver.online ? 'Yes' : 'No'}">No</span>
+            </div>
+
+            <div class="detail">
+                <strong>Available:</strong>
+                <span th:text="${driver.available ? 'Yes' : 'No'}">Yes</span>
+            </div>
+
+            <div class="detail">
+                <strong>Driver ID:</strong>
+                <span th:text="${driver.id}">1</span>
+            </div>
+        </div>
+
+        <a class="link" href="/">Home</a>
+        <a class="link" href="/drivers/location-page">Share GPS Location</a>
+        <a class="link" href="/driver-logout">Logout</a>
+
+        <p class="muted">
+            To accept bookings, your driver account must be approved,
+            online and available.
+        </p>
+    </div>
+
+    <h2 class="section-title">Incoming Booking Requests</h2>
+
+    <div th:if="${#lists.isEmpty(pendingBookings)}" class="empty">
+        <h3>No New Booking Requests</h3>
+        <p>New requests will appear here when passengers create bookings.</p>
+    </div>
+
+    <div th:each="booking : ${pendingBookings}" class="booking-card">
+        <h3>
+            Booking #
+            <span th:text="${booking.id}">1</span>
+        </h3>
+
+        <div class="details">
+            <div class="detail">
+                <strong>Passenger:</strong>
+                <span th:text="${booking.passengerName}">Passenger</span>
+            </div>
+
+            <div class="detail">
+                <strong>Pickup:</strong>
+                <span th:text="${booking.pickupLocation}">Pickup</span>
+            </div>
+
+            <div class="detail">
+                <strong>Destination:</strong>
+                <span th:text="${booking.destination}">Destination</span>
+            </div>
+
+            <div class="detail">
+                <strong>Vehicle Category:</strong>
+                <span th:text="${booking.vehicleCategory}">Car</span>
+            </div>
+
+            <div class="detail">
+                <strong>Distance:</strong>
+                <span th:text="${booking.distanceKm != null ? booking.distanceKm + ' km' : 'Not available'}">
+                    Not available
+                </span>
+            </div>
+
+            <div class="detail">
+                <strong>Estimated Fare:</strong>
+                Rs. <span th:text="${booking.fare}">0</span>
+            </div>
+
+            <div class="detail">
+                <strong>Status:</strong>
+                <span class="status" th:text="${booking.status}">PENDING</span>
+            </div>
+        </div>
+
+        <form th:action="@{/driver-dashboard/accept/{id}(id=${booking.id})}"
+              method="post"
+              style="display:inline">
+            <button type="submit" class="accept">Accept Booking</button>
+        </form>
+
+        <form th:action="@{/driver-dashboard/reject/{id}(id=${booking.id})}"
+              method="post"
+              style="display:inline"
+              onsubmit="return confirm('Reject this booking request?');">
+            <button type="submit" class="reject">Reject</button>
+        </form>
+    </div>
+
+    <h2 class="section-title">My Assigned Bookings</h2>
+
+    <div th:if="${#lists.isEmpty(myBookings)}" class="empty">
+        <h3>No Assigned Bookings</h3>
+        <p>Bookings you accept will appear here.</p>
+    </div>
+
+    <div th:each="booking : ${myBookings}" class="booking-card">
+        <h3>
+            Booking #
+            <span th:text="${booking.id}">1</span>
+        </h3>
+
+        <div class="details">
+            <div class="detail">
+                <strong>Passenger:</strong>
+                <span th:text="${booking.passengerName}">Passenger</span>
+            </div>
+
+            <div class="detail">
+                <strong>Pickup:</strong>
+                <span th:text="${booking.pickupLocation}">Pickup</span>
+            </div>
+
+            <div class="detail">
+                <strong>Destination:</strong>
+                <span th:text="${booking.destination}">Destination</span>
+            </div>
+
+            <div class="detail">
+                <strong>Category:</strong>
+                <span th:text="${booking.vehicleCategory}">Car</span>
+            </div>
+
+            <div class="detail">
+                <strong>Distance:</strong>
+                <span th:text="${booking.distanceKm != null ? booking.distanceKm + ' km' : 'Not available'}">
+                    Not available
+                </span>
+            </div>
+
+            <div class="detail">
+                <strong>Fare:</strong>
+                Rs. <span th:text="${booking.fare}">0</span>
+            </div>
+
+            <div class="detail">
+                <strong>Status:</strong>
+                <span class="status" th:text="${booking.status}">ACCEPTED</span>
+            </div>
+        </div>
+
+        <div th:if="${booking.status == 'ACCEPTED'}">
+            <form th:action="@{/bookings/status/{id}(id=${booking.id})}"
+                  method="post">
+                <input type="hidden" name="status" value="STARTED">
+                <button type="submit">Start Trip</button>
+            </form>
+        </div>
+
+        <div th:if="${booking.status == 'STARTED'}">
+            <a class="link"
+               th:href="@{/bookings/track-driver(bookingId=${booking.id})}">
+                Open Tracking Page
+            </a>
+
+            <form th:action="@{/bookings/status/{id}(id=${booking.id})}"
+                  method="post">
+                <input type="hidden" name="status" value="COMPLETED">
+                <button type="submit" class="complete">Complete Trip</button>
+            </form>
+        </div>
+
+        <p class="muted" th:if="${booking.status == 'COMPLETED'}">
+            This trip has been completed.
+        </p>
+
+        <p class="muted" th:if="${booking.status == 'CANCELLED'}">
+            This booking has been cancelled.
+        </p>
+
+        <p class="muted" th:if="${booking.status == 'REJECTED'}">
+            This booking was rejected.
+        </p>
+    </div>
+
+</div>
+</body>
+</html>

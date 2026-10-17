@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Route and Fare Calculator</title>
+
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            color: #172554;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 18px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 25px auto;
+            padding: 15px;
+        }
+
+        .panel {
+            background: white;
+            padding: 20px;
+            margin-bottom: 18px;
+            border-radius: 10px;
+        }
+
+        input, select, button {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            font-size: 16px;
+        }
+
+        button {
+            background: #facc15;
+            color: #172554;
+            border: 0;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #map {
+            height: 400px;
+            border-radius: 8px;
+        }
+
+        #result {
+            line-height: 1.8;
+            font-size: 17px;
+        }
+
+        a {
+            color: #172554;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Taxi Route and Fare Calculator</h1>
+    <p>Find your route, distance and estimated fare</p>
+</header>
+
+<main>
+    <section class="panel">
+        <label for="pickup">Pickup Location</label>
+        <input id="pickup"
+               type="text"
+               placeholder="e.g. Negombo, Sri Lanka"
+               required>
+
+        <label for="destination">Destination</label>
+        <input id="destination"
+               type="text"
+               placeholder="e.g. Colombo, Sri Lanka"
+               required>
+
+        <label for="vehicle">Vehicle Category</label>
+        <select id="vehicle">
+            <option value="Tuk Tuk">Tuk Tuk</option>
+            <option value="Mini">Mini</option>
+            <option value="Car">Car</option>
+            <option value="Van">Van</option>
+            <option value="Premium">Premium</option>
+        </select>
+
+        <button type="button" onclick="calculateRoute()">
+            Find Route and Calculate Fare
+        </button>
+
+        <p id="message" role="status"></p>
+    </section>
+
+    <section class="panel">
+        <div id="map"></div>
+    </section>
+
+    <section class="panel">
+        <h2>Journey Details</h2>
+        <div id="result">
+            Enter your pickup and destination to begin.
+        </div>
+    </section>
+
+    <p>
+        <a th:href="@{/}">Home</a> |
+        <a th:href="@{/bookings}">Booking Management</a>
+    </p>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    const map = L.map('map').setView([7.2083, 79.8358], 10);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    let routeLayer = null;
+    let pickupMarker = null;
+    let destinationMarker = null;
+
+    async function findLocation(place) {
+        const url =
+            'https://nominatim.openstreetmap.org/search?format=json&limit=1&q='
+            + encodeURIComponent(place);
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error('Location search failed. Try again.');
+        }
+
+        const locations = await response.json();
+
+        if (!locations.length) {
+            throw new Error('Location not found: ' + place);
+        }
+
+        return [
+            Number(locations[0].lon),
+            Number(locations[0].lat)
+        ];
+    }
+
+    async function calculateRoute() {
+        const pickup = document.getElementById('pickup').value.trim();
+        const destination =
+            document.getElementById('destination').value.trim();
+        const vehicle = document.getElementById('vehicle').value;
+        const message = document.getElementById('message');
+        const result = document.getElementById('result');
+
+        if (!pickup || !destination) {
+            message.textContent =
+                'Please enter both pickup and destination.';
+            return;
+        }
+
+        message.textContent = 'Finding route...';
+        result.textContent = '';
+
+        try {
+            const start = await findLocation(pickup);
+            const end = await findLocation(destination);
+
+            const routeUrl =
+                'https://router.project-osrm.org/route/v1/driving/'
+                + start.join(',') + ';' + end.join(',')
+                + '?overview=full&geometries=geojson';
+
+            const response = await fetch(routeUrl);
+
+            if (!response.ok) {
+                throw new Error('Route service is unavailable.');
+            }
+
+            const data = await response.json();
+
+            if (data.code !== 'Ok' || !data.routes.length) {
+                throw new Error('No driving route was found.');
+            }
+
+            const route = data.routes[0];
+            const distanceKm = route.distance / 1000;
+            const durationMinutes = Math.round(route.duration / 60);
+
+            const fareResponse = await fetch(
+                '/fare-calculator/calculate?vehicleCategory='
+                + encodeURIComponent(vehicle)
+                + '&distanceKm=' + encodeURIComponent(distanceKm)
+            );
+
+            if (!fareResponse.ok) {
+                throw new Error('Fare calculation failed.');
+            }
+
+            const fareData = await fareResponse.json();
+
+            if (!fareData.success) {
+                throw new Error(fareData.message || 'Invalid fare details.');
+            }
+
+            if (routeLayer) map.removeLayer(routeLayer);
+            if (pickupMarker) map.removeLayer(pickupMarker);
+            if (destinationMarker) map.removeLayer(destinationMarker);
+
+            routeLayer = L.geoJSON(route.geometry).addTo(map);
+
+            pickupMarker = L.marker([start[1], start[0]])
+                .addTo(map).bindPopup('Pickup: ' + pickup);
+
+            destinationMarker = L.marker([end[1], end[0]])
+                .addTo(map).bindPopup('Destination: ' + destination);
+
+            map.fitBounds(routeLayer.getBounds(), {padding: [25, 25]});
+
+            result.innerHTML =
+                '<p><strong>Pickup:</strong> ' + escapeHtml(pickup) + '</p>' +
+                '<p><strong>Destination:</strong> ' +
+                escapeHtml(destination) + '</p>' +
+                '<p><strong>Vehicle:</strong> ' + escapeHtml(vehicle) + '</p>' +
+                '<p><strong>Route Distance:</strong> ' +
+                distanceKm.toFixed(2) + ' km</p>' +
+                '<p><strong>Estimated Travel Time:</strong> ' +
+                durationMinutes + ' minutes</p>' +
+                '<p><strong>Estimated Fare:</strong> Rs. ' +
+                Number(fareData.fare).toFixed(2) + '</p>' +
+                '<p>Fare is an estimate and may differ from the final trip cost.</p>';
+
+            message.textContent = 'Route found successfully.';
+
+        } catch (error) {
+            message.textContent = error.message;
+            result.textContent = 'Unable to calculate this journey.';
+        }
+    }
+
+    function escapeHtml(value) {
+        return value.replace(/[&<>"']/g, function (character) {
+            const entities = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            };
+            return entities[character];
+        });
+    }
+</script>
+
+</body>
+</html>
