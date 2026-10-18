@@ -1,11 +1,15 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>SwiftRide | Your Journey, Our Priority</title>
 
     <style>
+        /* GENERAL STYLES */
+
         * {
             box-sizing: border-box;
         }
@@ -21,7 +25,7 @@
             color: #102a43;
         }
 
-        /* HEADER - DESKTOP */
+        /* HEADER */
 
         header {
             background: #071b35;
@@ -67,7 +71,7 @@
             color: #ffc629;
         }
 
-        /* HERO - DESKTOP DESIGN PRESERVED */
+        /* HERO SECTION - LAPTOP */
 
         .hero {
             min-height: calc(100vh - 80px);
@@ -125,7 +129,6 @@
             line-height: 1.7;
             max-width: 520px;
             margin: 0;
-            text-shadow: none;
         }
 
         .cta {
@@ -138,7 +141,9 @@
             text-decoration: none;
             font-weight: bold;
             font-size: 16px;
-            transition: background 0.2s ease, transform 0.2s ease;
+            transition:
+                    background 0.2s ease,
+                    transform 0.2s ease;
         }
 
         .cta:hover {
@@ -146,7 +151,7 @@
             transform: translateY(-2px);
         }
 
-        /* SERVICES */
+        /* SERVICES SECTION */
 
         main {
             max-width: 1250px;
@@ -168,10 +173,16 @@
             color: #66788a;
         }
 
+        /* SERVICE CARDS */
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(250px, 1fr)
+            );
             gap: 20px;
+            align-items: stretch;
         }
 
         .card {
@@ -180,8 +191,11 @@
             padding: 25px;
             box-shadow: 0 5px 22px #102a4310;
             border-top: 4px solid #ffc629;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition:
+                    transform 0.2s ease,
+                    box-shadow 0.2s ease;
             min-width: 0;
+            height: 100%;
         }
 
         .card:hover {
@@ -189,14 +203,24 @@
             box-shadow: 0 10px 28px #102a4320;
         }
 
+        /* FIXED CARD HEADINGS */
+
         .card h2 {
-            margin-top: -40px;
+            margin: 0 0 22px 0;
+            padding: 0;
+            font-size: 22px;
+            line-height: 1.4;
+            overflow-wrap: anywhere;
         }
+
+        /* SERVICE LINKS */
 
         .links {
             display: flex;
             flex-wrap: wrap;
+            align-items: flex-start;
             gap: 10px;
+            min-width: 0;
         }
 
         .links a {
@@ -207,8 +231,11 @@
             border-radius: 7px;
             font-size: 14px;
             font-weight: bold;
-            transition: background 0.2s ease, color 0.2s ease;
+            transition:
+                    background 0.2s ease,
+                    color 0.2s ease;
             overflow-wrap: anywhere;
+            max-width: 100%;
         }
 
         .links a:hover {
@@ -230,9 +257,10 @@
             color: #ffc629;
         }
 
-        /* MOBILE ONLY - DESKTOP IS NOT AFFECTED */
+        /* TABLETS AND MOBILE PHONES */
 
-        @media (max-width: 650px) {
+        @media screen and (max-width: 650px) {
+
             html,
             body {
                 width: 100%;
@@ -240,12 +268,14 @@
                 overflow-x: hidden;
             }
 
+            /* MOBILE HEADER */
+
             header {
                 justify-content: center;
                 text-align: center;
-                padding: 80px 7%;
-                align-items: flex-start;
-                gap: 12px;
+                padding: 25px 5%;
+                align-items: center;
+                gap: 15px;
             }
 
             .brand {
@@ -263,19 +293,27 @@
                 font-size: 13px;
             }
 
+            /* MOBILE HERO FIX */
+
             .hero {
-                min-height: 600px;
+                min-height: auto;
                 height: auto;
-                padding: 40px 7%;
+                width: 100%;
+                padding: 50px 7%;
+
+                display: flex;
                 align-items: center;
+
                 background-position: center center;
                 background-size: cover;
+                background-repeat: no-repeat;
             }
 
             .hero-content {
-                max-width: 100%;
                 width: 100%;
+                max-width: 100%;
                 margin-top: 0;
+
                 position: relative;
                 z-index: 2;
             }
@@ -291,60 +329,116 @@
                 line-height: 1.1;
                 letter-spacing: -0.5px;
                 overflow-wrap: anywhere;
-                margin-bottom: 16px;
+                margin: 0 0 16px;
             }
 
             .hero p {
                 max-width: 100%;
                 font-size: 15px;
                 line-height: 1.7;
+                margin: 0;
             }
 
+            /* BOOK A RIDE BUTTON */
+
             .cta {
+                display: inline-block;
+                position: relative;
+                z-index: 3;
+
+                margin-top: 24px;
                 padding: 14px 22px;
-                font-size: 15px;
                 min-height: 44px;
+                max-width: 100%;
+
+                font-size: 15px;
+                white-space: normal;
             }
+
+            /* MOBILE MAIN SECTION */
 
             main {
                 width: 100%;
+                max-width: 100%;
                 margin: 35px auto;
                 padding: 0 15px;
             }
 
+            .section-heading {
+                margin-bottom: 24px;
+            }
+
             .section-heading h2 {
                 font-size: 26px;
+                line-height: 1.3;
             }
+
+            .section-heading p {
+                font-size: 14px;
+                line-height: 1.6;
+            }
+
+            /* ONE CARD PER ROW ON PHONE */
 
             .grid {
                 grid-template-columns: minmax(0, 1fr);
                 gap: 16px;
+                align-items: stretch;
             }
 
             .card {
-                padding: 22px 16px;
+                width: 100%;
                 min-width: 0;
+                height: auto;
+                padding: 22px 16px;
                 overflow-wrap: anywhere;
             }
 
+            /* KEEP HEADINGS INSIDE CARDS */
+
+            .card h2 {
+                margin: 0 0 18px 0;
+                padding: 0;
+                font-size: 21px;
+                line-height: 1.4;
+                overflow-wrap: anywhere;
+            }
+
+            /* MOBILE BUTTONS */
+
             .links {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: flex-start;
                 gap: 8px;
+                width: 100%;
             }
 
             .links a {
                 padding: 10px 12px;
                 font-size: 13px;
+                line-height: 1.4;
                 max-width: 100%;
+                overflow-wrap: anywhere;
             }
+
+            /* MOBILE FOOTER */
 
             footer {
                 padding: 22px 12px;
+                margin-top: 35px;
+            }
+
+            footer p {
+                font-size: 14px;
+                line-height: 1.6;
             }
         }
 
         /* VERY SMALL PHONES */
 
-        @media (max-width: 380px) {
+        @media screen and (max-width: 380px) {
+
             .brand {
                 font-size: 24px;
             }
@@ -355,13 +449,14 @@
             }
 
             .hero {
-                min-height: 560px;
-                padding: 30px 6%;
+                padding: 35px 6%;
+                min-height: auto;
                 background-position: center center;
             }
 
             .hero-content {
                 width: 100%;
+                max-width: 100%;
                 margin-top: 0;
             }
 
@@ -382,6 +477,15 @@
             .card {
                 padding: 18px 12px;
             }
+
+            .card h2 {
+                font-size: 20px;
+            }
+
+            .links a {
+                font-size: 12px;
+                padding: 9px 10px;
+            }
         }
     </style>
 </head>
@@ -393,7 +497,9 @@
 <header>
     <div>
         <div class="brand">🚖 SwiftRide</div>
-        <div class="tagline">Your Journey, Our Priority</div>
+        <div class="tagline">
+            Your Journey, Our Priority
+        </div>
     </div>
 
     <nav>
@@ -412,7 +518,9 @@
 <section class="hero">
     <div class="hero-content">
 
-        <div class="eyebrow">SAFE · FAST · RELIABLE</div>
+        <div class="eyebrow">
+            SAFE · FAST · RELIABLE
+        </div>
 
         <h1 class="hero-title">
             ORDER A TAXI
@@ -432,7 +540,7 @@
     </div>
 </section>
 
-<!-- SERVICES -->
+<!-- SERVICES SECTION -->
 
 <main>
 
@@ -449,11 +557,25 @@
             <h2>👤 Passenger</h2>
 
             <div class="links">
-                <a th:href="@{/passengers/register}">Register</a>
-                <a th:href="@{/passengers/login}">Login</a>
-                <a th:href="@{/passengers}">Passenger Management</a>
-                <a th:href="@{/booking-history}">Booking History</a>
-                <a th:href="@{/favourites}">Favourite Locations</a>
+                <a th:href="@{/passengers/register}">
+                    Register
+                </a>
+
+                <a th:href="@{/passengers/login}">
+                    Login
+                </a>
+
+                <a th:href="@{/passengers}">
+                    Passenger Management
+                </a>
+
+                <a th:href="@{/booking-history}">
+                    Booking History
+                </a>
+
+                <a th:href="@{/favourites}">
+                    Favourite Locations
+                </a>
             </div>
         </section>
 
@@ -463,12 +585,29 @@
             <h2>🚘 Driver</h2>
 
             <div class="links">
-                <a th:href="@{/driver-registration}">Become a Driver</a>
-                <a th:href="@{/driver-portal/login}">Driver Portal Login</a>
-                <a th:href="@{/drivers}">Driver Management</a>
-                <a th:href="@{/driver-login}">Driver Login</a>
-                <a th:href="@{/driver-dashboard}">Driver Dashboard</a>
-                <a th:href="@{/driver-bookings}">Driver Booking Management</a>
+                <a th:href="@{/driver-registration}">
+                    Become a Driver
+                </a>
+
+                <a th:href="@{/driver-portal/login}">
+                    Driver Portal Login
+                </a>
+
+                <a th:href="@{/drivers}">
+                    Driver Management
+                </a>
+
+                <a th:href="@{/driver-login}">
+                    Driver Login
+                </a>
+
+                <a th:href="@{/driver-dashboard}">
+                    Driver Dashboard
+                </a>
+
+                <a th:href="@{/driver-bookings}">
+                    Driver Booking Management
+                </a>
             </div>
         </section>
 
@@ -478,7 +617,9 @@
             <h2>🚖 Vehicles</h2>
 
             <div class="links">
-                <a th:href="@{/vehicles}">Vehicle Management</a>
+                <a th:href="@{/vehicles}">
+                    Vehicle Management
+                </a>
             </div>
         </section>
 
@@ -488,22 +629,42 @@
             <h2>📍 Bookings and Trips</h2>
 
             <div class="links">
-                <a th:href="@{/bookings}">Booking Management</a>
-                <a th:href="@{/trips}">Trip Management</a>
-                <a th:href="@{/cancellations}">Cancellation Management</a>
-                <a th:href="@{/scheduled-bookings/new}">Schedule a Taxi</a>
-                <a th:href="@{/scheduled-bookings/list}">Scheduled Bookings</a>
-                <a th:href="@{/fare-calculator}">Route and Fare Calculator</a>
+                <a th:href="@{/bookings}">
+                    Booking Management
+                </a>
+
+                <a th:href="@{/trips}">
+                    Trip Management
+                </a>
+
+                <a th:href="@{/cancellations}">
+                    Cancellation Management
+                </a>
+
+                <a th:href="@{/scheduled-bookings/new}">
+                    Schedule a Taxi
+                </a>
+
+                <a th:href="@{/scheduled-bookings/list}">
+                    Scheduled Bookings
+                </a>
+
+                <a th:href="@{/fare-calculator}">
+                    Route and Fare Calculator
+                </a>
             </div>
         </section>
 
-        <!-- ADMIN -->
+        <!-- ADMINISTRATION -->
 
         <section class="card">
             <h2>🛡️ Administration</h2>
 
             <div class="links">
-                <a th:href="@{/admin/login}">Admin Login</a>
+                <a th:href="@{/admin/login}">
+                    Admin Login
+                </a>
+
                 <a th:href="@{/admin/driver-applications}">
                     Driver Applications
                 </a>
@@ -517,7 +678,10 @@
 <!-- FOOTER -->
 
 <footer>
-    <p><span>SwiftRide</span> — Your Journey, Our Priority</p>
+    <p>
+        <span>SwiftRide</span>
+        — Your Journey, Our Priority
+    </p>
 </footer>
 
 </body>
