@@ -64,20 +64,20 @@
             color: #ffc107;
         }
 
-
+        /* Full Screen Hero Section Configuration */
         .hero-section {
             position: relative;
             width: 100%;
             max-width: 100%;
             min-height: calc(100vh - 78px);
             display: flex;
-            align-items: center;
+            align-items: center; /* මැදට තිබූ අනුපාතය */
             justify-content: flex-start;
             padding: 0 80px;
             overflow: hidden;
         }
 
-
+        /* Background Full Screen Image */
         .hero-bg-img {
             position: absolute;
             top: 0;
@@ -88,12 +88,13 @@
             z-index: 1;
         }
 
-
+        /* Text Content Layer - Shifted Upwards */
         .hero-content {
             position: relative;
             z-index: 2;
             max-width: 550px;
             padding: 20px;
+            margin-top: -120px; /* අකුරු ටික ලස්සනට උඩට ගැනීමට මෙතනින් සකස් කළා */
         }
 
         .hero-tag {
@@ -139,7 +140,7 @@
             transform: scale(1.05);
         }
 
-
+        /* Responsive Modifications for Phones */
         @media (max-width: 768px) {
             .navbar {
                 flex-direction: column;
@@ -156,6 +157,9 @@
                 justify-content: center;
                 text-align: center;
             }
+            .hero-content {
+                margin-top: 0; /* ෆෝන් එකේදී සාමාන්‍ය පරිදි පෙන්වීමට */
+            }
             .hero-title {
                 font-size: 38px;
             }
@@ -164,6 +168,7 @@
 </head>
 <body>
 
+<!-- Top Navigation Bar Menu -->
 <div class="navbar">
     <div class="logo-section">
         <div class="logo-title">🚖 SwiftRide</div>
@@ -180,12 +185,12 @@
     </div>
 </div>
 
-
+<!-- Full Screen Hero Layout Area -->
 <div class="hero-section">
-
+    <!-- Background Pic Insertion -->
     <img class="hero-bg-img" src="Cinematic Sunset Taxi by the Waterfront.png" alt="SwiftRide Taxi Backdrop">
 
-
+    <!-- Shifted Content Layer over Image -->
     <div class="hero-content">
         <div class="hero-tag">SAFE • FAST • RELIABLE</div>
         <h1 class="hero-title">ORDER A TAXI<br><span style="color: #ffc107;">RIGHT NOW!</span></h1>
