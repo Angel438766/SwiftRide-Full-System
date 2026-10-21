@@ -1,6 +1,5 @@
-
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -90,12 +89,54 @@
             max-width: 100%;
             min-width: 0;
             overflow-wrap: break-word;
+            margin-bottom: 25px;
         }
 
         .welcome h2,
         .welcome p {
             max-width: 100%;
             overflow-wrap: anywhere;
+        }
+
+        /* ආරක්ෂිත ලොග් වීමේ පෝරමය (OTP Form) */
+        .auth-form {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ddd;
+            text-align: center;
+            max-width: 450px;
+            margin: 0 auto 25px auto;
+        }
+
+        .auth-form h3 {
+            color: #173b65;
+            margin-top: 0;
+        }
+
+        .auth-form input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        .auth-form button {
+            width: 100%;
+            padding: 12px;
+            background: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .auth-form button:hover {
+            background: #0b5ed7;
         }
 
         .cards {
@@ -222,18 +263,18 @@
 </header>
 
 <nav>
-    <a th:href="@{/}">Home</a>
-    <a th:href="@{/passengers}">Passengers</a>
-    <a th:href="@{/drivers}">Drivers</a>
-    <a th:href="@{/vehicles}">Vehicles</a>
-    <a th:href="@{/bookings}">Bookings</a>
-    <a th:href="@{/trips}">Trips</a>
-    <a th:href="@{/booking-history}">Booking History</a>
-    <a th:href="@{/favourite-locations}">Favourite Locations</a>
-    <a th:href="@{/driver-login}">Driver Login</a>
-    <a th:href="@{/driver-dashboard}">Driver Dashboard</a>
-    <a href="/scheduled-bookings/new">Schedule a Taxi</a>
-    <a href="/scheduled-bookings/list">View Scheduled Bookings</a>
+    <a href="index.html">Home</a>
+    <a href="passengers.html">Passengers</a>
+    <a href="drivers.html">Drivers</a>
+    <a href="vehicles.html">Vehicles</a>
+    <a href="bookings.html">Bookings</a>
+    <a href="trips.html">Trips</a>
+    <a href="booking-history.html">Booking History</a>
+    <a href="favourite-locations.html">Favourite Locations</a>
+    <a href="driver-login.html">Driver Login</a>
+    <a href="driver-dashboard.html">Driver Dashboard</a>
+    <a href="schedule-new.html">Schedule a Taxi</a>
+    <a href="schedule-list.html">View Scheduled Bookings</a>
 </nav>
 
 <div class="container">
@@ -246,60 +287,70 @@
         </p>
     </div>
 
+
+    <div class="auth-form">
+        <h3>Passenger / Driver Secure Login</h3>
+        <p style="color: #666; font-size: 14px;">Enter email to receive 24/7 Instant OTP</p>
+        <form id="otpLoginForm">
+            <input type="email" placeholder="Enter your email address" required>
+            <button type="submit">Send Safe OTP</button>
+        </form>
+    </div>
+
     <div class="cards">
 
         <div class="card">
             <h2>Passenger Management</h2>
             <p>Register passengers and manage passenger details.</p>
-            <a th:href="@{/passengers}">Manage Passengers</a>
+            <a href="passengers.html">Manage Passengers</a>
         </div>
 
         <div class="card">
             <h2>Driver Management</h2>
             <p>Manage drivers and their availability.</p>
-            <a th:href="@{/drivers}">Manage Drivers</a>
+            <a href="drivers.html">Manage Drivers</a>
         </div>
 
         <div class="card">
             <h2>Vehicle Management</h2>
             <p>Manage vehicles and vehicle categories.</p>
-            <a th:href="@{/vehicles}">Manage Vehicles</a>
+            <a href="vehicles.html">Manage Vehicles</a>
         </div>
 
         <div class="card">
             <h2>Booking Management</h2>
             <p>Create bookings, assign drivers and update booking status.</p>
-            <a th:href="@{/bookings}">Manage Bookings</a>
+            <a href="bookings.html">Manage Bookings</a>
         </div>
 
         <div class="card">
             <h2>Trip Management</h2>
             <p>View trip details, start times and completion times.</p>
-            <a th:href="@{/trips}">Manage Trips</a>
+            <a href="trips.html">Manage Trips</a>
         </div>
 
         <div class="card">
             <h2>Booking History</h2>
             <p>Review booking records and cancellation reasons.</p>
-            <a th:href="@{/booking-history}">View History</a>
+            <a href="booking-history.html">View History</a>
         </div>
 
         <div class="card">
             <h2>Favourite Locations</h2>
             <p>Manage saved locations.</p>
-            <a th:href="@{/favourite-locations}">Manage Locations</a>
+            <a href="favourite-locations.html">Manage Locations</a>
         </div>
 
         <div class="card">
             <h2>Driver Login</h2>
             <p>Login to view assigned bookings and manage trips.</p>
-            <a th:href="@{/driver-login}">Driver Login</a>
+            <a href="driver-login.html">Driver Login</a>
         </div>
 
         <div class="card">
             <h2>Driver Dashboard</h2>
             <p>View your assigned bookings and update trip status.</p>
-            <a th:href="@{/driver-dashboard}">Open Dashboard</a>
+            <a href="driver-dashboard.html">Open Dashboard</a>
         </div>
 
     </div>
@@ -309,6 +360,25 @@
 <footer>
     <p>Taxi Cab Booking System | 2026</p>
 </footer>
+
+<script src="https://jsdelivr.net"></script>
+
+<script>
+    // Supabase Credentials
+    const SUPABASE_URL = "https://supabase.co";
+
+    const SUPABASE_ANON_KEY = "sb_publishable_TSPXFTGaeIMHzvvUpPpGkQ_ZHN-sgwx";
+
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    document.getElementById('otpLoginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const emailInput = document.querySelector('#otpLoginForm input[type="email"]').value;
+
+        alert("Sending OTP code to your email address.Please wait a few seconds...");
+    });
+</script>
 
 </body>
 </html>
