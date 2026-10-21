@@ -18,7 +18,7 @@
             overflow-x: hidden;
         }
 
-
+        /* Top Navigation Bar Styling */
         .navbar {
             background-color: #0c2340;
             padding: 20px 50px;
@@ -65,18 +65,35 @@
         }
 
 
-        .hero-container {
+        .hero-section {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            min-height: calc(100vh - 78px);
             display: flex;
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 40px 50px;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-start;
+            padding: 0 80px;
+            overflow: hidden;
         }
 
-        .hero-text {
-            flex: 1;
-            max-width: 500px;
+
+        .hero-bg-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 550px;
+            padding: 20px;
         }
 
         .hero-tag {
@@ -88,68 +105,59 @@
         }
 
         .hero-title {
-            font-size: 48px;
+            font-size: 52px;
             font-weight: 900;
             line-height: 1.1;
             margin: 0 0 20px 0;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
         }
 
         .hero-desc {
-            color: #aaa;
-            font-size: 16px;
-            line-height: 1.5;
-            margin-bottom: 30px;
+            color: #ddd;
+            font-size: 17px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
         }
 
         .btn-book {
             display: inline-block;
-            padding: 12px 25px;
+            padding: 14px 30px;
             background-color: #ffc107;
             color: #000;
             font-weight: bold;
             text-decoration: none;
             border-radius: 25px;
-            transition: background 0.2s;
+            font-size: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s, background 0.2s;
         }
 
         .btn-book:hover {
             background-color: #e0a800;
+            transform: scale(1.05);
         }
 
-        .hero-image {
-            flex: 1;
-            text-align: right;
-            position: relative;
-        }
 
-        .hero-image img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        @media (max-width: 992px) {
-            .hero-container {
-                flex-direction: column;
-                text-align: center;
-                padding: 30px 20px;
-            }
-            .hero-text {
-                margin-bottom: 40px;
-                max-width: 100%;
-            }
-            .hero-image {
-                text-align: center;
-            }
+        @media (max-width: 768px) {
             .navbar {
                 flex-direction: column;
                 gap: 15px;
                 padding: 15px;
+                text-align: center;
             }
             .nav-links {
                 flex-wrap: wrap;
                 justify-content: center;
+            }
+            .hero-section {
+                padding: 40px 20px;
+                justify-content: center;
+                text-align: center;
+            }
+            .hero-title {
+                font-size: 38px;
             }
         }
     </style>
@@ -173,17 +181,17 @@
 </div>
 
 
-<div class="hero-container">
-    <div class="hero-text">
+<div class="hero-section">
+
+    <img class="hero-bg-img" src="Cinematic Sunset Taxi by the Waterfront.png" alt="SwiftRide Taxi Backdrop">
+
+
+    <div class="hero-content">
         <div class="hero-tag">SAFE • FAST • RELIABLE</div>
         <h1 class="hero-title">ORDER A TAXI<br><span style="color: #ffc107;">RIGHT NOW!</span></h1>
         <p class="hero-desc">Travel with comfort and confidence. Book your ride, manage your journey and get where you need to go with SwiftRide.</p>
         <a href="templates/passenger/register.html" class="btn-book">🚖 Book a Ride →</a>
     </div>
-
-<div class="hero-image">
-    <img src="Cinematic Sunset Taxi by the Waterfront.png" alt="SwiftRide Taxi">
-</div>
 </div>
 
 </body>
