@@ -1,19 +1,47 @@
-
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Passenger Login</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- 100%ක්ම වැඩ කරන පරිදි CSS ලින්ක් එක නිවැරදි කළා -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        /* උඩ මෙනු තීරුව ලස්සනට පෙනෙන්න දැමූ සරල මෝස්තර */
+        nav {
+            background-color: #0c2340;
+            padding: 15px 30px;
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+        nav a:hover {
+            color: #ffc107;
+        }
+    </style>
 </head>
 <body>
 
+<!-- ඔයාට අඩුවෙන් තිබුණු ප්‍රධාන මෙනු තීරුව (Navbar) මෙන්න එකතු කළා -->
+<nav>
+    <a href="../../index.html">Home</a>
+    <a href="../about.html">About Us</a>
+    <a href="../contact.html">Contact Us</a>
+    <a href="register.html">Sign Up</a>
+    <a href="login.html" style="color: #ffc107; font-weight: bold;">Passenger Login</a>
+</nav>
+
 <h1>Passenger Login</h1>
 
-<p th:if="${error}" th:text="${error}"></p>
-
-<form th:action="@{/passengers/login}" method="post">
-
+<!-- Form Action එක සාමාන්‍ය HTML එකක් බවට පත් කළා -->
+<form action="#" method="post">
     <label>Email</label><br>
     <input type="email" name="email" required>
     <br><br>
@@ -25,8 +53,9 @@
     <button type="submit">Login</button>
 </form>
 
-<p><a th:href="@{/passengers/register}">Create an account</a></p>
-<a th:href="@{/}">Home</a>
+<!-- යට තියෙන බොත්තම් දෙකේ ලින්ක්ස් 404 Error නොවී වැඩ කරන්න නිවැරදි කළා -->
+<p><a href="register.html">Create an account</a></p>
+<p><a href="../../index.html">Home</a></p>
 
 </body>
 </html>
