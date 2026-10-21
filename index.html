@@ -13,7 +13,7 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #f3f4f6; /* ඡායාරූපයේ ඇති පරිදි ලස්සන අළු/සුදු පසුබිම */
+            background-color: #f3f4f6; /* ලස්සන අළු/සුදු පසුබිම */
             color: #222;
             overflow-x: hidden;
         }
@@ -64,67 +64,31 @@
             color: #ffc107;
         }
 
-        /* Full Screen Hero Image Area */
-        .hero-section {
-            position: relative;
+        /* Banner section - කාර් එක වැසීම වැළැක්වීමට ස්වයංක්‍රීය පිරිසිදු Layout එකක් */
+        .banner-container {
             width: 100%;
             max-width: 100%;
-            height: 55vh; /* කාඩ්ස් ටික පහළින් පෙනීමට උස මඳක් සකස් කළා */
+            position: relative;
+            background-color: #07162c;
             display: flex;
-            align-items: flex-start;
-            justify-content: flex-start;
-            padding: 40px 80px 0 80px;
+            justify-content: center;
+            align-items: center;
             overflow: hidden;
         }
 
-        .hero-bg-img {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .banner-bg-img {
             width: 100%;
-            height: 100%;
+            height: auto;
+            max-height: 550px;
             object-fit: cover;
-            z-index: 1;
+            display: block;
         }
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 550px;
-            padding: 20px;
-            margin-top: -45px;
-        }
-
-        .hero-tag {
-            color: #ffffff; /* සුදු පාටින් */
-            font-weight: bold;
-            letter-spacing: 2px;
-            font-size: 14px;
-            margin-bottom: 25px;
-        }
-
-        .hero-title {
-            font-size: 52px;
-            font-weight: 900;
-            line-height: 1.1;
-            margin: 0 0 25px 0;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
-        }
-
-        .hero-desc {
-            color: #ddd;
-            font-size: 17px;
-            line-height: 1.6;
-            margin-bottom: 40px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-        }
-
-        /* ඡායාරූපයේ ඇති පරිදිම පිරිසිදු Cards Dashboard එක */
+        /* Cards Dashboard Container - කාඩ්ස් ටික පින්තූරයෙන් පහළට තල්ලු කිරීම */
         .dashboard-container {
             max-width: 1300px;
             width: 90%;
-            margin: -50px auto 50px auto; /* පින්තූරය උඩින් මඳක් overlap වන සේ */
+            margin: 35px auto 60px auto; /* 👈 ඍණ අගය අයින් කරලා කාඩ්ස් ටික පහළටම ගත්තා */
             position: relative;
             z-index: 10;
         }
@@ -164,14 +128,12 @@
             font-size: 22px;
         }
 
-        /* ඡායාරූපයේ ඇති පරිදි බොත්තම් ව්‍යුහය */
         .btn-list {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        /* Passenger Login / Register බොත්තම් දෙක ළඟින් තැබීමට */
         .btn-row {
             display: flex;
             gap: 10px;
@@ -205,9 +167,9 @@
         }
         @media (max-width: 650px) {
             .grid-container { grid-template-columns: 1fr; }
-            .hero-section { padding: 40px 20px; text-align: center; }
             .navbar { flex-direction: column; gap: 15px; }
             .nav-links { flex-wrap: wrap; justify-content: center; }
+            .dashboard-container { margin-top: 30px; }
         }
     </style>
 </head>
@@ -230,17 +192,12 @@
     </div>
 </div>
 
-<!-- Full Screen Hero Layout Area -->
-<div class="hero-section">
-    <img class="hero-bg-img" src="Cinematic Sunset Taxi by the Waterfront.png" alt="SwiftRide Taxi Backdrop">
-    <div class="hero-content">
-        <div class="hero-tag">SAFE • FAST • RELIABLE</div>
-        <h1 class="hero-title">ORDER A TAXI<br><span style="color: #ffc107;">RIGHT NOW!</span></h1>
-        <p class="hero-desc">Travel with comfort and confidence. Book your ride, manage your journey and get where you need to go with SwiftRide.</p>
-    </div>
+<!-- පින්තූරය (කාඩ්ස් වලින් වෙන් වූ නිවැරදිම පෙනුම) -->
+<div class="banner-container">
+    <img class="banner-bg-img" src="Cinematic Sunset Taxi by the Waterfront.png" alt="SwiftRide Taxi Backdrop">
 </div>
 
-<!-- ඡායාරූපයට 100% ක් සමාන Cards Dashboard කොටස -->
+<!-- Cards Dashboard කොටස -->
 <div class="dashboard-container">
     <div class="grid-container">
 
@@ -297,7 +254,12 @@
             <div class="card-title"><span class="icon" style="color: #0d6efd;">🛡️</span> Administration</div>
             <div class="btn-list">
                 <a href="templates/admin-login.html">Admin Login</a>
+                <a href="templates/driver-applications.html">Driver Applications</a>
             </div>
         </div>
+
     </div>
 </div>
+
+</body>
+</html>
