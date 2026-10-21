@@ -13,8 +13,8 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #07162c;
-            color: white;
+            background-color: #f3f4f6; /* ඡායාරූපයේ ඇති පරිදි ලස්සන අළු/සුදු පසුබිම */
+            color: #222;
             overflow-x: hidden;
         }
 
@@ -64,20 +64,19 @@
             color: #ffc107;
         }
 
-        /* Full Screen Hero Section Configuration */
+        /* Full Screen Hero Image Area */
         .hero-section {
             position: relative;
             width: 100%;
             max-width: 100%;
-            min-height: calc(100vh - 78px);
+            height: 55vh; /* කාඩ්ස් ටික පහළින් පෙනීමට උස මඳක් සකස් කළා */
             display: flex;
-            align-items: flex-start; /* අකුරු ටික ඉහළ සිට ආරම්භ වීමට flex-start කළා */
+            align-items: flex-start;
             justify-content: flex-start;
-            padding: 50px 80px 0 80px; /* උඩින් ලස්සන පරතරයක් (Padding) ලබා දුන්නා */
+            padding: 40px 80px 0 80px;
             overflow: hidden;
         }
 
-        /* Background Full Screen Image */
         .hero-bg-img {
             position: absolute;
             top: 0;
@@ -88,21 +87,20 @@
             z-index: 1;
         }
 
-        /* Text Content Layer - Shifted Higher Perfectly matching Localhost */
         .hero-content {
             position: relative;
             z-index: 2;
             max-width: 550px;
             padding: 20px;
-            margin-top: 0px; /* Localhost එකේ තේරුවටම ගැළපෙන පරිදි උඩටම සකස් කළා */
+            margin-top: -45px;
         }
 
         .hero-tag {
-            color: #ffffff;
+            color: #ffffff; /* සුදු පාටින් */
             font-weight: bold;
             letter-spacing: 2px;
             font-size: 14px;
-            margin-bottom: 25px; /* SAFE FAST RELIABLE එකට යටින් පරතරය වැඩි කළා */
+            margin-bottom: 25px;
         }
 
         .hero-title {
@@ -122,48 +120,94 @@
             text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
         }
 
-        .btn-book {
-            display: inline-block;
-            padding: 14px 30px;
-            background-color: #ffc107;
-            color: #000;
+        /* ඡායාරූපයේ ඇති පරිදිම පිරිසිදු Cards Dashboard එක */
+        .dashboard-container {
+            max-width: 1300px;
+            width: 90%;
+            margin: -50px auto 50px auto; /* පින්තූරය උඩින් මඳක් overlap වන සේ */
+            position: relative;
+            z-index: 10;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            border-top: 5px solid #ffc107; /* කහ පාට උඩ දාරය */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Administration කාඩ් එකට නිල් පාට උඩ දාරය */
+        .card.admin-card {
+            border-top: 5px solid #0d6efd;
+        }
+
+        .card-title {
+            font-size: 20px;
             font-weight: bold;
+            color: #173b65;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title .icon {
+            font-size: 22px;
+        }
+
+        /* ඡායාරූපයේ ඇති පරිදි බොත්තම් ව්‍යුහය */
+        .btn-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Passenger Login / Register බොත්තම් දෙක ළඟින් තැබීමට */
+        .btn-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-list a, .btn-row a {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #f8f9fa;
+            color: #333;
             text-decoration: none;
-            border-radius: 25px;
-            font-size: 16px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: transform 0.2s, background 0.2s;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid #e5e7eb;
+            text-align: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        .btn-book:hover {
-            background-color: #e0a800;
-            transform: scale(1.05);
+        .btn-list a:hover, .btn-row a:hover {
+            background-color: #e5e7eb;
+            color: #000;
+            transform: translateY(-1px);
         }
 
-        /* Responsive Modifications for Phones */
-        @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                gap: 15px;
-                padding: 15px;
-                text-align: center;
-            }
-            .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            .hero-section {
-                padding: 40px 20px;
-                justify-content: center;
-                text-align: center;
-                align-items: center;
-            }
-            .hero-content {
-                margin-top: 0;
-            }
-            .hero-title {
-                font-size: 38px;
-            }
+        /* Responsive Modifications */
+        @media (max-width: 1100px) {
+            .grid-container { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 650px) {
+            .grid-container { grid-template-columns: 1fr; }
+            .hero-section { padding: 40px 20px; text-align: center; }
+            .navbar { flex-direction: column; gap: 15px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; }
         }
     </style>
 </head>
@@ -188,17 +232,72 @@
 
 <!-- Full Screen Hero Layout Area -->
 <div class="hero-section">
-    <!-- Background Pic Insertion -->
     <img class="hero-bg-img" src="Cinematic Sunset Taxi by the Waterfront.png" alt="SwiftRide Taxi Backdrop">
-
-    <!-- Shifted Content Layer over Image -->
     <div class="hero-content">
         <div class="hero-tag">SAFE • FAST • RELIABLE</div>
         <h1 class="hero-title">ORDER A TAXI<br><span style="color: #ffc107;">RIGHT NOW!</span></h1>
         <p class="hero-desc">Travel with comfort and confidence. Book your ride, manage your journey and get where you need to go with SwiftRide.</p>
-        <a href="templates/passenger/register.html" class="btn-book">🚖 Book a Ride →</a>
     </div>
 </div>
 
-</body>
-</html>
+<!-- ඡායාරූපයට 100% ක් සමාන Cards Dashboard කොටස -->
+<div class="dashboard-container">
+    <div class="grid-container">
+
+        <!-- 1. Passenger Card -->
+        <div class="card">
+            <div class="card-title"><span class="icon" style="color: #6f42c1;">👤</span> Passenger</div>
+            <div class="btn-list">
+                <div class="btn-row">
+                    <a href="templates/passenger/register.html">Register</a>
+                    <a href="templates/passenger/login.html">Login</a>
+                </div>
+                <a href="templates/passenger/list.html">Passenger Management</a>
+                <a href="templates/booking-history.html">Booking History</a>
+                <a href="templates/favourite-locations.html">Favourite Locations</a>
+            </div>
+        </div>
+
+        <!-- 2. Driver Card -->
+        <div class="card">
+            <div class="card-title"><span class="icon" style="color: #e685a3;">🚙</span> Driver</div>
+            <div class="btn-list">
+                <a href="templates/driver/form.html">Become a Driver</a>
+                <a href="templates/driver/portal-login.html">Driver Portal Login</a>
+                <a href="templates/driver/list.html">Driver Management</a>
+                <a href="templates/driver/login.html">Driver Login</a>
+                <a href="templates/driver/dashboard.html">Driver Dashboard</a>
+                <a href="templates/driver/portal-dashboard.html">Driver Booking Management</a>
+            </div>
+        </div>
+
+        <!-- 3. Vehicles Card -->
+        <div class="card">
+            <div class="card-title"><span class="icon" style="color: #fd7e14;">🚕</span> Vehicles</div>
+            <div class="btn-list">
+                <a href="templates/vehicles.html">Vehicle Management</a>
+            </div>
+        </div>
+
+        <!-- 4. Bookings and Trips Card -->
+        <div class="card">
+            <div class="card-title"><span class="icon" style="color: #dc3545;">📍</span> Bookings and Trips</div>
+            <div class="btn-list">
+                <a href="templates/bookings.html">Booking Management</a>
+                <a href="templates/trips.html">Trip Management</a>
+                <a href="templates/cancellation-management.html">Cancellation Management</a>
+                <a href="templates/schedule-new.html">Schedule a Taxi</a>
+                <a href="templates/schedule-list.html">Scheduled Bookings</a>
+                <a href="templates/route-fare-calculator.html">Route and Fare Calculator</a>
+            </div>
+        </div>
+
+        <!-- 5. Administration Card -->
+        <div class="card admin-card">
+            <div class="card-title"><span class="icon" style="color: #0d6efd;">🛡️</span> Administration</div>
+            <div class="btn-list">
+                <a href="templates/admin-login.html">Admin Login</a>
+            </div>
+        </div>
+    </div>
+</div>
