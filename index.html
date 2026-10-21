@@ -13,7 +13,7 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #f3f4f6; /* ලස්සන අළු/සුදු පසුබිම */
+            background-color: #f3f4f6;
             color: #222;
             overflow-x: hidden;
         }
@@ -171,7 +171,6 @@
 
         .grid-container {
             display: grid;
-            /* ඡායාරූපයේ පරිදිම එකම පේළියක කාඩ්ස් 4ක් බලහත්කාරයෙන් පෙන්වීමට මෙය වෙනස් කළා */
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
         }
@@ -187,10 +186,10 @@
             justify-content: space-between;
         }
 
-        /* Administration කාඩ් එක සම්පූර්ණ පළලින් ඊළඟ පේළියේ ආරම්භ වීමට */
+        /* Administration කාඩ් එක ඊළඟ පේළියේ පළමුවැන්නා ලෙස තැබීමට */
         .card.admin-card {
             border-top: 5px solid #0d6efd;
-            grid-column: 1 / span 1; /* පළමු කාඩ් එකේ පළලටම සමානව තැබීමට */
+            grid-column: 1 / span 1;
             margin-top: 10px;
         }
 
@@ -239,7 +238,7 @@
             color: #000;
         }
 
-        /* Responsive Modifications for Small Screens */
+        /* Responsive Modifications */
         @media (max-width: 1150px) {
             .grid-container { grid-template-columns: repeat(2, 1fr); }
             .card.admin-card { grid-column: auto; }
@@ -266,7 +265,7 @@
     <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="templates/about.html">About Us</a>
-        <a href="templates/contact.html">Contact Us</a>
+        <a href="templates/contact-us.html">Contact Us</a>
         <a href="templates/passenger/register.html">Sign Up</a>
         <a href="templates/passenger/login.html">Passenger Login</a>
         <a href="templates/driver/login.html">Driver Login</a>
@@ -296,7 +295,7 @@
     <div class="grid-container">
 
         <!-- 1. Passenger Card -->
-        <div class="card" style="flex: 1; min-width: 230px;">
+        <div class="card">
             <div>
                 <div class="card-title"><span class="icon" style="color: #6f42c1;">👤</span> Passenger</div>
                 <div class="btn-list">
@@ -312,7 +311,7 @@
         </div>
 
         <!-- 2. Driver Card -->
-        <div class="card" style="flex: 1; min-width: 230px;">
+        <div class="card">
             <div>
                 <div class="card-title"><span class="icon" style="color: #e685a3;">🚙</span> Driver</div>
                 <div class="btn-list">
@@ -321,52 +320,48 @@
                     <a href="templates/driver/list.html">Driver Management</a>
                     <a href="templates/driver/login.html">Driver Login</a>
                     <a href="templates/driver/dashboard.html">Driver Dashboard</a>
-
-                    <!-- 3. Vehicles Card -->
-                    <div class="card" style="flex: 1; min-width: 230px;">
-                        <div>
-                            <div class="card-title"><span class="icon" style="color: #fd7e14;">🚕</span> Vehicles</div>
-                            <div class="btn-list">
-                                <a href="templates/vehicles.html">Vehicle Management</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 4. Bookings and Trips Card -->
-                    <div class="card" style="flex: 1; min-width: 230px;">
-                        <div>
-                            <div class="card-title"><span class="icon" style="color: #dc3545;">📍</span> Bookings and Trips</div>
-                            <div class="btn-list">
-                                <a href="templates/bookings.html">Booking Management</a>
-                                <a href="templates/trips.html">Trip Management</a>
-                                <a href="templates/cancellation-management.html">Cancellation Management</a>
-                                <a href="templates/schedule-new.html">Schedule a Taxi</a>
-                                <a href="templates/schedule-list.html">Scheduled Bookings</a>
-                                <a href="templates/route-fare-calculator.html">Route and Fare Calculator</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 5. Administration Card -->
-                    <div style="margin-top: 20px; display: flex; justify-content: flex-start;">
-
-                    </div>
-                    <div class="card admin-card" style="width: 24.2%; min-width: 230px;">
-                        <div>
-                            <div class="card-title"><span class="icon" style="color: #0d6efd;">🛡️</span> Administration</div>
-                            <div class="btn-list">
-                                <a href="templates/admin-login.html">Admin Login</a>
-                                <a href="templates/driver-applications.html">Driver Applications</a>
-
-
-                            </div>
-                        </div>
-                    </div>
-
+                    <a href="templates/driver/portal-dashboard.html">Driver Booking Management</a>
                 </div>
             </div>
         </div>
+        <!-- 3. Vehicles Card -->
+        <div class="card">
+            <div>
+                <div class="card-title"><span class="icon" style="color: #fd7e14;">🚕</span> Vehicles</div>
+                <div class="btn-list">
+                    <a href="templates/vehicles.html">Vehicle Management</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Bookings and Trips Card -->
+        <div class="card">
+            <div>
+                <div class="card-title"><span class="icon" style="color: #dc3545;">📍</span> Bookings and Trips</div>
+                <div class="btn-list">
+                    <a href="templates/bookings.html">Booking Management</a>
+                    <a href="templates/trips.html">Trip Management</a>
+                    <a href="templates/cancellation-management.html">Cancellation Management</a>
+                    <a href="templates/schedule-new.html">Schedule a Taxi</a>
+                    <a href="templates/schedule-list.html">Scheduled Bookings</a>
+                    <a href="templates/route-fare-calculator.html">Route and Fare Calculator</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Administration Card -->
+        <div class="card admin-card">
+            <div>
+                <div class="card-title"><span class="icon" style="color: #0d6efd;">🛡️</span> Administration</div>
+                <div class="btn-list">
+                    <a href="templates/admin-login.html">Admin Login</a>
+                    <a href="templates/driver-applications.html">Driver Applications</a>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
+
 </body>
 </html>
