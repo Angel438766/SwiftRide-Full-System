@@ -3,167 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to SwiftRide</title>
+    <title>SwiftRide - Safe, Fast, Reliable</title>
     <style>
         * {
             box-sizing: border-box;
         }
+
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #f3f4f6;
-            color: #333;
+            background-color: #07162c; /* සැබෑ තද නිල් පැහැති පසුබිම */
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Top Navigation Bar Styling from Localhost */
+        .navbar {
+            background-color: #0c2340; /* Navbar නිල් පාට */
+            padding: 20px 50px;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            min-height: 100vh;
-        }
-        .main-title {
-            text-align: center;
-            margin-top: 40px;
-            font-size: 32px;
-            font-weight: bold;
-            color: #222;
-        }
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 40px;
-            font-size: 16px;
-        }
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            max-width: 1200px;
-            width: 90%;
-        }
-        .admin-row {
-            grid-column: span 4;
-            display: flex;
-            justify-content: flex-start;
-            margin-top: 10px;
-        }
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            border-top: 4px solid #ffc107;
-        }
-        .card.admin-card {
-            border-top: 4px solid #0d6efd;
-            width: 285px;
-        }
-        .card-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .card-title span.icon {
-            font-size: 20px;
-        }
-        .btn-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .btn-list a {
-            display: block;
             width: 100%;
-            padding: 10px;
-            background-color: #f8f9fa;
-            color: #333;
+        }
+
+        .logo-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffc107; /* කහ පාට SwiftRide නම */
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-sub {
+            font-size: 12px;
+            color: #ccc;
+            margin-top: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
             text-decoration: none;
-            border-radius: 6px;
             font-size: 14px;
-            border: 1px solid #e5e7eb;
-            transition: all 0.2s ease;
+            transition: color 0.2s;
         }
-        .btn-list a:hover {
-            background-color: #e5e7eb;
+
+        .nav-links a:hover {
+            color: #ffc107;
+        }
+
+        /* Hero / Banner Layout Section */
+        .hero-container {
+            display: flex;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px 50px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .hero-text {
+            flex: 1;
+            max-width: 500px;
+        }
+
+        .hero-tag {
+            color: #ffc107;
+            font-weight: bold;
+            letter-spacing: 2px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin: 0 0 20px 0;
+        }
+
+        .hero-desc {
+            color: #aaa;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .btn-book {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #ffc107;
             color: #000;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: background 0.2s;
         }
-        @media (max-width: 1024px) {
-            .grid-container { grid-template-columns: repeat(2, 1fr); }
-            .admin-row { grid-column: span 2; }
+
+        .btn-book:hover {
+            background-color: #e0a800;
         }
-        @media (max-width: 600px) {
-            .grid-container { grid-template-columns: 1fr; }
-            .admin-row { grid-column: span 1; }
-            .card.admin-card { width: 100%; }
+
+        .hero-image {
+            flex: 1;
+            text-align: right;
+            position: relative;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        @media (max-width: 992px) {
+            .hero-container {
+                flex-direction: column;
+                text-align: center;
+                padding: 30px 20px;
+            }
+            .hero-text {
+                margin-bottom: 40px;
+                max-width: 100%;
+            }
+            .hero-image {
+                text-align: center;
+            }
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="main-title">Welcome to SwiftRide</div>
-<div class="subtitle">Choose a service to get started.</div>
+<!-- Localhost නිවැරදිම නිල් පාට මෙනු තීරුව (Top Navbar) -->
+<div class="navbar">
+    <div class="logo-section">
+        <div class="logo-title">🚖 SwiftRide</div>
+        <div class="logo-sub">Your Journey, Our Priority</div>
+    </div>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="templates/about.html">About Us</a>
+        <a href="templates/contact.html">Contact Us</a>
+        <a href="templates/passenger/register.html">Sign Up</a>
+        <a href="templates/passenger/login.html">Passenger Login</a>
+        <a href="templates/driver/login.html">Driver Login</a>
+        <a href="templates/driver/form.html">Become a Driver</a>
+    </div>
+</div>
 
-<div class="grid-container">
-
-    <!-- 1. Passenger Card -->
-    <div class="card">
-        <div class="card-title"><span class="icon">👤</span> Passenger</div>
-        <div class="btn-list">
-            <a href="templates/passenger/register.html">Register</a>
-            <a href="templates/passenger/login.html">Login</a>
-            <a href="templates/passenger/list.html">Passenger Management</a>
-            <a href="templates/booking-history.html">Booking History</a>
-            <a href="templates/favourite-location/list.html">Favourite Locations</a>
-        </div>
+<!-- සැබෑම ලස්සන Taxi Banner සහ Localhost එකේ තිබුණු පාඨයන් -->
+<div class="hero-container">
+    <div class="hero-text">
+        <div class="hero-tag">SAFE • FAST • RELIABLE</div>
+        <h1 class="hero-title">ORDER A TAXI<br><span style="color: #ffc107;">RIGHT NOW!</span></h1>
+        <p class="hero-desc">Travel with comfort and confidence. Book your ride, manage your journey and get where you need to go with SwiftRide.</p>
+        <a href="templates/passenger/register.html" class="btn-book">🚖 Book a Ride →</a>
     </div>
 
-    <!-- 2. Driver Card -->
-    <div class="card">
-        <div class="card-title"><span class="icon">🚖</span> Driver</div>
-        <div class="btn-list">
-            <a href="templates/driver/form.html">Become a Driver</a>
-            <a href="templates/driver/portal-login.html">Driver Portal Login</a>
-            <a href="templates/driver/list.html">Driver Management</a>
-            <a href="templates/driver/login.html">Driver Login</a>
-            <a href="templates/driver/dashboard.html">Driver Dashboard</a>
-            <a href="templates/driver/portal-dashboard.html">Driver Booking Management</a>
-        </div>
-    </div>
-
-    <!-- 3. Vehicles Card -->
-    <div class="card">
-        <div class="card-title"><span class="icon">🚕</span> Vehicles</div>
-        <div class="btn-list">
-            <a href="templates/driver/vehicle-list.html">Vehicle Management</a>
-        </div>
-    </div>
-
-    <!-- 4. Bookings and Trips Card -->
-    <div class="card">
-        <div class="card-title"><span class="icon">📍</span> Bookings and Trips</div>
-        <div class="btn-list">
-            <a href="templates/booking/list.html">Booking Management</a>
-            <a href="templates/track-driver.html">Trip Management</a>
-            <a href="templates/cancellation/form.html">Cancellation Management</a>
-            <a href="templates/scheduled-booking-form.html">Schedule a Taxi</a>
-            <a href="templates/scheduled-booking-list.html">Scheduled Bookings</a>
-            <a href="templates/favourite-location/form.html">Route and Fare Calculator</a>
-        </div>
-    </div>
-
-    <!-- 5. Administration Row & Card -->
-    <div class="admin-row">
-        <div class="card admin-card">
-            <div class="card-title"><span class="icon">🛡️</span> Administration</div>
-            <div class="btn-list">
-                <a href="templates/admin-login.html">Admin Login</a>
-                <a href="templates/driver/vehicle-form.html">Driver Applications</a>
-            </div>
-        </div>
-    </div>
-
+<div class="hero-image">
+    <img src="Cinematic Sunset Taxi by the Waterfront.jpg" alt="SwiftRide Taxi">
+</div>
 </div>
 
 </body>
-</html>
+</html>gi
