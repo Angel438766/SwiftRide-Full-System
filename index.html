@@ -13,7 +13,7 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #f3f4f6; /* ඡායාරූපයේ ඇති පරිදි ලස්සන අළු/සුදු පසුබිම */
+            background-color: #f3f4f6; /* ලස්සන අළු/සුදු පසුබිම */
             color: #222;
             overflow-x: hidden;
         }
@@ -88,7 +88,7 @@
             z-index: 1;
         }
 
-        /* Text Content Layer - Shifted Higher Perfectly matching Localhost */
+        /* Text Content Layer Over Banner */
         .hero-content {
             position: relative;
             z-index: 2;
@@ -140,10 +140,10 @@
             transform: scale(1.05);
         }
 
-        /* ඡායාරූපයේ ඇති පරිදිම පිරිසිදු මධ්‍යගත මාතෘකා */
+        /* මධ්‍යගත මාතෘකා කොටස */
         .dashboard-header {
             text-align: center;
-            margin: 60px 0 30px 0;
+            margin: 60px 0 35px 0;
             width: 100%;
         }
 
@@ -160,10 +160,10 @@
             margin: 0;
         }
 
-        /* Cards Dashboard Container - පින්තූරයෙන් සම්පූර්ණයෙන්ම වෙන්ව පහළින් පෙනීමට */
+        /* Cards Dashboard Container */
         .dashboard-container {
-            max-width: 1300px;
-            width: 90%;
+            max-width: 1400px;
+            width: 95%;
             margin: 0 auto 60px auto;
             position: relative;
             z-index: 10;
@@ -171,74 +171,78 @@
 
         .grid-container {
             display: grid;
+            /* ඡායාරූපයේ පරිදිම එකම පේළියක කාඩ්ස් 4ක් බලහත්කාරයෙන් පෙන්වීමට මෙය වෙනස් කළා */
             grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
+            gap: 20px;
         }
 
         .card {
             background: white;
             border-radius: 16px;
-            padding: 30px 24px;
+            padding: 24px 18px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.06);
             border-top: 5px solid #ffc107;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
         }
 
+        /* Administration කාඩ් එක සම්පූර්ණ පළලින් ඊළඟ පේළියේ ආරම්භ වීමට */
         .card.admin-card {
             border-top: 5px solid #0d6efd;
+            grid-column: 1 / span 1; /* පළමු කාඩ් එකේ පළලටම සමානව තැබීමට */
+            margin-top: 10px;
         }
 
         .card-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             color: #173b65;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
         .card-title .icon {
-            font-size: 22px;
+            font-size: 20px;
         }
 
         .btn-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .btn-row {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
         .btn-list a, .btn-row a {
             display: block;
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background-color: #f8f9fa;
             color: #333;
             text-decoration: none;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             border: 1px solid #e5e7eb;
             text-align: center;
             transition: all 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .btn-list a:hover, .btn-row a:hover {
             background-color: #e5e7eb;
             color: #000;
-            transform: translateY(-1px);
         }
 
-        /* Responsive Modifications */
-        @media (max-width: 1100px) {
+        /* Responsive Modifications for Small Screens */
+        @media (max-width: 1150px) {
             .grid-container { grid-template-columns: repeat(2, 1fr); }
+            .card.admin-card { grid-column: auto; }
         }
         @media (max-width: 768px) {
             .navbar { flex-direction: column; gap: 15px; padding: 15px; }
@@ -247,7 +251,7 @@
             .hero-content { margin-top: 0; }
             .hero-title { font-size: 38px; }
             .grid-container { grid-template-columns: 1fr; }
-            .dashboard-header h2 { font-size: 26px; }
+            .card.admin-card { grid-column: auto; }
         }
     </style>
 </head>
@@ -281,81 +285,82 @@
     </div>
 </div>
 
-<!-- ඡායාරූපයේ තිබූ සැබෑම "Welcome to SwiftRide" ප්‍රධාන මාතෘකා කොටස -->
+<!-- "Welcome to SwiftRide" මාතෘකා කොටස -->
 <div class="dashboard-header">
     <h2>Welcome to SwiftRide</h2>
     <p>Choose a service to get started.</p>
 </div>
 
-<!-- ඡායාරූපයේ තිබූ සැබෑම ලස්සන Cards Dashboard කොටස -->
+<!-- Dashboard Container -->
 <div class="dashboard-container">
     <div class="grid-container">
 
         <!-- 1. Passenger Card -->
         <div class="card">
-            <div class="card-title"><span class="icon" style="color: #6f42c1;">👤</span> Passenger</div>
-            <div class="btn-list">
-                <div class="btn-row">
-                    <a href="templates/passenger/register.html">Register</a>
-                    <a href="templates/passenger/login.html">Login</a>
+            <div>
+                <div class="card-title"><span class="icon" style="color: #6f42c1;">👤</span> Passenger</div>
+                <div class="btn-list">
+                    <div class="btn-row">
+                        <a href="templates/passenger/register.html">Register</a>
+                        <a href="templates/passenger/login.html">Login</a>
+                    </div>
+                    <a href="templates/passenger/list.html">Passenger Management</a>
+                    <a href="templates/booking-history.html">Booking History</a>
+                    <a href="templates/favourite-locations.html">Favourite Locations</a>
                 </div>
-                <a href="templates/passenger/list.html">Passenger Management</a>
-                <a href="templates/booking-history.html">Booking History</a>
-                <a href="templates/favourite-locations.html">Favourite Locations</a>
             </div>
         </div>
 
         <!-- 2. Driver Card -->
         <div class="card">
-            <div class="card-title"><span class="icon" style="color: #e685a3;">🚖</span> Driver</div>
-            <div class="btn-list">
-                <a href="templates/driver/form.html">Become a Driver</a>
-                <a href="templates/driver/portal-login.html">Driver Portal Login</a>
-                <a href="templates/driver/list.html">Driver Management</a>
-                <a href="templates/driver/login.html">Driver Login</a>
-                <a href="templates/driver/dashboard.html">Driver Dashboard</a>
-                <a href="templates/driver/portal-dashboard.html">Driver Booking Management</a>
-            </div>
-        </div>
-
-        <!-- 3. Vehicles Card -->
-        <div class="card">
             <div>
-                <div class="card-title"><span class="icon" style="color: #fd7e14;">🚕</span> Vehicles</div>
+                <div class="card-title"><span class="icon" style="color: #e685a3;">🚙</span> Driver</div>
                 <div class="btn-list">
-                    <a href="templates/vehicles.html">Vehicle Management</a>
+                    <a href="templates/driver/form.html">Become a Driver</a>
+                    <a href="templates/driver/portal-login.html">Driver Portal Login</a>
+                    <a href="templates/driver/list.html">Driver Management</a>
+                    <a href="templates/driver/login.html">Driver Login</a>
+                    <a href="templates/driver/dashboard.html">Driver Dashboard</a>
+                    <!-- 3. Vehicles Card -->
+                    <div class="card">
+                        <div>
+                            <div class="card-title"><span class="icon" style="color: #fd7e14;">🚕</span> Vehicles</div>
+                            <div class="btn-list">
+                                <a href="templates/vehicles.html">Vehicle Management</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Bookings and Trips Card -->
+                    <div class="card">
+                        <div>
+                            <div class="card-title"><span class="icon" style="color: #dc3545;">📍</span> Bookings and Trips</div>
+                            <div class="btn-list">
+                                <a href="templates/bookings.html">Booking Management</a>
+                                <a href="templates/trips.html">Trip Management</a>
+                                <a href="templates/cancellation-management.html">Cancellation Management</a>
+                                <a href="templates/schedule-new.html">Schedule a Taxi</a>
+                                <a href="templates/schedule-list.html">Scheduled Bookings</a>
+                                <a href="templates/route-fare-calculator.html">Route and Fare Calculator</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5. Administration Card -->
+                    <div class="card admin-card">
+                        <div>
+                            <div class="card-title"><span class="icon" style="color: #0d6efd;">🛡️</span> Administration</div>
+                            <div class="btn-list">
+                                <a href="templates/admin-login.html">Admin Login</a>
+                                <a href="templates/driver-applications.html">Driver Applications</a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
-
-        <!-- 4. Bookings and Trips Card -->
-        <div class="card">
-            <div>
-                <div class="card-title"><span class="icon" style="color: #dc3545;">📍</span> Bookings and Trips</div>
-                <div class="btn-list">
-                    <a href="templates/bookings.html">Booking Management</a>
-                    <a href="templates/trips.html">Trip Management</a>
-                    <a href="templates/cancellation-management.html">Cancellation Management</a>
-                    <a href="templates/schedule-new.html">Schedule a Taxi</a>
-                    <a href="templates/schedule-list.html">Scheduled Bookings</a>
-                    <a href="templates/route-fare-calculator.html">Route and Fare Calculator</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- 5. Administration Card -->
-        <div class="card admin-card">
-            <div>
-                <div class="card-title"><span class="icon" style="color: #0d6efd;">🛡️</span> Administration</div>
-                <div class="btn-list">
-                    <a href="templates/admin-login.html">Admin Login</a>
-                    <a href="templates/driver-applications.html">Driver Applications</a>
-                </div>
-            </div>
-        </div>
-
     </div>
 </div>
-
 </body>
 </html>
