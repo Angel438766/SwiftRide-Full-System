@@ -13,7 +13,7 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #f3f4f6; /* ලස්සන අළු/සුදු පසුබිම */
+            background-color: #f3f4f6; /* ඡායාරූපයේ ඇති පරිදි ලස්සන අළු/සුදු පසුබිම */
             color: #222;
             overflow-x: hidden;
         }
@@ -64,31 +64,107 @@
             color: #ffc107;
         }
 
-        /* Banner section - කාර් එක වැසීම වැළැක්වීමට ස්වයංක්‍රීය පිරිසිදු Layout එකක් */
-        .banner-container {
+        /* Full Screen Hero Section Configuration */
+        .hero-section {
+            position: relative;
             width: 100%;
             max-width: 100%;
-            position: relative;
-            background-color: #07162c;
+            min-height: calc(100vh - 78px);
             display: flex;
-            justify-content: center;
-            align-items: center;
+            align-items: flex-start;
+            justify-content: flex-start;
+            padding: 40px 80px 0 80px;
             overflow: hidden;
         }
 
-        .banner-bg-img {
+        /* Background Full Screen Image */
+        .hero-bg-img {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: auto;
-            max-height: 550px;
+            height: 100%;
             object-fit: cover;
-            display: block;
+            z-index: 1;
         }
 
-        /* Cards Dashboard Container - කාඩ්ස් ටික පින්තූරයෙන් පහළට තල්ලු කිරීම */
+        /* Text Content Layer - Shifted Higher Perfectly matching Localhost */
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 550px;
+            padding: 20px;
+            margin-top: -45px;
+        }
+
+        .hero-tag {
+            color: #ffffff;
+            font-weight: bold;
+            letter-spacing: 2px;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .hero-title {
+            font-size: 52px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin: 0 0 25px 0;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+        }
+
+        .hero-desc {
+            color: #ddd;
+            font-size: 17px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .btn-book {
+            display: inline-block;
+            padding: 14px 30px;
+            background-color: #ffc107;
+            color: #000;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn-book:hover {
+            background-color: #e0a800;
+            transform: scale(1.05);
+        }
+
+        /* ඡායාරූපයේ ඇති පරිදිම පිරිසිදු මධ්‍යගත මාතෘකා */
+        .dashboard-header {
+            text-align: center;
+            margin: 60px 0 30px 0;
+            width: 100%;
+        }
+
+        .dashboard-header h2 {
+            font-size: 32px;
+            font-weight: bold;
+            color: #222;
+            margin: 0 0 10px 0;
+        }
+
+        .dashboard-header p {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
+        }
+
+        /* Cards Dashboard Container - පින්තූරයෙන් සම්පූර්ණයෙන්ම වෙන්ව පහළින් පෙනීමට */
         .dashboard-container {
             max-width: 1300px;
             width: 90%;
-            margin: 35px auto 60px auto; /* 👈 ඍණ අගය අයින් කරලා කාඩ්ස් ටික පහළටම ගත්තා */
+            margin: 0 auto 60px auto;
             position: relative;
             z-index: 10;
         }
@@ -104,12 +180,11 @@
             border-radius: 16px;
             padding: 30px 24px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-            border-top: 5px solid #ffc107; /* කහ පාට උඩ දාරය */
+            border-top: 5px solid #ffc107;
             display: flex;
             flex-direction: column;
         }
 
-        /* Administration කාඩ් එකට නිල් පාට උඩ දාරය */
         .card.admin-card {
             border-top: 5px solid #0d6efd;
         }
@@ -165,11 +240,14 @@
         @media (max-width: 1100px) {
             .grid-container { grid-template-columns: repeat(2, 1fr); }
         }
-        @media (max-width: 650px) {
-            .grid-container { grid-template-columns: 1fr; }
-            .navbar { flex-direction: column; gap: 15px; }
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; gap: 15px; padding: 15px; }
             .nav-links { flex-wrap: wrap; justify-content: center; }
-            .dashboard-container { margin-top: 30px; }
+            .hero-section { padding: 40px 20px; text-align: center; align-items: center; }
+            .hero-content { margin-top: 0; }
+            .hero-title { font-size: 38px; }
+            .grid-container { grid-template-columns: 1fr; }
+            .dashboard-header h2 { font-size: 26px; }
         }
     </style>
 </head>
@@ -192,12 +270,24 @@
     </div>
 </div>
 
-<!-- පින්තූරය (කාඩ්ස් වලින් වෙන් වූ නිවැරදිම පෙනුම) -->
-<div class="banner-container">
-    <img class="banner-bg-img" src="Cinematic Sunset Taxi by the Waterfront.png" alt="SwiftRide Taxi Backdrop">
+<!-- Full Screen Hero Layout Area -->
+<div class="hero-section">
+    <img class="hero-bg-img" src="Cinematic Sunset Taxi by the Waterfront.png" alt="SwiftRide Taxi Backdrop">
+    <div class="hero-content">
+        <div class="hero-tag">SAFE • FAST • RELIABLE</div>
+        <h1 class="hero-title">ORDER A TAXI<br><span style="color: #ffc107;">RIGHT NOW!</span></h1>
+        <p class="hero-desc">Travel with comfort and confidence. Book your ride, manage your journey and get where you need to go with SwiftRide.</p>
+        <a href="templates/passenger/register.html" class="btn-book">🚖 Book a Ride →</a>
+    </div>
 </div>
 
-<!-- Cards Dashboard කොටස -->
+<!-- ඡායාරූපයේ තිබූ සැබෑම "Welcome to SwiftRide" ප්‍රධාන මාතෘකා කොටස -->
+<div class="dashboard-header">
+    <h2>Welcome to SwiftRide</h2>
+    <p>Choose a service to get started.</p>
+</div>
+
+<!-- ඡායාරූපයේ තිබූ සැබෑම ලස්සන Cards Dashboard කොටස -->
 <div class="dashboard-container">
     <div class="grid-container">
 
@@ -230,36 +320,6 @@
 
         <!-- 3. Vehicles Card -->
         <div class="card">
-            <div class="card-title"><span class="icon" style="color: #fd7e14;">🚕</span> Vehicles</div>
-            <div class="btn-list">
-                <a href="templates/vehicles.html">Vehicle Management</a>
-            </div>
         </div>
-
-        <!-- 4. Bookings and Trips Card -->
-        <div class="card">
-            <div class="card-title"><span class="icon" style="color: #dc3545;">📍</span> Bookings and Trips</div>
-            <div class="btn-list">
-                <a href="templates/bookings.html">Booking Management</a>
-                <a href="templates/trips.html">Trip Management</a>
-                <a href="templates/cancellation-management.html">Cancellation Management</a>
-                <a href="templates/schedule-new.html">Schedule a Taxi</a>
-                <a href="templates/schedule-list.html">Scheduled Bookings</a>
-                <a href="templates/route-fare-calculator.html">Route and Fare Calculator</a>
-            </div>
-        </div>
-
-        <!-- 5. Administration Card -->
-        <div class="card admin-card">
-            <div class="card-title"><span class="icon" style="color: #0d6efd;">🛡️</span> Administration</div>
-            <div class="btn-list">
-                <a href="templates/admin-login.html">Admin Login</a>
-                <a href="templates/driver-applications.html">Driver Applications</a>
-            </div>
-        </div>
-
     </div>
 </div>
-
-</body>
-</html>
