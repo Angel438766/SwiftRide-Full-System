@@ -79,6 +79,21 @@
             min-width: 0;
         }
 
+        /* Banner Image Wrapper */
+        .banner-wrapper {
+            text-align: center;
+            margin: 0 auto 25px auto;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .banner-wrapper img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
         .welcome {
             background: white;
             padding: 25px;
@@ -279,6 +294,11 @@
 
 <div class="container">
 
+    <!-- ඔබ ආසාවෙන් දාපු ලස්සන පින්තූරය (Pic එක) පෙන්වන කොටස -->
+    <div class="banner-wrapper">
+        <img src="Cinematic Sunset Taxi by the Waterfront.jpg" alt="SwiftRide Taxi Services">
+    </div>
+
     <div class="welcome">
         <h2>Welcome to Taxi Cab Booking System!</h2>
         <p>
@@ -363,20 +383,37 @@
 
 <script src="https://jsdelivr.net"></script>
 
+<!-- Supabase නිල පුස්තකාලය සම්බන්ධ කිරීම -->
+<script src="https://jsdelivr.net"></script>
+
 <script>
     // Supabase Credentials
     const SUPABASE_URL = "https://supabase.co";
-
     const SUPABASE_ANON_KEY = "sb_publishable_TSPXFTGaeIMHzvvUpPpGkQ_ZHN-sgwx";
 
     const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+    // Live OTP handling function
     document.getElementById('otpLoginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const emailInput = document.querySelector('#otpLoginForm input[type="email"]').value;
 
-        alert("Sending OTP code to your email address.Please wait a few seconds...");
+        alert("Sending OTP code to your email address. Please wait a few seconds...");
+
+        // Triggering 24/7 instant email OTP directly through Supabase
+        const { data, error } = await supabase.auth.signInWithOtp({
+            email: emailInput,
+            options: {
+                shouldCreateUser: true
+            }
+        });
+
+        if (error) {
+            alert("Error: " + error.message);
+        } else {
+            alert("Success! A secure login OTP has been sent to your email address (" + emailInput + "). Please check your inbox.");
+        }
     });
 </script>
 
