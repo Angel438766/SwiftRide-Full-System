@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftRide - Verify Email</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: white;
+            width: 360px;
+            max-width: 90%;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 5px 22px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #087f8c;
+            text-align: center;
+        }
+
+        h2, p {
+            text-align: center;
+        }
+
+        p {
+            color: #555;
+            overflow-wrap: anywhere;
+        }
+
+        input {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 12px;
+            margin: 12px 0;
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 6px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            background: #087f8c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .error {
+            color: #c62828;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>SwiftRide</h1>
+    <h2>Verify Your Email</h2>
+
+    <p>We sent a verification code to:</p>
+    <p><strong th:text="${email}">your email</strong></p>
+    <p>Enter the 6-digit code. It expires in 5 minutes.</p>
+
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+
+    <form th:action="@{/verify-email}" method="post">
+        <input type="hidden" name="role" th:value="${role}">
+
+        <input type="text"
+               name="otp"
+               placeholder="000000"
+               inputmode="numeric"
+               pattern="[0-9]{6}"
+               minlength="6"
+               maxlength="6"
+               autocomplete="one-time-code"
+               required>
+
+        <button type="submit">Verify Email</button>
+    </form>
+</div>
+</body>
+</html>

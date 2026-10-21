@@ -1,0 +1,405 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SwiftRide - Track Driver</title>
+
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f6fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            color: #172554;
+        }
+
+        .search-area {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        input {
+            flex: 1;
+            min-width: 180px;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #driverInfo, #status, #eta {
+            padding: 12px;
+            background: #eff6ff;
+            border-radius: 7px;
+            margin-top: 12px;
+        }
+
+        #map {
+            height: 450px;
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #2563eb;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>SwiftRide Live Driver Tracking</h1>
+
+    <p>Enter your booking ID to track your assigned driver.</p>
+
+    <div class="search-area">
+        <input type="number"
+               id="bookingId"
+               min="1"
+               placeholder="Enter Booking ID">
+
+        <button type="button" onclick="startTracking()">
+            Track Driver
+        </button>
+    </div>
+
+    <p id="driverInfo">Driver information will appear here.</p>
+    <p id="status">Enter your booking ID to begin tracking.</p>
+    <p id="eta">Estimated arrival time: Waiting for location.</p>
+
+    <div id="map"></div>
+
+    <a href="/booking-history">Back to Booking History</a>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    const map = L.map('map').setView([7.8731, 80.7718], 8);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    let driverMarker = null;
+    let pickupMarker = null;
+    let routeLine = null;
+    let currentBookingId = null;
+    let pollingTimer = null;
+    let lastRouteRequest = 0;
+    let requestInProgress = false;
+    let firstLocation = true;
+
+    const driverInfo = document.getElementById('driverInfo');
+    const statusElement = document.getElementById('status');
+    const etaElement = document.getElementById('eta');
+
+    function startTracking() {
+        const input = document.getElementById('bookingId').value.trim();
+
+        if (!/^[1-9]\d*$/.test(input)) {
+            statusElement.textContent = 'Please enter a valid booking ID.';
+            return;
+        }
+
+        currentBookingId = input;
+        firstLocation = true;
+        lastRouteRequest = 0;
+
+        if (pollingTimer !== null) {
+            clearInterval(pollingTimer);
+        }
+
+        if (driverMarker) {
+            map.removeLayer(driverMarker);
+            driverMarker = null;
+        }
+
+        if (pickupMarker) {
+            map.removeLayer(pickupMarker);
+            pickupMarker = null;
+        }
+
+        if (routeLine) {
+            map.removeLayer(routeLine);
+            routeLine = null;
+        }
+
+        driverInfo.textContent = 'Loading booking information...';
+        statusElement.textContent = 'Connecting to tracking service...';
+        etaElement.textContent = 'Estimated arrival time: Calculating...';
+
+        updateTracking();
+
+        pollingTimer = setInterval(updateTracking, 5000);
+    }
+
+    async function updateTracking() {
+        if (!currentBookingId || requestInProgress) {
+            return;
+        }
+
+        requestInProgress = true;
+
+        try {
+            const response = await fetch(
+                '/bookings/track-data/' +
+                encodeURIComponent(currentBookingId),
+                {
+                    method: 'GET',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                }
+            );
+
+            if (response.status === 401) {
+                stopPolling();
+                statusElement.textContent =
+                    'Please log in as the passenger who made this booking.';
+                etaElement.textContent = 'ETA unavailable.';
+                return;
+            }
+
+            if (response.status === 403) {
+                stopPolling();
+                statusElement.textContent =
+                    'You are not allowed to track this booking.';
+                etaElement.textContent = 'ETA unavailable.';
+                return;
+            }
+
+            if (response.status === 404) {
+                stopPolling();
+                statusElement.textContent = 'Booking not found.';
+                etaElement.textContent = 'ETA unavailable.';
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error('Tracking request failed.');
+            }
+
+            const data = await response.json();
+
+            driverInfo.textContent =
+                'Booking ID: ' + data.bookingId +
+                ' | Driver: ' + (data.driverName || 'Not assigned') +
+                ' | Booking status: ' + (data.status || 'Unknown');
+
+            if (data.pickupLatitude != null &&
+                data.pickupLongitude != null) {
+
+                const pickup = [
+                    Number(data.pickupLatitude),
+                    Number(data.pickupLongitude)
+                ];
+
+                if (pickup.every(Number.isFinite)) {
+                    if (!pickupMarker) {
+                        pickupMarker = L.marker(pickup)
+                            .addTo(map)
+                            .bindPopup('Your pickup location');
+                    } else {
+                        pickupMarker.setLatLng(pickup);
+                    }
+                }
+            }
+
+            if (data.status === 'COMPLETED' ||
+                data.status === 'CANCELLED') {
+                stopPolling();
+
+                statusElement.textContent =
+                    'This booking is ' + data.status.toLowerCase() + '.';
+
+                etaElement.textContent =
+                    data.status === 'COMPLETED'
+                        ? 'Your trip is complete.'
+                        : 'This trip has been cancelled.';
+
+                return;
+            }
+
+            if (data.driverId == null || !data.driverName) {
+                statusElement.textContent =
+                    'Waiting for a driver to be assigned.';
+                etaElement.textContent = 'ETA available after driver location is received.';
+                return;
+            }
+
+            if (data.driverOnline === false) {
+                statusElement.textContent =
+                    'The assigned driver is currently offline.';
+                etaElement.textContent = 'ETA unavailable while driver is offline.';
+                return;
+            }
+
+            if (data.driverLatitude == null ||
+                data.driverLongitude == null) {
+                statusElement.textContent =
+                    'Waiting for the driver to share GPS location.';
+                etaElement.textContent = 'Waiting for GPS coordinates.';
+                return;
+            }
+
+            const lat = Number(data.driverLatitude);
+            const lng = Number(data.driverLongitude);
+
+            if (!Number.isFinite(lat) || !Number.isFinite(lng) ||
+                lat < -90 || lat > 90 ||
+                lng < -180 || lng > 180) {
+                throw new Error('Invalid driver coordinates.');
+            }
+
+            const driverPosition = [lat, lng];
+
+            if (!driverMarker) {
+                driverMarker = L.marker(driverPosition)
+                    .addTo(map)
+                    .bindPopup('Your driver');
+
+                if (firstLocation) {
+                    map.setView(driverPosition, 15);
+                    firstLocation = false;
+                }
+            } else {
+                driverMarker.setLatLng(driverPosition);
+            }
+
+            statusElement.textContent =
+                'Driver location updated. Refreshing every 5 seconds.';
+
+            if (data.pickupLatitude != null &&
+                data.pickupLongitude != null) {
+
+                const pickupLat = Number(data.pickupLatitude);
+                const pickupLng = Number(data.pickupLongitude);
+
+                if (Number.isFinite(pickupLat) &&
+                    Number.isFinite(pickupLng)) {
+
+                    const now = Date.now();
+
+                    if (now - lastRouteRequest >= 20000) {
+                        lastRouteRequest = now;
+
+                        await updateRoute(
+                            driverPosition,
+                            [pickupLat, pickupLng]
+                        );
+                    }
+                }
+            } else {
+                etaElement.textContent =
+                    'Pickup coordinates are not available for this booking.';
+            }
+
+        } catch (error) {
+            console.error(error);
+            statusElement.textContent =
+                'Unable to retrieve tracking data. Please try again.';
+        } finally {
+            requestInProgress = false;
+        }
+    }
+
+    async function updateRoute(driverPosition, pickupPosition) {
+        try {
+            const url =
+                'https://router.project-osrm.org/route/v1/driving/' +
+                driverPosition[1] + ',' + driverPosition[0] + ';' +
+                pickupPosition[1] + ',' + pickupPosition[0] +
+                '?overview=full&geometries=geojson';
+
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error('Route service unavailable.');
+            }
+
+            const result = await response.json();
+
+            if (!result.routes || result.routes.length === 0) {
+                etaElement.textContent = 'No driving route was found.';
+                return;
+            }
+
+            const route = result.routes[0];
+            const minutes = Math.max(1, Math.round(route.duration / 60));
+            const kilometres = (route.distance / 1000).toFixed(1);
+
+            etaElement.textContent =
+                'Estimated arrival: ' + minutes +
+                ' minutes | Road distance: ' + kilometres + ' km';
+
+            const coordinates = route.geometry.coordinates.map(point => [
+                point[1],
+                point[0]
+            ]);
+
+            if (routeLine) {
+                map.removeLayer(routeLine);
+            }
+
+            routeLine = L.polyline(coordinates, {
+                color: '#2563eb',
+                weight: 5
+            }).addTo(map);
+
+        } catch (error) {
+            console.error(error);
+            etaElement.textContent =
+                'Driver location is available, but ETA could not be calculated.';
+        }
+    }
+
+    function stopPolling() {
+        if (pollingTimer !== null) {
+            clearInterval(pollingTimer);
+            pollingTimer = null;
+        }
+    }
+</script>
+
+</body>
+</html>

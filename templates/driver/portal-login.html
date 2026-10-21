@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Driver Login | SwiftRide</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #102a43;
+            margin: 0;
+            padding: 25px 15px;
+        }
+
+        .box {
+            max-width: 430px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 5px 25px #102a4315;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            box-sizing: border-box;
+            border: 1px solid #ccd6e0;
+            border-radius: 7px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 23px;
+            border: 0;
+            border-radius: 7px;
+            background: #ffc629;
+            color: #102a43;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .error {
+            padding: 10px;
+            border-radius: 6px;
+            background: #ffe5e5;
+            color: #9b1c1c;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>🚘 Driver Login</h1>
+    <p>Log in after your application has been approved.</p>
+
+    <p th:if="${error}" class="error" th:text="${error}"></p>
+
+    <form th:action="@{/driver-portal/login}" method="post">
+
+        <label for="email">Email Address</label>
+        <input id="email" type="email"
+               name="email" required autocomplete="username">
+
+        <label for="password">Password</label>
+        <input id="password" type="password"
+               name="password" required autocomplete="current-password">
+
+        <button type="submit">Login</button>
+
+    </form>
+
+    <p>
+        Not registered yet?
+        <a th:href="@{/driver-registration}">Become a Driver</a>
+    </p>
+
+    <p><a th:href="@{/}">← Back to Home</a></p>
+
+</div>
+
+</body>
+</html>

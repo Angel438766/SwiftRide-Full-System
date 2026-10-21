@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passenger Profile</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #ddd;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+        }
+
+        input {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 11px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button, .back {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 11px 16px;
+            background: #172554;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>Passenger Profile</h1>
+
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+
+    <form th:action="@{/passengers/profile/update/{id}(id=${passenger.id})}"
+          th:object="${passenger}" method="post">
+
+        <label>Name</label>
+        <input type="text" th:field="*{name}" required>
+
+        <label>Email</label>
+        <input type="email" th:field="*{email}" readonly>
+
+        <label>Phone</label>
+        <input type="text" th:field="*{phone}" required>
+
+        <label>Favourite Location</label>
+        <input type="text"
+               th:field="*{favouriteLocation}"
+               placeholder="Enter your favourite location">
+
+        <button type="submit">Save Changes</button>
+
+    </form>
+
+    <a class="back" th:href="@{/}">Home</a>
+
+    <a class="back" th:href="@{/passengers}">View Passengers</a>
+
+</div>
+</body>
+</html>

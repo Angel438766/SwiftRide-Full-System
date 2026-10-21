@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Passenger Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            color: #222;
+        }
+
+        header {
+            background: #173b65;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        nav {
+            background: #102b49;
+            padding: 12px;
+            text-align: center;
+        }
+
+        nav a {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin: 5px;
+            padding: 9px 12px;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background: #315b86;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .welcome, .details, .quick-links {
+            background: white;
+            padding: 22px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ddd;
+        }
+
+        h2 {
+            color: #173b65;
+        }
+
+        .details p {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .links a {
+            display: block;
+            padding: 15px;
+            background: #173b65;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 6px;
+        }
+
+        .links a:hover {
+            background: #198754;
+        }
+
+        .links .book {
+            background: #198754;
+        }
+
+        .links .favourite {
+            background: #d97706;
+        }
+
+        footer {
+            text-align: center;
+            padding: 18px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Passenger Dashboard</h1>
+    <p>Welcome to Taxi Cab Booking System</p>
+</header>
+
+<nav>
+    <a th:href="@{/}">Home</a>
+    <a th:href="@{/passengers}">Passenger Management</a>
+    <a th:href="@{/bookings}">Booking Management</a>
+    <a th:href="@{/trips}">Trip Management</a>
+    <a th:href="@{/favourite-locations}">My Favourite Locations</a>
+</nav>
+
+<div class="container">
+
+    <section class="welcome">
+        <h2>Welcome!</h2>
+        <p>You have successfully logged in.</p>
+        <p>Manage your profile and access taxi booking services below.</p>
+    </section>
+
+    <section class="details">
+        <h2>Passenger Details</h2>
+
+        <p>
+            <strong>Name:</strong>
+            <span th:text="${passenger.name}">Passenger Name</span>
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            <span th:text="${passenger.email}">passenger@example.com</span>
+        </p>
+
+        <p>
+            <strong>Phone:</strong>
+            <span th:text="${passenger.phone}">Phone Number</span>
+        </p>
+    </section>
+
+    <section class="quick-links">
+        <h2>Quick Links</h2>
+
+        <div class="links">
+
+            <a class="book" th:href="@{/bookings/new}">
+                Create New Booking
+            </a>
+
+            <a th:href="@{/booking-history}">
+                View Booking History
+            </a>
+
+            <a th:href="@{/passengers/profile/{id}(id=${passenger.id})}">
+                Edit My Profile
+            </a>
+
+            <a class="favourite" th:href="@{/favourite-locations}">
+                My Favourite Locations
+            </a>
+
+            <a th:href="@{/}">
+                Home
+            </a>
+
+            <a th:href="@{/passengers/logout}">
+                Logout
+            </a>
+
+            <a th:href="@{/passengers/deactivate}">
+                Deactivate My Account
+            </a>
+
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    <p>Taxi Cab Booking System | All Rights Reserved</p>
+</footer>
+
+</body>
+</html>

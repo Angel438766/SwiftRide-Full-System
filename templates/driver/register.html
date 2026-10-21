@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Become a SwiftRide Driver</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 30px 15px;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #102a43;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px #102a4315;
+        }
+
+        h1 { color: #071b35; }
+
+        .intro {
+            color: #66788a;
+            line-height: 1.6;
+        }
+
+        label {
+            display: block;
+            margin-top: 17px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #ccd6e0;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            border: 0;
+            border-radius: 8px;
+            background: #ffc629;
+            color: #102a43;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover { background: #f0b800; }
+
+        .message {
+            padding: 12px;
+            border-radius: 7px;
+            margin: 15px 0;
+        }
+
+        .success { background: #e0f7e9; color: #176536; }
+        .error { background: #ffe5e5; color: #9b1c1c; }
+
+        a { color: #102a43; }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>🚘 Become a SwiftRide Driver</h1>
+
+    <p class="intro">
+        Complete the form below to apply to become a driver.
+        You can log in after the administrator approves your application.
+    </p>
+
+    <div th:if="${success}" class="message success"
+         th:text="${success}"></div>
+
+    <div th:if="${error}" class="message error"
+         th:text="${error}"></div>
+
+    <form th:action="@{/driver-registration}"
+          th:object="${form}"
+          method="post">
+
+        <label for="fullName">Full Name</label>
+        <input id="fullName" type="text"
+               th:field="*{fullName}" required maxlength="100">
+
+        <label for="email">Email Address</label>
+        <input id="email" type="email"
+               th:field="*{email}" required maxlength="150">
+
+        <label for="phone">Phone Number</label>
+        <input id="phone" type="tel"
+               th:field="*{phone}" required maxlength="25">
+
+        <label for="password">Create Password</label>
+        <input id="password" type="password"
+               th:field="*{password}" required minlength="8"
+               autocomplete="new-password">
+
+        <label for="licenseNumber">Driving Licence Number</label>
+        <input id="licenseNumber" type="text"
+               th:field="*{licenseNumber}" required maxlength="60">
+
+        <h3>Vehicle Details</h3>
+
+        <label for="vehicleNumber">Vehicle Registration Number</label>
+        <input id="vehicleNumber" type="text"
+               th:field="*{vehicleNumber}" required maxlength="30">
+
+        <label for="vehicleCategory">Vehicle Category</label>
+        <select id="vehicleCategory"
+                th:field="*{vehicleCategory}" required>
+            <option value="">-- Select Vehicle Category --</option>
+            <option value="Tuk Tuk">Tuk Tuk</option>
+            <option value="Mini">Mini</option>
+            <option value="Car">Car</option>
+            <option value="Van">Van</option>
+            <option value="Premium">Premium</option>
+        </select>
+
+        <label for="vehicleBrand">Vehicle Brand</label>
+        <input id="vehicleBrand" type="text"
+               th:field="*{vehicleBrand}"
+               placeholder="e.g. Toyota, Suzuki, Bajaj"
+               required maxlength="60">
+
+        <label for="vehicleModel">Vehicle Model</label>
+        <input id="vehicleModel" type="text"
+               th:field="*{vehicleModel}"
+               placeholder="e.g. Prius, Alto, RE"
+               required maxlength="60">
+
+        <button type="submit">Submit Driver Application</button>
+    </form>
+
+    <p><a th:href="@{/}">← Back to Home</a></p>
+
+    <p>
+        Already approved?
+        <a th:href="@{/driver-portal/login}">Driver Portal Login</a>
+    </p>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Bookings</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; background: #f2f5f9; }
+        h1 { color: #142850; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background: #142850; color: white; }
+        a { color: #145da0; }
+        .error { color: #c0392b; }
+        .button { background: #142850; color: white; padding: 8px 12px; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<h1>Booking Update Management</h1>
+
+<p class="error" th:if="${error}" th:text="${error}"></p>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Passenger</th>
+        <th>Pickup</th>
+        <th>Destination</th>
+        <th>Vehicle Category</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="booking : ${bookings}">
+        <td th:text="${booking.id}"></td>
+        <td th:text="${booking.passengerName}"></td>
+        <td th:text="${booking.pickupLocation}"></td>
+        <td th:text="${booking.destination}"></td>
+        <td th:text="${booking.vehicleCategory}"></td>
+        <td th:text="${booking.status}"></td>
+        <td>
+            <a class="button"
+               th:href="@{/booking-update/edit/{id}(id=${booking.id})}">
+                Edit
+            </a>
+        </td>
+    </tr>
+
+    <tr th:if="${#lists.isEmpty(bookings)}">
+        <td colspan="7">No bookings found.</td>
+    </tr>
+    </tbody>
+</table>
+
+<p><a th:href="@{/}">Back to Home</a></p>
+<p><a th:href="@{/bookings}">Booking Management</a></p>
+
+</body>
+</html>

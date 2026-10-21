@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cancellation Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<h1>Cancellation Management</h1>
+
+<a th:href="@{/cancellations/new}">Cancel a Booking</a> |
+<a th:href="@{/bookings}">Booking Management</a> |
+<a th:href="@{/}">Home</a>
+
+<br><br>
+
+<table border="1" cellpadding="8">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Booking ID</th>
+        <th>Cancellation Reason</th>
+        <th>Cancellation Time</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="cancellation : ${cancellations}">
+        <td th:text="${cancellation.id}"></td>
+        <td th:text="${cancellation.bookingId}"></td>
+        <td th:text="${cancellation.reason}"></td>
+        <td th:text="${cancellation.cancellationTime}"></td>
+        <td>
+            <a th:href="@{/cancellations/delete/{id}
+                (id=${cancellation.id})}"
+               onclick="return confirm('Delete this cancellation record?')">
+                Delete Record
+            </a>
+        </td>
+    </tr>
+
+    <tr th:if="${#lists.isEmpty(cancellations)}">
+        <td colspan="5">No cancellations available.</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

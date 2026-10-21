@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Booking</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f2f5f9; padding: 30px; }
+        .container { max-width: 550px; margin: auto; background: white; padding: 25px; border-radius: 10px; }
+        h1 { color: #142850; }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input, select { width: 100%; padding: 10px; margin-top: 6px; box-sizing: border-box; }
+        button { margin-top: 20px; padding: 12px 20px; background: #142850; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .error { color: #c0392b; }
+        a { display: inline-block; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Edit Booking</h1>
+
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+
+    <form th:action="@{/booking-update/save/{id}(id=${booking.id})}"
+          method="post">
+
+        <label>Passenger Name</label>
+        <input type="text" name="passengerName"
+               th:value="${booking.passengerName}" required>
+
+        <label>Pickup Location</label>
+        <input type="text" name="pickupLocation"
+               th:value="${booking.pickupLocation}" required>
+
+        <label>Destination</label>
+        <input type="text" name="destination"
+               th:value="${booking.destination}" required>
+
+        <label>Vehicle Category</label>
+        <select name="vehicleCategory" required>
+            <option value="Tuk Tuk"
+                    th:selected="${booking.vehicleCategory == 'Tuk Tuk'}">Tuk Tuk</option>
+            <option value="Mini"
+                    th:selected="${booking.vehicleCategory == 'Mini'}">Mini</option>
+            <option value="Car"
+                    th:selected="${booking.vehicleCategory == 'Car'}">Car</option>
+            <option value="Van"
+                    th:selected="${booking.vehicleCategory == 'Van'}">Van</option>
+            <option value="Premium"
+                    th:selected="${booking.vehicleCategory == 'Premium'}">Premium</option>
+        </select>
+
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <a th:href="@{/booking-update}">Back to Booking List</a>
+</div>
+
+</body>
+</html>

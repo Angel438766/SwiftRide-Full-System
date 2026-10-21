@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | SwiftRide</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #102a43;
+        }
+
+        header {
+            background: #071b35;
+            color: white;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .brand {
+            color: #ffc629;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px;
+        }
+
+        nav a:hover { color: #ffc629; }
+
+        .hero {
+            background: #102a43;
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .hero h1 {
+            color: #ffc629;
+            font-size: 40px;
+            margin: 0 0 12px;
+        }
+
+        .hero p { line-height: 1.7; }
+
+        .container {
+            max-width: 950px;
+            margin: 35px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            border-top: 4px solid #ffc629;
+            box-shadow: 0 5px 20px #102a4310;
+        }
+
+        .card h2 { color: #087f8c; }
+
+        .card p {
+            color: #526579;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        .card a {
+            color: #087f8c;
+            font-weight: bold;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccd6e0;
+            border-radius: 7px;
+            font: inherit;
+        }
+
+        textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 18px;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            background: #ffc629;
+            color: #102a43;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover { background: #ffdb70; }
+
+        .notice {
+            background: #e5f6ed;
+            color: #17663a;
+            padding: 12px;
+            border-radius: 7px;
+            overflow-wrap: anywhere;
+        }
+
+        .buttons {
+            text-align: center;
+            margin: 25px 0 40px;
+        }
+
+        .buttons a {
+            display: inline-block;
+            background: #102a43;
+            color: white;
+            text-decoration: none;
+            padding: 13px 22px;
+            border-radius: 25px;
+        }
+
+        footer {
+            background: #071b35;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        footer span { color: #ffc629; }
+
+        @media (max-width: 600px) {
+            header { justify-content: center; }
+            nav { justify-content: center; }
+            .hero h1 { font-size: 32px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div>
+        <div class="brand">🚖 SwiftRide</div>
+        <div>Your Journey, Our Priority</div>
+    </div>
+
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/about}">About Us</a>
+        <a th:href="@{/contact}">Contact Us</a>
+        <a th:href="@{/passengers/register}">Sign Up</a>
+        <a th:href="@{/passengers/login}">Passenger Login</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Contact Us</h1>
+    <p>Have a question about SwiftRide? Get in touch with us.</p>
+</section>
+
+<main class="container">
+
+    <section class="card">
+        <h2>Contact Information</h2>
+
+        <p>
+            <strong>Email:</strong><br>
+            <a href="mailto:swiftride573@gmail.com">
+                swiftride573@gmail.com
+            </a>
+        </p>
+
+        <p>
+            <strong>Customer Support</strong><br>
+            Please contact us by email for assistance.
+        </p>
+
+        <p>
+            We welcome your questions, suggestions and feedback
+            about our taxi booking platform.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>Send Us a Message</h2>
+
+        <p class="notice"
+           th:if="${submitted}"
+           th:text="'Thank you, ' + ${name} + '! Your message was received.'">
+        </p>
+
+        <form th:action="@{/contact}" method="post">
+
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name"
+                   maxlength="100" required>
+
+            <label for="email">Your Email</label>
+            <input type="email" id="email" name="email"
+                   maxlength="150" required>
+
+            <label for="message">Your Message</label>
+            <textarea id="message" name="message"
+                      maxlength="2000" required></textarea>
+
+            <button type="submit">Send Message</button>
+
+        </form>
+
+    </section>
+
+</main>
+
+<div class="buttons">
+    <a th:href="@{/}">← Back to Home</a>
+</div>
+
+<footer>
+    <p><span>SwiftRide</span> — Your Journey, Our Priority</p>
+</footer>
+
+</body>
+</html>

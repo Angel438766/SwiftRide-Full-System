@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deactivate Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 450px;
+            margin: 40px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #ddd;
+        }
+
+        input {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 11px;
+            margin: 12px 0;
+        }
+
+        button, a {
+            display: inline-block;
+            padding: 11px 15px;
+            margin-top: 12px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            background: #b91c1c;
+            color: white;
+        }
+
+        a {
+            background: #172554;
+            color: white;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h1>Deactivate Account</h1>
+
+    <p>
+        Your account will be deactivated. You will no longer be able
+        to log in using this account.
+    </p>
+
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+
+    <form th:action="@{/passengers/deactivate}" method="post">
+        <label for="password">Enter your current password to confirm:</label>
+
+        <input type="password"
+               id="password"
+               name="password"
+               required
+               autocomplete="current-password">
+
+        <button type="submit"
+                onclick="return confirm('Are you sure you want to deactivate your account?')">
+            Deactivate My Account
+        </button>
+    </form>
+
+    <a th:href="@{/passengers/dashboard}">Cancel</a>
+
+</div>
+</body>
+</html>

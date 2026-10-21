@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Live Location</title>
+
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fa;
+            color: #222;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 30px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #172554;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        #map {
+            height: 400px;
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            border: none;
+            padding: 12px 18px;
+            margin: 8px 5px 8px 0;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        #startButton {
+            background: #15803d;
+            color: white;
+        }
+
+        #stopButton {
+            background: #b91c1c;
+            color: white;
+        }
+
+        #status {
+            padding: 12px;
+            background: #eff6ff;
+            border-radius: 7px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Driver Live Location</h1>
+
+    <p>
+        Share your current location while you are online and
+        available to receive bookings.
+    </p>
+
+    <label for="driverId">Driver ID:</label>
+    <input type="number" id="driverId" min="1"
+           placeholder="Enter your driver ID" required>
+
+    <br><br>
+
+    <button id="startButton" onclick="startTracking()">
+        Start Location Sharing
+    </button>
+
+    <button id="stopButton" onclick="stopTracking()" disabled>
+        Stop Location Sharing
+    </button>
+
+    <p id="status">Location sharing is stopped.</p>
+
+    <div id="map"></div>
+
+    <a class="back" href="/drivers">Back to Driver Management</a>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    const map = L.map('map').setView([7.2083, 79.8358], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    let driverMarker = null;
+    let watchId = null;
+    let lastSentAt = 0;
+
+    const statusElement = document.getElementById('status');
+    const startButton = document.getElementById('startButton');
+    const stopButton = document.getElementById('stopButton');
+
+    async function sendLocation(driverId, latitude, longitude) {
+        const response = await fetch(
+            `/drivers/${driverId}/location`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    latitude: latitude,
+                    longitude: longitude
+                })
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error('Server rejected the location update.');
+        }
+
+        return response.json();
+    }
+
+    function startTracking() {
+        const driverId = document.getElementById('driverId').value;
+
+        if (!driverId || Number(driverId) <= 0) {
+            statusElement.textContent = 'Please enter a valid Driver ID.';
+            return;
+        }
+
+        if (!navigator.geolocation) {
+            statusElement.textContent =
+                'Geolocation is not supported by this browser.';
+            return;
+        }
+
+        if (watchId !== null) {
+            return;
+        }
+
+        statusElement.textContent = 'Requesting GPS permission...';
+
+        watchId = navigator.geolocation.watchPosition(
+            async function(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                if (driverMarker === null) {
+                    driverMarker = L.marker([latitude, longitude])
+                        .addTo(map)
+                        .bindPopup('Your current location');
+                } else {
+                    driverMarker.setLatLng([latitude, longitude]);
+                }
+
+                map.setView([latitude, longitude], 16);
+
+                const now = Date.now();
+
+                if (now - lastSentAt < 5000) {
+                    statusElement.textContent =
+                        'GPS received. Waiting to send the next update.';
+                    return;
+                }
+
+                lastSentAt = now;
+
+                try {
+                    await sendLocation(
+                        driverId,
+                        latitude,
+                        longitude
+                    );
+
+                    statusElement.textContent =
+                        'Location shared successfully. Latitude: ' +
+                        latitude.toFixed(6) +
+                        ', Longitude: ' +
+                        longitude.toFixed(6);
+                } catch (error) {
+                    statusElement.textContent =
+                        'Could not send location to the server. Check login and server status.';
+                    console.error(error);
+                }
+            },
+            function(error) {
+                const messages = {
+                    1: 'Location permission was denied.',
+                    2: 'Your current location is unavailable.',
+                    3: 'GPS request timed out.'
+                };
+
+                statusElement.textContent =
+                    messages[error.code] || 'Unable to obtain GPS location.';
+
+                stopTracking();
+            },
+            {
+                enableHighAccuracy: true,
+                maximumAge: 3000,
+                timeout: 15000
+            }
+        );
+
+        startButton.disabled = true;
+        stopButton.disabled = false;
+        statusElement.textContent = 'Location sharing started.';
+    }
+
+    function stopTracking() {
+        if (watchId !== null) {
+            navigator.geolocation.clearWatch(watchId);
+            watchId = null;
+        }
+
+        startButton.disabled = false;
+        stopButton.disabled = true;
+
+        statusElement.textContent = 'Location sharing is stopped.';
+    }
+
+    window.addEventListener('beforeunload', function() {
+        if (watchId !== null) {
+            navigator.geolocation.clearWatch(watchId);
+        }
+    });
+</script>
+
+</body>
+</html>

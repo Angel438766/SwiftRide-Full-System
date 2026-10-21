@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Scheduled Bookings</title>
+</head>
+<body>
+
+<h1>Scheduled Bookings</h1>
+
+<p>
+    <a th:href="@{/scheduled-bookings/new}">Schedule New Taxi</a> |
+    <a th:href="@{/}">Home</a> |
+    <a th:href="@{/bookings}">All Bookings</a>
+</p>
+
+<table border="1" cellpadding="10">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Passenger</th>
+        <th>Pickup</th>
+        <th>Destination</th>
+        <th>Vehicle</th>
+        <th>Scheduled Date & Time</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="booking : ${scheduledBookings}">
+        <td th:text="${booking.id}"></td>
+        <td th:text="${booking.passengerName}"></td>
+        <td th:text="${booking.pickupLocation}"></td>
+        <td th:text="${booking.destination}"></td>
+        <td th:text="${booking.vehicleCategory}"></td>
+        <td th:text="${booking.scheduledTime}"></td>
+        <td th:text="${booking.status}"></td>
+    </tr>
+
+    <tr th:if="${#lists.isEmpty(scheduledBookings)}">
+        <td colspan="7">No scheduled bookings found.</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

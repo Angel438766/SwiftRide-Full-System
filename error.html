@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Error - Taxi Cab Booking System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f5f9;
+            margin: 0;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 35px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-icon {
+            font-size: 60px;
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #c0392b;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .error-message {
+            background: #fff0f0;
+            color: #c0392b;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        .home-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 25px;
+            background: #142850;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+
+        .home-button:hover {
+            background: #27496d;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="error-icon">&#9888;</div>
+
+    <h1>Something Went Wrong!</h1>
+
+    <p>
+        We are sorry, but your request could not be completed.
+    </p>
+
+    <div class="error-message"
+         th:text="${errorMessage}">
+        An unexpected error occurred. Please try again.
+    </div>
+
+    <p>
+        Please check your information and try again.
+        If the problem continues, contact the system administrator.
+    </p>
+
+    <a th:href="@{/}" class="home-button">
+        Back to Home
+    </a>
+
+</div>
+
+</body>
+</html>

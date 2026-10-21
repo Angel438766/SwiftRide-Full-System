@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Driver Bookings</title>
+</head>
+<body>
+
+<h1>Driver Booking Management</h1>
+
+<table border="1" cellpadding="10">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Passenger</th>
+        <th>Pickup</th>
+        <th>Destination</th>
+        <th>Vehicle</th>
+        <th>Fare</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="booking : ${bookings}">
+        <td th:text="${booking.id}"></td>
+        <td th:text="${booking.passengerName}"></td>
+        <td th:text="${booking.pickupLocation}"></td>
+        <td th:text="${booking.destination}"></td>
+        <td th:text="${booking.vehicleCategory}"></td>
+        <td th:text="${booking.fare}"></td>
+        <td th:text="${booking.status}"></td>
+
+        <td>
+            <form th:if="${booking.status == 'PENDING'}"
+                  th:action="@{/driver-bookings/accept/{id}(id=${booking.id})}"
+                  method="post">
+                <button type="submit">Accept</button>
+            </form>
+
+            <form th:if="${booking.status == 'PENDING'}"
+                  th:action="@{/driver-bookings/reject/{id}(id=${booking.id})}"
+                  method="post">
+                <button type="submit">Reject</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<a href="/">Home</a>
+<br><br>
+<a href="/bookings">All Bookings</a>
+
+</body>
+</html>

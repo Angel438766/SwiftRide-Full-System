@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule a Taxi</title>
+</head>
+<body>
+<h1>Schedule a Taxi Booking</h1>
+
+<p th:if="${error}" th:text="${error}" style="color:red"></p>
+
+<form th:action="@{/scheduled-bookings/save}" method="post">
+    <label>Passenger Name:</label>
+    <input type="text" name="passengerName" required>
+    <br><br>
+
+    <label>Pickup Location:</label>
+    <input type="text" name="pickupLocation" required>
+    <br><br>
+
+    <label>Destination:</label>
+    <input type="text" name="destination" required>
+    <br><br>
+
+    <label>Vehicle Category:</label>
+    <select name="vehicleCategory" required>
+        <option value="Tuk Tuk">Tuk Tuk</option>
+        <option value="Mini">Mini</option>
+        <option value="Car">Car</option>
+        <option value="Van">Van</option>
+        <option value="Premium">Premium</option>
+    </select>
+    <br><br>
+
+    <label>Date and Time:</label>
+    <input type="datetime-local" name="scheduledTime" required>
+    <br><br>
+
+    <button type="submit">Schedule Booking</button>
+</form>
+
+<br>
+<a th:href="@{/}">Home</a>
+</body>
+</html>

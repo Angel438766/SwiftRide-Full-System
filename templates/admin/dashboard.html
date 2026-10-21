@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftRide Admin Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #172033;
+        }
+
+        header {
+            background: #101c36;
+            color: white;
+            padding: 24px 7%;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+        }
+
+        header p {
+            margin: 0;
+            color: #d5deef;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            padding: 28px;
+            border-radius: 14px;
+            box-shadow: 0 5px 18px #17203312;
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        .card p {
+            color: #596579;
+            line-height: 1.6;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 12px 18px;
+            background: #087fce;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .logout {
+            margin-top: 28px;
+            padding: 12px 18px;
+            background: #b42318;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>SwiftRide Admin Dashboard</h1>
+    <p>Manage your taxi booking platform</p>
+</header>
+
+<main>
+    <div class="cards">
+
+        <section class="card">
+            <h2>Driver Applications</h2>
+            <p>Review driver registrations and approve or reject applications.</p>
+
+            <a class="button" th:href="@{/admin/driver-applications}">
+                Manage Drivers
+            </a>
+        </section>
+
+        <section class="card">
+            <h2>Contact Messages</h2>
+            <p>Read messages submitted through the SwiftRide contact form.</p>
+
+            <a class="button" th:href="@{/admin/contact-messages}">
+                View Messages
+            </a>
+        </section>
+
+    </div>
+
+    <!-- Logout uses POST to match the controller -->
+    <form th:action="@{/admin/logout}" method="post">
+        <button class="logout" type="submit">Logout</button>
+    </form>
+
+</main>
+
+</body>
+</html>

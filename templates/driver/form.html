@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Form</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px #00000015;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        .check {
+            margin-top: 15px;
+        }
+
+        button, .cancel {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 5px;
+            background: #1677ff;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .cancel {
+            background: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 th:text="${driver.id == null ? 'Add New Driver' : 'Edit Driver'}">
+        Driver Form
+    </h1>
+
+    <form th:action="@{/drivers/save}"
+          th:object="${driver}"
+          method="post">
+
+        <input type="hidden" th:field="*{id}">
+
+        <label for="name">Driver Name</label>
+        <input type="text" id="name" th:field="*{name}" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" th:field="*{email}" required>
+
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" th:field="*{phone}" required>
+
+        <label for="licenseNumber">License Number</label>
+        <input type="text" id="licenseNumber"
+               th:field="*{licenseNumber}" required>
+
+        <label for="driverPassword">Driver Password</label>
+        <input type="password"
+               id="driverPassword"
+               th:field="*{driverPassword}"
+               minlength="6"
+               autocomplete="new-password"
+               required>
+
+        <div class="check">
+            <input type="checkbox" id="approved" th:field="*{approved}">
+            <label for="approved" style="display:inline;">Approved</label>
+        </div>
+
+        <div class="check">
+            <input type="checkbox" id="online" th:field="*{online}">
+            <label for="online" style="display:inline;">Online</label>
+        </div>
+
+        <div class="check">
+            <input type="checkbox" id="available" th:field="*{available}">
+            <label for="available" style="display:inline;">Available</label>
+        </div>
+
+        <button type="submit">Save Driver</button>
+        <a class="cancel" th:href="@{/drivers}">Cancel</a>
+    </form>
+</div>
+
+</body>
+</html>

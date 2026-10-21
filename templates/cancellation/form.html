@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cancel Booking</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<h1>Cancel Booking</h1>
+
+<form th:action="@{/cancellations/save}" method="post">
+
+    <label>Booking ID:</label>
+    <input type="number"
+           name="bookingId"
+           min="1"
+           required
+           th:value="${cancellation.bookingId}">
+    <br><br>
+
+    <label>Cancellation Reason:</label>
+    <select name="reason" required>
+        <option value="">Select a Reason</option>
+        <option value="Change of plans">Change of plans</option>
+        <option value="Wrong pickup location">Wrong pickup location</option>
+        <option value="Long waiting time">Long waiting time</option>
+        <option value="Driver unavailable">Driver unavailable</option>
+        <option value="Booked by mistake">Booked by mistake</option>
+        <option value="Other">Other</option>
+    </select>
+    <br><br>
+
+    <button type="submit">Confirm Cancellation</button>
+
+</form>
+
+<br>
+<a th:href="@{/cancellations}">Back to Cancellations</a> |
+<a th:href="@{/bookings}">Booking Management</a> |
+<a th:href="@{/}">Home</a>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Trip</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<h1>Create Trip</h1>
+
+<form th:action="@{/trips/save}"
+      th:object="${trip}"
+      method="post">
+
+    <input type="hidden" th:field="*{id}">
+
+    <label>Booking ID:</label>
+    <input type="number" th:field="*{bookingId}" min="1" required>
+    <br><br>
+
+    <label>Driver Name:</label>
+    <input type="text" th:field="*{driverName}" required>
+    <br><br>
+
+    <label>Pickup Location:</label>
+    <input type="text" th:field="*{pickupLocation}" required>
+    <br><br>
+
+    <label>Destination:</label>
+    <input type="text" th:field="*{destination}" required>
+    <br><br>
+
+    <button type="submit">Save Trip</button>
+
+</form>
+
+<br>
+
+<a th:href="@{/trips}">Back to Trips</a> |
+<a th:href="@{/}">Home</a>
+
+</body>
+</html>
