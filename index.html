@@ -71,9 +71,9 @@
             max-width: 100%;
             min-height: calc(100vh - 78px);
             display: flex;
-            align-items: center; /* මැදට තිබූ අනුපාතය */
+            align-items: flex-start; /* අකුරු ටික ඉහළ සිට ආරම්භ වීමට flex-start කළා */
             justify-content: flex-start;
-            padding: 0 80px;
+            padding: 80px 80px 0 80px; /* උඩින් ලස්සන පරතරයක් (Padding) ලබා දුන්නා */
             overflow: hidden;
         }
 
@@ -88,13 +88,13 @@
             z-index: 1;
         }
 
-        /* Text Content Layer - Shifted Upwards */
+        /* Text Content Layer - Shifted Higher Perfectly matching Localhost */
         .hero-content {
             position: relative;
             z-index: 2;
             max-width: 550px;
             padding: 20px;
-            margin-top: -120px; /* අකුරු ටික ලස්සනට උඩට ගැනීමට මෙතනින් සකස් කළා */
+            margin-top: 20px; /* Localhost එකේ තේරුවටම ගැළපෙන පරිදි උඩටම සකස් කළා */
         }
 
         .hero-tag {
@@ -102,14 +102,14 @@
             font-weight: bold;
             letter-spacing: 2px;
             font-size: 14px;
-            margin-bottom: 15px;
+            margin-bottom: 25px; /* SAFE FAST RELIABLE එකට යටින් පරතරය වැඩි කළා */
         }
 
         .hero-title {
             font-size: 52px;
             font-weight: 900;
             line-height: 1.1;
-            margin: 0 0 20px 0;
+            margin: 0 0 25px 0;
             color: white;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
         }
@@ -118,7 +118,7 @@
             color: #ddd;
             font-size: 17px;
             line-height: 1.6;
-            margin-bottom: 35px;
+            margin-bottom: 40px;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
         }
 
@@ -156,9 +156,10 @@
                 padding: 40px 20px;
                 justify-content: center;
                 text-align: center;
+                align-items: center;
             }
             .hero-content {
-                margin-top: 0; /* ෆෝන් එකේදී සාමාන්‍ය පරිදි පෙන්වීමට */
+                margin-top: 0;
             }
             .hero-title {
                 font-size: 38px;
