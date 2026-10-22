@@ -285,6 +285,34 @@
         }
     });
 </script>
+<script>
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const nameInput = document.getElementById('name').value;
+        const emailInput = document.getElementById('email').value;
+        const messageInput = document.getElementById('message').value;
+
+        // දැනට පවතින පණිවිඩ ලැයිස්තුව මතකයෙන් ලබාගැනීම
+        let existingMessages = JSON.parse(localStorage.getItem('swiftRideMessages')) || [];
+
+        // අලුත් පණිවිඩය සකස් කිරීම
+        const newMsg = {
+            id: existingMessages.length + 101,
+            name: nameInput,
+            email: emailInput,
+            message: messageInput,
+            status: 'Unread'
+        };
+
+        // අලුත් පණිවිඩය මතකයට එකතු කර සුරැකීම
+        existingMessages.push(newMsg);
+        localStorage.setItem('swiftRideMessages', JSON.stringify(existingMessages));
+
+        alert("Message Sent Successfully! Thank you for contacting SwiftRide.");
+        this.reset();
+    });
+</script>
 
 </body>
 </html>

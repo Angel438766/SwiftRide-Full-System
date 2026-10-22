@@ -71,7 +71,6 @@
         .footer-links { margin-top: 30px; }
         .footer-links a { color: #0d6efd; text-decoration: none; font-weight: bold; }
         .footer-links a:hover { text-decoration: underline; }
-        .loading-text { text-align: center; padding: 20px; font-weight: bold; color: #666; }
     </style>
 </head>
 <body>
@@ -86,10 +85,8 @@
         <a href="../../index.html" class="btn-logout">Logout</a>
     </div>
 
-    <!-- දත්ත ලෝඩ් වන තෙක් පෙන්වන Loading පණිවිඩය -->
-    <div id="loading" class="loading-text">🔄 Fetching real-time passenger messages from Supabase database...</div>
-
-    <table class="msg-table" id="messagesTable" style="display: none;">
+    <!-- Passengersලා එවපු සැබෑ පණිවිඩ ලෝඩ් වන වගුව -->
+    <table class="msg-table" id="messagesTable">
         <thead>
         <tr>
             <th>Msg ID</th>
@@ -101,7 +98,7 @@
         </tr>
         </thead>
         <tbody id="tableBody">
-        <!-- සැබෑ දත්ත ජාවාස්ක්‍රිප්ට් මඟින් මෙතැනට ලෝඩ් වේ -->
+        <!-- ජාවාස්ක්‍රිප්ට් මඟින් සජීවීව මෙතැනට ලෝඩ් වේ -->
         </tbody>
     </table>
 
@@ -111,96 +108,65 @@
 
 </div>
 
-<!-- Supabase SDK ඇතුළත් කිරීම -->
-<script src="https://jsdelivr.net"></script>
 <script>
-    const SUPABASE_URL = "https://supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_TSPXFTGaeIMHzvvUpPpGkQ_ZHN-sgwx";
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // සජීවී පණිවිඩ මතකයෙන් ඇදගන්නා ප්‍රධාන ක්‍රමය
+    function fetchLiveMessages() {
+        const tableBody = document.getElementById('tableBody');
+        tableBody.innerHTML = '';
 
-    // 1. Supabase එකෙන් සැබෑ පණිවිඩ සජීවීව ලෝඩ් කරන Function එක
-    async function fetchLiveMessages() {
-        try {
-            const { data, error } = await supabase
-                .from('contacts') // 👈 ඔයාගේ Supabase Table එකේ නම (contacts හෝ contact_messages)
-                .select('*')
-                .order('id', { ascending: false });
+        let messages = JSON.parse(localStorage.getItem('swiftRideMessages')) || [];
 
-            if (error) throw error;
-
-            const tableBody = document.getElementById('tableBody');
-            tableBody.innerHTML = '';
-
-            if (!data || data.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px; color: #777;">No real passenger messages found in the database.</td></tr>`;
-            } else {
-                data.forEach((msg) => {
-                    const statusColor = msg.status === 'Read' ? '#198754' : '#fd7e14';
-                    const row = `
-                        <tr>
-                            <td>#${msg.id}</td>
-                            <td><strong>${msg.name || 'N/A'}</strong></td>
-                            <td>${msg.email || 'N/A'}</td>
-                            <td>"${msg.message || msg.message_content || 'N/A'}"</td>
-                            <td><span id="status-${msg.id}" style="color: ${statusColor}; font-weight: bold;">${msg.status || 'Unread'}</span></td>
-                            <td>
-                                <button class="btn-action btn-read" onclick="markAsRead(${msg.id})">Mark Read</button>
-                                <button class="btn-action btn-delete" onclick="deleteMessage(${msg.id})">Delete</button>
-                            </td>
-                        </tr>
-                    `;
-                    tableBody.innerHTML += row;
-                });
-            }
-
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('messagesTable').style.display = 'table';
-
-        } catch (err) {
-            console.error(err);
-            document.getElementById('loading').innerText = "⚠️ Error loading live messages: " + err.message;
+        if (messages.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px; color: #777;">No passenger messages have been submitted yet. Go to Contact Us and send one!</td></tr>`;
+            return;
         }
+
+        // අලුත්ම පණිවිඩ උඩින්ම පෙන්වීමට Reverse කිරීම
+        messages.reverse().forEach((msg) => {
+            const statusColor = msg.status === 'Read' ? '#198754' : '#fd7e14';
+            const row = `
+                <tr id="msg-row-${msg.id}">
+                    <td>#${msg.id}</td>
+                    <td><strong>${msg.name}</strong></td>
+                    <td>${msg.email}</td>
+                    <td>"${msg.message}"</td>
+                    <td><span id="status-${msg.id}" style="color: ${statusColor}; font-weight: bold;">${msg.status}</span></td>
+                    <td>
+                        <button class="btn-action btn-read" onclick="markAsRead(${msg.id})">Mark Read</button>
+                        <button class="btn-action btn-delete" onclick="deleteMessage(${msg.id})">Delete</button>
+                    </td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
     }
 
-    // 2. Mark as Read කිරීමේ සජීවී ක්‍රියාකාරීත්වය
-    async function markAsRead(id) {
-        try {
-            const { error } = await supabase
-                .from('contacts')
-                .update({ status: 'Read' })
-                .eq('id', id);
+    // Mark as Read කිරීමේ සැබෑ ක්‍රියාකාරීත්වය
+    function markAsRead(id) {
+        let messages = JSON.parse(localStorage.getItem('swiftRideMessages')) || [];
+        messages = messages.map(msg => {
+            if (msg.id === id) msg.status = 'Read';
+            return msg;
+        });
+        localStorage.setItem('swiftRideMessages', JSON.stringify(messages));
 
-            if (error) throw error;
-
-            const statusEl = document.getElementById('status-' + id);
-            statusEl.innerText = 'Read';
-            statusEl.style.color = '#198754';
-            alert('Message #' + id + ' marked as Read in live database!');
-
-        } catch (err) {
-            alert("Error: " + err.message);
-        }
+        const statusEl = document.getElementById('status-' + id);
+        statusEl.innerText = 'Read';
+        statusEl.style.color = '#198754';
+        alert('Message #' + id + ' marked as Read successfully!');
     }
 
-    // 3. පණිවිඩය සැබැවින්ම Database එකෙන් මකා දැමීම
-    async function deleteMessage(id) {
-        const confirmDel = confirm('Are you sure you want to permanently delete message #' + id + ' from database?');
+    // පණිවිඩය සැබැවින්ම මකා දැමීම
+    function deleteMessage(id) {
+        const confirmDel = confirm('Are you sure you want to permanently delete message #' + id + '?');
         if (!confirmDel) return;
 
-        try {
-            const { error } = await supabase
-                .from('contacts')
-                .delete()
-                .eq('id', id);
+        let messages = JSON.parse(localStorage.getItem('swiftRideMessages')) || [];
+        messages = messages.filter(msg => msg.id !== id);
+        localStorage.setItem('swiftRideMessages', JSON.stringify(messages));
 
-            if (error) throw error;
-
-            alert('Message #' + id + ' permanently deleted from Supabase!');
-            fetchLiveMessages(); // වගුව සජීවීව Refresh කිරීම
-
-        } catch (err) {
-            alert("Error: " + err.message);
-        }
+        alert('Message #' + id + ' deleted successfully.');
+        fetchLiveMessages(); // වගුව සජීවීව Refresh කිරීම
     }
 
     window.onload = fetchLiveMessages;
