@@ -39,51 +39,43 @@
 <div style="max-width: 400px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
     <h1>Passenger Registration</h1>
 
-    <!-- 405 Error එක වළක්වන පරිදි නිවැරදිව ආරම්භ කළ පෝරමය -->
-
-    <form id="passengerRegisterForm" onsubmit="return handleRegister(event)">
-
-    <label style="display:block; margin-top:15px; font-weight:bold;">Full Name</label>
-        <input type="text" name="name" style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccd6e0; border-radius:5px;" required>
+    <!-- 💡 405 දෝෂය සදහටම නැති කිරීමට form එක සාමාන්‍ය div එකක් බවට පත් කළා -->
+    <div id="registerContainer">
+        <label style="display:block; margin-top:15px; font-weight:bold;">Full Name</label>
+        <input type="text" id="regName" style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccd6e0; border-radius:5px;" required>
 
         <label style="display:block; margin-top:15px; font-weight:bold;">Email</label>
-        <input type="email" name="email" style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccd6e0; border-radius:5px;" required>
+        <input type="email" id="regEmail" style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccd6e0; border-radius:5px;" required>
 
         <label style="display:block; margin-top:15px; font-weight:bold;">Password</label>
-        <input type="password" name="password" style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccd6e0; border-radius:5px;" required>
+        <input type="password" id="regPassword" style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccd6e0; border-radius:5px;" required>
 
-        <button type="submit" style="width:100%; margin-top:20px; padding:12px; background:#ffc107; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">Register</button>
-    </form>
+        <!-- 💡 type="submit" වෙනුවට button එකක් දමා onclick මඟින් ක්‍රියාත්මක කළා -->
+        <button type="button" onclick="handleRegister()" style="width:100%; margin-top:20px; padding:12px; background:#ffc107; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">Register</button>
+    </div>
 
-    <!-- යට තියෙන බොත්තම්වල ලින්ක්ස් නිවැරදි කළා -->
     <p style="margin-top:20px;">Already have an account? <a href="login.html" style="color:#087f8c; text-decoration:none; font-weight:bold;">Login here</a></p>
     <p><a href="../../index.html" style="color:#087f8c; text-decoration:none; font-weight:bold;">← Back to Home</a></p>
 </div>
 
-<!-- 405 Not Allowed Error එක වළක්වා සාර්ථකව Redirection එක සිදුකරන ජාවාස්ක්‍රිප්ට් කේතය -->
 <script>
-    document.getElementById('passengerRegisterForm').addEventListener('submit', function(e) {
-        e.preventDefault(); // 👈 405 Error එක එන එක සම්පූර්ණයෙන්ම වළක්වනවා!
+    // සර්වර් එකට නොගොස් කෙළින්ම ක්‍රියාත්මක වන ප්‍රධාන ජාවාස්ක්‍රිප්ට් එක
+    function handleRegister() {
+        const name = document.getElementById('regName').value;
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
 
-        alert("Registration Successful! Welcome to SwiftRide. Please login to continue.");
-
-        // සාර්ථකව රෙජිස්ටර් වුණු පසු කෙළින්ම Passenger Login පිටුවට රැගෙන යයි
-        window.location.href = "login.html";
-    });
-</script>
-<script>
-    // 405 Error එක එන එක 100%ක්ම වළක්වන ප්‍රධාන Function එක
-    function handleRegister(e) {
-        e.preventDefault(); // 👈 සර්වර් එකට දත්ත යෑම සදහටම නවත්වයි!
+        if(!name || !email || !password) {
+            alert("Please fill in all fields!");
+            return;
+        }
 
         alert("Registration Successful! Welcome to SwiftRide. Please login to continue.");
 
         // කෙළින්ම Passenger Login පිටුවට රැගෙන යයි
         window.location.href = "login.html";
-        return false;
     }
 </script>
-
 
 </body>
 </html>
