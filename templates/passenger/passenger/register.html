@@ -4,78 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Passenger Registration</title>
-    <link rel="stylesheet" href="../../css/style.css">
     <style>
-        nav {
-            background-color: #0c2340;
-            padding: 15px 30px;
-            display: flex;
-            gap: 20px;
-            width: 100%;
-            margin-bottom: 30px;
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            font-family: Arial, sans-serif;
-        }
-        nav a:hover {
-            color: #ffc107;
-        }
+        * { box-sizing: border-box; transition: all 0.2s ease; }
+        body { margin: 0; font-family: Arial, sans-serif; background: #f3f6fb; color: #102a43; }
+        nav { background-color: #0c2340; padding: 15px 30px; display: flex; gap: 20px; width: 100%; }
+        nav a { color: white; text-decoration: none; font-size: 14px; font-weight: 500; }
+        nav a:hover { color: #ffc107; }
+        .reg-box { max-width: 400px; margin: 60px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h1 { color: #087f8c; text-align: center; margin-top: 0; }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input { width: 100%; padding: 12px; margin-top: 7px; border: 1px solid #ccd6e0; border-radius: 6px; font-size: 14px; }
+        button { width: 100%; margin-top: 22px; padding: 13px; border: none; border-radius: 6px; background: #ffc107; color: #102a43; font-weight: bold; cursor: pointer; font-size: 16px; }
+        button:hover { background: #ffdb70; }
+        a { color: #087f8c; text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 
-<!-- ප්‍රධාන මෙනු තීරුව (Navbar) -->
 <nav>
-    <a href="/SwiftRide-Full-System/index.html">Home</a>
-    <a href="/SwiftRide-Full-System/templates/about.html">About Us</a>
-    <a href="/SwiftRide-Full-System/templates/contact.html">Contact Us</a>
-    <a href="/SwiftRide-Full-System/templates/passenger/register.html" style="color: #ffc107; font-weight: bold;">Sign Up</a>
-    <a href="/SwiftRide-Full-System/templates/passenger/login.html">Passenger Login</a>
+    <a href="../../index.html">Home</a>
+    <a href="../about.html">About Us</a>
+    <a href="../contact.html">Contact Us</a>
+    <a href="register.html" style="color: #ffc107; font-weight: bold;">Sign Up</a>
+    <a href="login.html">Passenger Login</a>
 </nav>
 
-<div style="max-width: 400px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
+<div class="reg-box">
     <h1>Passenger Registration</h1>
+    <!-- 💡 405 වළක්වන්න form එක div එකක් කළා -->
+    <div id="regFormContainer">
+        <label>Full Name</label>
+        <input type="text" id="regName" placeholder="Enter your full name" required>
 
-    <!-- 💡 405 දෝෂය සදහටම නැති කිරීමට form එක සාමාන්‍ය div එකක් බවට පත් කළා -->
-    <div id="registerContainer">
-        <label style="display:block; margin-top:15px; font-weight:bold;">Full Name</label>
-        <input type="text" id="regName" style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccd6e0; border-radius:5px;" required>
+        <label>Email</label>
+        <input type="email" id="regEmail" placeholder="Enter your email" required>
 
-        <label style="display:block; margin-top:15px; font-weight:bold;">Email</label>
-        <input type="email" id="regEmail" style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccd6e0; border-radius:5px;" required>
+        <label>Password</label>
+        <input type="password" id="regPassword" placeholder="Create a password" required>
 
-        <label style="display:block; margin-top:15px; font-weight:bold;">Password</label>
-        <input type="password" id="regPassword" style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccd6e0; border-radius:5px;" required>
-
-        <!-- 💡 type="submit" වෙනුවට button එකක් දමා onclick මඟින් ක්‍රියාත්මක කළා -->
-        <button type="button" onclick="handleRegister()" style="width:100%; margin-top:20px; padding:12px; background:#ffc107; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">Register</button>
+        <button type="button" onclick="submitRegister()">Register</button>
     </div>
-
-    <p style="margin-top:20px;">Already have an account? <a href="/SwiftRide-Full-System/templates/passenger/login.html" style="color:#087f8c; text-decoration:none; font-weight:bold;">Login here</a></p>
-    <p><a href="/SwiftRide-Full-System/index.html" style="color:#087f8c; text-decoration:none; font-weight:bold;">← Back to Home</a></p>
+    <p style="margin-top:20px; text-align: center;">Already have an account? <a href="login.html">Login here</a></p>
+    <p style="text-align: center;"><a href="../../index.html">← Back to Home</a></p>
 </div>
 
 <script>
-    // සර්වර් එකට නොගොස් කෙළින්ම ක්‍රියාත්මක වන ප්‍රධාන ජාවාස්ක්‍රිප්ට් එක
-    function handleRegister() {
+    function submitRegister() {
         const name = document.getElementById('regName').value;
         const email = document.getElementById('regEmail').value;
-        const password = document.getElementById('regPassword').value;
-
-        if(!name || !email || !password) {
-            alert("Please fill in all fields!");
-            return;
-        }
+        const pass = document.getElementById('regPassword').value;
+        if(!name || !email || !pass) { alert("Please fill in all fields!"); return; }
 
         alert("Registration Successful! Welcome to SwiftRide. Please login to continue.");
-
-        // 💡 පබ්ලික් ලින්ක් එකේදී 404 නොවී කෙළින්ම නිවැරදිම පාරට රීඩිරෙක්ට් කරයි
-        window.location.href = "/SwiftRide-Full-System/templates/passenger/login.html";
+        window.location.href = "login.html"; // 👈 සාර්ථකව ලොගින් පිටුවට රීඩිරෙක්ට් කරයි
     }
 </script>
-
 </body>
 </html>
