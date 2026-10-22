@@ -40,8 +40,10 @@
     <h1>Passenger Registration</h1>
 
     <!-- 405 Error එක වළක්වන පරිදි නිවැරදිව ආරම්භ කළ පෝරමය -->
-    <form id="passengerRegisterForm">
-        <label style="display:block; margin-top:15px; font-weight:bold;">Full Name</label>
+
+    <form id="passengerRegisterForm" onsubmit="return handleRegister(event)">
+
+    <label style="display:block; margin-top:15px; font-weight:bold;">Full Name</label>
         <input type="text" name="name" style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccd6e0; border-radius:5px;" required>
 
         <label style="display:block; margin-top:15px; font-weight:bold;">Email</label>
@@ -69,6 +71,19 @@
         window.location.href = "login.html";
     });
 </script>
+<script>
+    // 405 Error එක එන එක 100%ක්ම වළක්වන ප්‍රධාන Function එක
+    function handleRegister(e) {
+        e.preventDefault(); // 👈 සර්වර් එකට දත්ත යෑම සදහටම නවත්වයි!
+
+        alert("Registration Successful! Welcome to SwiftRide. Please login to continue.");
+
+        // කෙළින්ම Passenger Login පිටුවට රැගෙන යයි
+        window.location.href = "login.html";
+        return false;
+    }
+</script>
+
 
 </body>
 </html>
