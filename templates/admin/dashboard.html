@@ -1,128 +1,136 @@
-
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SwiftRide Admin Dashboard</title>
-
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
+        * { box-sizing: border-box; }
         body {
             margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
-            background: #f3f6fb;
-            color: #172033;
+            background-color: #f3f4f6;
+            color: #102a43;
         }
-
-        header {
-            background: #101c36;
+        /* ඡායාරූපයේ ඇති පරිදිම තද නිල් පාට ප්‍රධාන Header එක */
+        .admin-header {
+            background-color: #0c2340;
             color: white;
-            padding: 24px 7%;
+            padding: 25px 40px;
+            width: 100%;
         }
-
-        header h1 {
-            margin: 0 0 8px;
-        }
-
-        header p {
+        .admin-header h1 {
             margin: 0;
-            color: #d5deef;
+            font-size: 26px;
+            font-weight: bold;
         }
-
-        main {
-            max-width: 1000px;
-            margin: 45px auto;
-            padding: 0 20px;
+        .admin-header p {
+            margin: 5px 0 0 0;
+            font-size: 14px;
+            color: #ccc;
         }
-
-        .cards {
+        /* Dashboard Container & Cards Grid Layout */
+        .dashboard-container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 40px auto;
+        }
+        .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 22px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
         }
-
         .card {
             background: white;
-            padding: 28px;
-            border-radius: 14px;
-            box-shadow: 0 5px 18px #17203312;
+            border-radius: 12px;
+            padding: 35px 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 200px;
         }
-
         .card h2 {
-            margin-top: 0;
+            margin: 0 0 10px 0;
+            font-size: 20px;
+            color: #111;
         }
-
         .card p {
-            color: #596579;
-            line-height: 1.6;
+            margin: 0 0 25px 0;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
         }
-
-        .button {
+        /* ඡායාරූපයේ ඇති පරිදිම පිරිසිදු නිල් පාට බොත්තම් */
+        .btn-manage {
             display: inline-block;
-            margin-top: 12px;
-            padding: 12px 18px;
-            background: #087fce;
+            background-color: #0d6efd;
             color: white;
             text-decoration: none;
-            border: none;
-            border-radius: 7px;
-            cursor: pointer;
-            font-size: 15px;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            width: fit-content;
         }
-
-        .logout {
-            margin-top: 28px;
-            padding: 12px 18px;
-            background: #b42318;
+        .btn-manage:hover {
+            background-color: #0b5ed7;
+        }
+        /* ඡායාරූපයේ ඇති පරිදිම රතු පාට Logout බොත්තම */
+        .btn-logout {
+            display: inline-block;
+            background-color: #dc3545;
             color: white;
-            border: none;
-            border-radius: 7px;
-            cursor: pointer;
-            font-size: 15px;
+            text-decoration: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            width: fit-content;
+            margin-top: 10px;
+        }
+        .btn-logout:hover {
+            background-color: #bb2d3b;
         }
     </style>
 </head>
-
 <body>
 
-<header>
+<!-- Top Admin Header Section -->
+<div class="admin-header">
     <h1>SwiftRide Admin Dashboard</h1>
     <p>Manage your taxi booking platform</p>
-</header>
+</div>
 
-<main>
-    <div class="cards">
+<!-- Main Cards Grid Dashboard Configuration -->
+<div class="dashboard-container">
+    <div class="grid-container">
 
-        <section class="card">
-            <h2>Driver Applications</h2>
-            <p>Review driver registrations and approve or reject applications.</p>
+        <!-- 1. Driver Applications Card -->
+        <div class="card">
+            <div>
+                <h2>Driver Applications</h2>
+                <p>Review driver registrations and approve or reject applications.</p>
+            </div>
+            <a href="../driver-applications.html" class="btn-manage">Manage Drivers</a>
+        </div>
 
-            <a class="button" th:href="@{/admin/driver-applications}">
-                Manage Drivers
-            </a>
-        </section>
-
-        <section class="card">
-            <h2>Contact Messages</h2>
-            <p>Read messages submitted through the SwiftRide contact form.</p>
-
-            <a class="button" th:href="@{/admin/contact-messages}">
-                View Messages
-            </a>
-        </section>
+        <!-- 2. Contact Messages Card -->
+        <div class="card">
+            <div>
+                <h2>Contact Messages</h2>
+                <p>Read messages submitted through the SwiftRide contact form.</p>
+            </div>
+            <a href="../contact.html" class="btn-manage">View Messages</a>
+        </div>
 
     </div>
 
-    <!-- Logout uses POST to match the controller -->
-    <form th:action="@{/admin/logout}" method="post">
-        <button class="logout" type="submit">Logout</button>
-    </form>
-
-</main>
+    <!-- Logout Action Button -->
+    <a href="../../index.html" class="btn-logout">Logout</a>
+</div>
 
 </body>
 </html>

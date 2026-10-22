@@ -45,6 +45,7 @@
             font-weight: bold;
             cursor: pointer;
         }
+        .error { color: #c62828; }
         a { color: #087f8c; text-decoration: none; font-weight: bold; }
         a:hover { text-decoration: underline; }
     </style>
@@ -54,7 +55,7 @@
     <h1>🚖 SwiftRide</h1>
     <p>Administrator Login</p>
 
-    <!-- 405 Error එක වළක්වන පරිදි ID එක සැකසූ පෝරමය -->
+    <!-- 405 Error එක වළක්වන පරිදි ID එක පමණක් සකස් කළ පෝරමය -->
     <form id="adminLoginForm">
         <label for="username">Username</label>
         <input id="username" name="username" type="text" required>
@@ -78,8 +79,8 @@
 
         alert("Login Successful! Welcome to Administration Dashboard.");
 
-        // සාර්ථකව ලොගින් වුණු පසු කෙළින්ම Driver Applications පැනල් එකට රැගෙන යයි
-        window.location.href = "driver-applications.html";
+        // සාර්ථකව ලොගින් වුණු පසු කෙළින්ම එකම ෆෝල්ඩරයේ ඇති අලුත් Admin Dashboard එකට රැගෙන යයි
+        window.location.href = "admin-dashboard.html";
     });
 </script>
 
