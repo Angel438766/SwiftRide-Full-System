@@ -5,94 +5,140 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SwiftRide Admin Dashboard</title>
     <style>
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease; /* සියලුම ඇනිමේෂන් සුමට කිරීමට */
+        }
+
         body {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f3f4f6;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f4f6f9;
             color: #102a43;
         }
-        /* ඡායාරූපයේ ඇති පරිදිම තද නිල් පාට ප්‍රධාන Header එක */
+
+        /* නවීන මට්ටමේ Gradient Header එකක් */
         .admin-header {
-            background-color: #0c2340;
+            background: linear-gradient(135deg, #0c2340 0%, #1a3a5f 100%);
             color: white;
-            padding: 25px 40px;
+            padding: 35px 50px;
             width: 100%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
+
         .admin-header h1 {
             margin: 0;
-            font-size: 26px;
-            font-weight: bold;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
+
         .admin-header p {
-            margin: 5px 0 0 0;
+            margin: 6px 0 0 0;
             font-size: 14px;
-            color: #ccc;
+            color: #ffc107; /* රන්වන් කහ පැහැයෙන් */
+            font-weight: 500;
         }
-        /* Dashboard Container & Cards Grid Layout */
+
         .dashboard-container {
             max-width: 1200px;
             width: 90%;
-            margin: 40px auto;
+            margin: 50px auto;
         }
+
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 30px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
+
+        /* කාඩ්ස් වලට Hover Effect එකක් එකතු කළා */
         .card {
             background: white;
-            border-radius: 12px;
-            padding: 35px 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: 0 6px 18px rgba(16, 42, 67, 0.05);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 200px;
+            min-height: 230px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
         }
+
+        .card:hover {
+            transform: translateY(-5px); /* මවුස් එක තියද්දී මඳක් උඩට මතු වේ */
+            box-shadow: 0 12px 25px rgba(16, 42, 67, 0.12);
+            border-color: #0d6efd;
+        }
+
+        .card-header-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .card-icon {
+            font-size: 30px;
+            background: #f0f4f8;
+            padding: 10px;
+            border-radius: 12px;
+        }
+
         .card h2 {
-            margin: 0 0 10px 0;
-            font-size: 20px;
-            color: #111;
+            margin: 0 0 8px 0;
+            font-size: 22px;
+            color: #0c2340;
+            font-weight: 600;
         }
+
         .card p {
-            margin: 0 0 25px 0;
+            margin: 10px 0 25px 0;
             font-size: 14px;
-            color: #666;
-            line-height: 1.5;
+            color: #627d98;
+            line-height: 1.6;
         }
-        /* ඡායාරූපයේ ඇති පරිදිම පිරිසිදු නිල් පාට බොත්තම් */
+
+        /* පිරිසිදු නිල් පාට වෘත්තීය බොත්තම් */
         .btn-manage {
             display: inline-block;
             background-color: #0d6efd;
             color: white;
             text-decoration: none;
-            padding: 12px 24px;
-            border-radius: 6px;
+            padding: 12px 28px;
+            border-radius: 8px;
             font-size: 14px;
-            font-weight: bold;
+            font-weight: 600;
             width: fit-content;
+            box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
         }
+
         .btn-manage:hover {
             background-color: #0b5ed7;
+            box-shadow: 0 6px 14px rgba(13, 110, 253, 0.3);
         }
-        /* ඡායාරූපයේ ඇති පරිදිම රතු පාට Logout බොත්තම */
+
+        /* රතු පාට Logout බොත්තම */
         .btn-logout {
             display: inline-block;
             background-color: #dc3545;
             color: white;
             text-decoration: none;
-            padding: 10px 24px;
-            border-radius: 6px;
+            padding: 12px 30px;
+            border-radius: 8px;
             font-size: 14px;
-            font-weight: bold;
+            font-weight: 600;
             width: fit-content;
+            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);
             margin-top: 10px;
         }
+
         .btn-logout:hover {
             background-color: #bb2d3b;
+            box-shadow: 0 6px 14px rgba(220, 53, 69, 0.3);
         }
     </style>
 </head>
@@ -100,36 +146,46 @@
 
 <!-- Top Admin Header Section -->
 <div class="admin-header">
-    <h1>SwiftRide Admin Dashboard</h1>
-    <p>Manage your taxi booking platform</p>
+    <h1>🛠️ SwiftRide Admin Dashboard</h1>
+    <p>Platform Administration & Control Console</p>
 </div>
 
-<!-- Main Cards Grid Dashboard Configuration -->
+<!-- Main Dashboard Body -->
 <div class="dashboard-container">
     <div class="grid-container">
 
-        <!-- 1. Driver Applications Card -->
+        <!-- 1. Driver Applications Card (එකම admin ෆෝල්ඩරයේ ඇති පිටුවට පාර හැදුවා) -->
         <div class="card">
             <div>
-                <h2>Driver Applications</h2>
-                <p>Review driver registrations and approve or reject applications.</p>
+                <div class="card-header-box">
+                    <div class="card-icon">📋</div>
+                    <div>
+                        <h2>Driver Applications</h2>
+                    </div>
+                </div>
+                <p>Review new driver registrations, background details, and approve or reject recruitment applications.</p>
             </div>
-            <a href="../driver-applications.html" class="btn-manage">Manage Drivers</a>
+            <a href="driver-applications.html" class="btn-manage">Manage Drivers →</a>
         </div>
 
-        <!-- 2. Contact Messages Card -->
+        <!-- 2. Contact Messages Card (admin ෆෝල්ඩරයෙන් පිටත templates/contact.html වෙත පාර හැදුවා) -->
         <div class="card">
             <div>
-                <h2>Contact Messages</h2>
-                <p>Read messages submitted through the SwiftRide contact form.</p>
+                <div class="card-header-box">
+                    <div class="card-icon">✉️</div>
+                    <div>
+                        <h2>Contact Messages</h2>
+                    </div>
+                </div>
+                <p>Read client inquiries, support requests, and user suggestions submitted through the public contact form.</p>
             </div>
-            <a href="../contact.html" class="btn-manage">View Messages</a>
+            <a href="../contact.html" class="btn-manage">View Messages →</a>
         </div>
 
     </div>
 
-    <!-- Logout Action Button -->
-    <a href="../../index.html" class="btn-logout">Logout</a>
+    <!-- Logout Action Button (ෆෝල්ඩර දෙකකින් පිටතට ප්‍රධාන Root index.html වෙත පාර හැදුවා) -->
+    <a href="../../index.html" class="btn-logout">🔒 Logout Admin</a>
 </div>
 
 </body>
