@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Driver Applications | SwiftRide Admin</title>
     <style>
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; transition: all 0.2s ease; }
         body {
             font-family: Arial, sans-serif;
             background-color: #f3f6fb;
@@ -76,6 +76,16 @@
             font-weight: bold;
         }
         .footer-links a:hover { text-decoration: underline; }
+
+        /* Status වෙනස් වන විට පෙනෙන ලස්සන Colors */
+        .status-badge {
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        .status-pending { color: #fd7e14; }
+        .status-approved { color: #198754; background-color: #e8f5e9; }
+        .status-rejected { color: #dc3545; background-color: #ffebee; }
     </style>
 </head>
 <body>
@@ -113,11 +123,11 @@
             <td>B1234567</td>
             <td>WP CAS-4321</td>
             <td>Car (Luxury)</td>
-            <td style="color: #fd7e14; font-weight: bold;">Pending</td>
+            <!-- ID එකක් ලබා දී සජීවීව වෙනස් කිරීමට සකස් කළා -->
+            <td><span id="status-1" class="status-badge status-pending">Pending</span></td>
             <td>
-                <!-- 100%ක් වැඩ කරන පරිදි onclick ඇලර්ට්ස් එකතු කළා -->
-                <button class="btn-action btn-approve" onclick="alert('Application Approved successfully!')">Approve</button>
-                <button class="btn-action btn-reject" onclick="alert('Application Rejected.')">Reject</button>
+                <button class="btn-action btn-approve" onclick="updateStatus(1, 'Approved')">Approve</button>
+                <button class="btn-action btn-reject" onclick="updateStatus(1, 'Rejected')">Reject</button>
             </td>
         </tr>
         <tr>
@@ -128,22 +138,38 @@
             <td>B7654321</td>
             <td>WP QB-8765</td>
             <td>Three Wheeler</td>
-            <td style="color: #fd7e14; font-weight: bold;">Pending</td>
+            <!-- ID එකක් ලබා දී සජීවීව වෙනස් කිරීමට සකස් කළා -->
+            <td><span id="status-2" class="status-badge status-pending">Pending</span></td>
             <td>
-                <!-- 100%ක් වැඩ කරන පරිදි onclick ඇලර්ට්ස් එකතු කළා -->
-                <button class="btn-action btn-approve" onclick="alert('Application Approved successfully!')">Approve</button>
-                <button class="btn-action btn-reject" onclick="alert('Application Rejected.')">Reject</button>
+                <button class="btn-action btn-approve" onclick="updateStatus(2, 'Approved')">Approve</button>
+                <button class="btn-action btn-reject" onclick="updateStatus(2, 'Rejected')">Reject</button>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <!-- 404 නොවී කෙලින්ම ඇඩ්මින් ඩෑෂ්බෝඩ් එකට පස්සට යන නිවැරදිම ලින්ක් එක -->
     <div class="footer-links">
         <a href="dashboard.html">← Back to Admin Dashboard</a>
     </div>
 
 </div>
+
+<!-- Status එක සැබවින්ම වෙනස් කරන ප්‍රධාන ජාවාස්ක්‍රිප්ට් කේතය -->
+<script>
+    function updateStatus(id, newStatus) {
+        const statusElement = document.getElementById('status-' + id);
+
+        if (newStatus === 'Approved') {
+            statusElement.innerText = 'Approved';
+            statusElement.className = 'status-badge status-approved';
+            alert('Application ID ' + id + ' Approved successfully!');
+        } else if (newStatus === 'Rejected') {
+            statusElement.innerText = 'Rejected';
+            statusElement.className = 'status-badge status-rejected';
+            alert('Application ID ' + id + ' Rejected.');
+        }
+    }
+</script>
 
 </body>
 </html>
