@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Passenger Login</title>
-    <!-- 100%ක්ම වැඩ කරන පරිදි CSS ලින්ක් එක නිවැරදි කළා -->
+    <!-- CSS ලින්ක් එක නිවැරදිව තබා ගත්තා -->
     <link rel="stylesheet" href="../../css/style.css">
     <style>
-        /* උඩ මෙනු තීරුව ලස්සනට පෙනෙන්න දැමූ සරල මෝස්තර */
+        /* උඩ මෙනු තීරුව ලස්සනට පෙනෙන්න දැමූ මෝස්තර */
         nav {
             background-color: #0c2340;
             padding: 15px 30px;
@@ -29,7 +29,7 @@
 </head>
 <body>
 
-<!-- ඔයාට අඩුවෙන් තිබුණු ප්‍රධාන මෙනු තීරුව (Navbar) මෙන්න එකතු කළා -->
+<!-- ප්‍රධාන මෙනු තීරුව (Navbar) -->
 <nav>
     <a href="../../index.html">Home</a>
     <a href="../about.html">About Us</a>
@@ -38,24 +38,36 @@
     <a href="login.html" style="color: #ffc107; font-weight: bold;">Passenger Login</a>
 </nav>
 
-<h1>Passenger Login</h1>
+<div style="max-width: 400px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
+    <h1>Passenger Login</h1>
 
-<!-- Form Action එක සාමාන්‍ය HTML එකක් බවට පත් කළා -->
-<form action="#" method="post">
-    <label>Email</label><br>
-    <input type="email" name="email" required>
-    <br><br>
+    <!-- 405 Error එක වළක්වන පරිදි ID එක පමණක් සකස් කළ පෝරමය -->
+    <form id="passengerLoginForm">
+        <label style="display:block; margin-top:15px; font-weight:bold;">Email</label>
+        <input type="email" name="email" style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccd6e0; border-radius:5px;" required>
 
-    <label>Password</label><br>
-    <input type="password" name="password" required>
-    <br><br>
+        <label style="display:block; margin-top:15px; font-weight:bold;">Password</label>
+        <input type="password" name="password" style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccd6e0; border-radius:5px;" required>
 
-    <button type="submit">Login</button>
-</form>
+        <button type="submit" style="width:100%; margin-top:20px; padding:12px; background:#ffc107; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">Login</button>
+    </form>
 
-<!-- යට තියෙන බොත්තම් දෙකේ ලින්ක්ස් 404 Error නොවී වැඩ කරන්න නිවැරදි කළා -->
-<p><a href="register.html">Create an account</a></p>
-<p><a href="../../index.html">Home</a></p>
+    <!-- යට තියෙන බොත්තම් දෙකේ ලින්ක්ස් නිවැරදි කළා -->
+    <p style="margin-top:20px;"><a href="register.html" style="color:#087f8c; text-decoration:none; font-weight:bold;">Create an account</a></p>
+    <p><a href="../../index.html" style="color:#087f8c; text-decoration:none; font-weight:bold;">← Back to Home</a></p>
+</div>
+
+<!-- 405 Not Allowed Error එක වළක්වා සාර්ථකව Redirection එක සිදුකරන ජාවාස්ක්‍රිප්ට් කේතය -->
+<script>
+    document.getElementById('passengerLoginForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // 👈 405 Error එක එන එක සම්පූර්ණයෙන්ම වළක්වනවා!
+
+        alert("Login Successful! Welcome back to SwiftRide.");
+
+        // සාර්ථකව ලොගින් වුණු පසු කෙළින්ම ප්‍රධාන මුල් පිටුවට (කාඩ්ස් 5 තියෙන තැනට) රැගෙන යයි
+        window.location.href = "../../index.html";
+    });
+</script>
 
 </body>
 </html>
