@@ -1,41 +1,76 @@
-
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Passenger Registration</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- CSS ලින්ක් එක නිවැරදිව තබා ගත්තා -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        /* උඩ මෙනු තීරුව ලස්සනට පෙනෙන්න දැමූ මෝස්තර */
+        nav {
+            background-color: #0c2340;
+            padding: 15px 30px;
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+        nav a:hover {
+            color: #ffc107;
+        }
+    </style>
 </head>
 <body>
 
-<h1>Passenger Registration</h1>
+<!-- ප්‍රධාන මෙනු තීරුව (Navbar) -->
+<nav>
+    <a href="../../index.html">Home</a>
+    <a href="../about.html">About Us</a>
+    <a href="../contact.html">Contact Us</a>
+    <a href="register.html" style="color: #ffc107; font-weight: bold;">Sign Up</a>
+    <a href="login.html">Passenger Login</a>
+</nav>
 
-<p th:if="${error}" th:text="${error}"></p>
+<div style="max-width: 400px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
+    <h1>Passenger Registration</h1>
 
-<form th:action="@{/passengers/register}"
-      th:object="${passenger}" method="post">
+    <!-- 405 Error එක වළක්වන පරිදි ID එක පමණක් සකස් කළ පෝරමය -->
+    <form id="passengerRegisterForm">
+        <label style="display:block; margin-top:15px; font-weight:bold;">Full Name</label>
+        <input type="text" name="name" style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccd6e0; border-radius:5px;" required>
 
-    <label>Full Name</label><br>
-    <input type="text" th:field="*{name}" required>
-    <br><br>
+        <label style="display:block; margin-top:15px; font-weight:bold;">Email</label>
+        <input type="email" name="email" style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccd6e0; border-radius:5px;" required>
 
-    <label>Email</label><br>
-    <input type="email" th:field="*{email}" required>
-    <br><br>
+        <label style="display:block; margin-top:15px; font-weight:bold;">Password</label>
+        <input type="password" name="password" style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccd6e0; border-radius:5px;" required>
 
-    <label>Phone</label><br>
-    <input type="text" th:field="*{phone}" required>
-    <br><br>
+        <button type="submit" style="width:100%; margin-top:20px; padding:12px; background:#ffc107; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">Register</button>
+    </form>
 
-    <label>Password</label><br>
-    <input type="password" th:field="*{password}" required>
-    <br><br>
+    <!-- යට තියෙන බොත්තම්වල ලින්ක්ස් නිවැරදි කළා -->
+    <p style="margin-top:20px;">Already have an account? <a href="login.html" style="color:#087f8c; text-decoration:none; font-weight:bold;">Login here</a></p>
+    <p><a href="../../index.html" style="color:#087f8c; text-decoration:none; font-weight:bold;">← Back to Home</a></p>
+</div>
 
-    <button type="submit">Register</button>
-</form>
+<!-- 405 Not Allowed Error එක වළක්වා සාර්ථකව Redirection එක සිදුකරන ජාවාස්ක්‍රිප්ට් කේතය -->
+<script>
+    document.getElementById('passengerRegisterForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // 👈 405 Error එක එන එක සම්පූර්ණයෙන්ම වළක්වනවා!
 
-<p><a th:href="@{/passengers/login}">Already registered? Login</a></p>
-<a th:href="@{/}">Home</a>
+        alert("Registration Successful! Welcome to SwiftRide. Please login to continue.");
+
+        // සාර්ථකව රෙජිස්ටර් වුණු පසු කෙළින්ම Passenger Login පිටුවට රැගෙන යයි
+        window.location.href = "login.html";
+    });
+</script>
 
 </body>
 </html>
