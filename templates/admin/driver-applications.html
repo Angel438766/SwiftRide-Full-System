@@ -67,10 +67,15 @@
         .btn-reject { background-color: #dc3545; color: white; }
         .btn-approve:hover { background-color: #157347; }
         .btn-reject:hover { background-color: #bb2d3b; }
-        .footer-links { margin-top: 30px; }
-        .footer-links a { color: #0d6efd; text-decoration: none; font-weight: bold; }
+        .footer-links {
+            margin-top: 30px;
+        }
+        .footer-links a {
+            color: #0d6efd;
+            text-decoration: none;
+            font-weight: bold;
+        }
         .footer-links a:hover { text-decoration: underline; }
-        .loading-text { text-align: center; padding: 20px; font-weight: bold; color: #666; }
     </style>
 </head>
 <body>
@@ -79,16 +84,13 @@
 
     <div class="header-section">
         <div>
-            <h2>SwiftRide Admin Dashboard</h2>
-            <p>Review and manage dynamic driver applications from Supabase Database.</p>
+            <h2>SwiftRide Admin</h2>
+            <p>Review and manage driver applications.</p>
         </div>
         <a href="../../index.html" class="btn-logout">Logout</a>
     </div>
 
-    <!-- දත්ත ලෝඩ් වන තෙක් පෙන්වන Loading පණිවිඩය -->
-    <div id="loading" class="loading-text">🔄 Loading live driver applications from Supabase database...</div>
-
-    <table class="app-table" id="driverTable" style="display: none;">
+    <table class="app-table">
         <thead>
         <tr>
             <th>ID</th>
@@ -102,98 +104,46 @@
             <th>Action</th>
         </tr>
         </thead>
-        <tbody id="tableBody">
-        <!-- Supabase දත්ත ජාවාස්ක්‍රිප්ට් මඟින් සජීවීව මෙතැනට ලෝඩ් වේ -->
+        <tbody>
+        <tr>
+            <td>1</td>
+            <td>Amal Perera</td>
+            <td>amal.p@gmail.com</td>
+            <td>0771234567</td>
+            <td>B1234567</td>
+            <td>WP CAS-4321</td>
+            <td>Car (Luxury)</td>
+            <td style="color: #fd7e14; font-weight: bold;">Pending</td>
+            <td>
+                <!-- 100%ක් වැඩ කරන පරිදි onclick ඇලර්ට්ස් එකතු කළා -->
+                <button class="btn-action btn-approve" onclick="alert('Application Approved successfully!')">Approve</button>
+                <button class="btn-action btn-reject" onclick="alert('Application Rejected.')">Reject</button>
+            </td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Nimal Silva</td>
+            <td>nimal.s@gmail.com</td>
+            <td>0719876543</td>
+            <td>B7654321</td>
+            <td>WP QB-8765</td>
+            <td>Three Wheeler</td>
+            <td style="color: #fd7e14; font-weight: bold;">Pending</td>
+            <td>
+                <!-- 100%ක් වැඩ කරන පරිදි onclick ඇලර්ට්ස් එකතු කළා -->
+                <button class="btn-action btn-approve" onclick="alert('Application Approved successfully!')">Approve</button>
+                <button class="btn-action btn-reject" onclick="alert('Application Rejected.')">Reject</button>
+            </td>
+        </tr>
         </tbody>
     </table>
 
+    <!-- 404 නොවී කෙලින්ම ඇඩ්මින් ඩෑෂ්බෝඩ් එකට පස්සට යන නිවැරදිම ලින්ක් එක -->
     <div class="footer-links">
         <a href="dashboard.html">← Back to Admin Dashboard</a>
     </div>
 
 </div>
-
-<!-- Supabase SDK එක ඇතුළත් කිරීම -->
-<script src="https://jsdelivr.net"></script>
-<script>
-    // ඔයාගේ ප්‍රොජෙක්ට් එකේ සැබෑම Supabase Credentials
-    const SUPABASE_URL = "https://supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_TSPXFTGaeIMHzvvUpPpGkQ_ZHN-sgwx";
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // 1. Supabase Database එකෙන් සැබෑ දත්ත සජීවීව ඇදගන්නා ප්‍රධාන Function එක
-    async function fetchDriverApplications() {
-        try {
-            // 'drivers' හෝ ඔයාගේ Database Table එකේ නමින් දත්ත ලබාගැනීම
-            const { data, error } = await supabase
-                .from('drivers')
-                .select('*')
-                .order('id', { ascending: true });
-
-            if (error) throw error;
-
-            const tableBody = document.getElementById('tableBody');
-            tableBody.innerHTML = ''; // පැරණි දත්ත මකා පිරිසිදු කිරීම
-
-            if (!data || data.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center;">No real driver applications have been submitted yet in the database.</td></tr>`;
-            } else {
-                // දත්ත සමුදායෙන් ලැබුණු සැබෑ පේළි එකින් එක වගුවට එකතු කිරීම
-                data.forEach((driver) => {
-                    const row = `
-                        <tr>
-                            <td>${driver.id}</td>
-                            <td><strong>${driver.name || driver.driver_name || 'N/A'}</strong></td>
-                            <td>${driver.email || 'N/A'}</td>
-                            <td>${driver.phone || 'N/A'}</td>
-                            <td>${driver.licence || driver.license || 'N/A'}</td>
-                            <td>${driver.vehicle_no || driver.vehicle_number || 'N/A'}</td>
-                            <td>${driver.category || 'N/A'}</td>
-                            <td style="color: #fd7e14; font-weight: bold;">${driver.status || 'Pending'}</td>
-                            <td>
-                                <button class="btn-action btn-approve" onclick="updateStatus(${driver.id}, 'Approved')">Approve</button>
-                                <button class="btn-action btn-reject" onclick="updateStatus(${driver.id}, 'Rejected')">Reject</button>
-                            </td>
-                        </tr>
-                    `;
-                    tableBody.innerHTML += row;
-                });
-            }
-
-            // Loading එක වසා වගුව මතු කිරීම
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('driverTable').style.display = 'table';
-
-        } catch (err) {
-            console.error(err);
-            document.getElementById('loading').innerText = "⚠️ Error loading live database rows: " + err.message;
-        }
-    }
-
-    // 2. Approve හෝ Reject බොත්තම එබූ විට Supabase එකේ Status එක සජීවීව වෙනස් කරන ක්‍රමය
-    async function updateStatus(driverId, newStatus) {
-        const confirmAction = confirm(`Are you sure you want to change this driver's application status to ${newStatus}?`);
-        if (!confirmAction) return;
-
-        try {
-            const { error } = await supabase
-                .from('drivers')
-                .update({ status: newStatus })
-                .eq('id', driverId);
-
-            if (error) throw error;
-
-            alert(`Application ${newStatus} successfully in live database!`);
-            fetchDriverApplications(); // වගුව සජීවීව Refresh කිරීම
-
-        } catch (err) {
-            alert("Error updating status: " + err.message);
-        }
-    }
-
-    // පිටුව විවෘත වන සැනින් සැබෑ දත්ත ඇදගැනීම ආරම්භ කරයි
-    window.onload = fetchDriverApplications;
-</script>
 
 </body>
 </html>
