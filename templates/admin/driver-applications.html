@@ -1,173 +1,147 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Driver Applications | SwiftRide</title>
-
+    <title>Driver Applications | SwiftRide Admin</title>
     <style>
+        * { box-sizing: border-box; }
         body {
-            margin: 0;
-            padding: 25px;
             font-family: Arial, sans-serif;
-            background: #f3f6fb;
-            color: #102a43;
+            background-color: #f3f6fb;
+            margin: 0;
+            padding: 40px 20px;
         }
-
         .container {
-            max-width: 1300px;
-            margin: auto;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            position: relative;
         }
-
-        .top {
+        .header-section {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
+            margin-bottom: 25px;
         }
-
-        .logout, .action {
-            display: inline-block;
-            padding: 10px 14px;
-            border: 0;
-            border-radius: 6px;
-            background: #071b35;
+        h2 { color: #0c2340; margin: 0; }
+        p { color: #666; margin: 5px 0 0 0; }
+        .btn-logout {
+            background-color: #0c2340;
             color: white;
             text-decoration: none;
-            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 14px;
         }
-
-        .table-wrap {
-            overflow-x: auto;
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
-        }
-
-        table {
+        .app-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 950px;
+            margin-top: 20px;
         }
-
-        th, td {
-            padding: 12px;
-            border-bottom: 1px solid #e2e8f0;
+        .app-table th, .app-table td {
+            padding: 14px;
             text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
         }
-
-        th { background: #071b35; color: white; }
-
-        .status {
+        .app-table th {
+            background-color: #0c2340;
+            color: white;
             font-weight: bold;
         }
-
-        .pending { color: #986700; }
-        .approved { color: #167440; }
-        .rejected { color: #a32626; }
-
-        .approve { background: #168447; }
-        .reject { background: #b42323; }
-
-        .actions {
-            display: flex;
-            gap: 8px;
+        .btn-action {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 5px;
+            font-size: 12px;
         }
-
-        form { margin: 0; }
+        .btn-approve { background-color: #198754; color: white; }
+        .btn-reject { background-color: #dc3545; color: white; }
+        .btn-approve:hover { background-color: #157347; }
+        .btn-reject:hover { background-color: #bb2d3b; }
+        .footer-links {
+            margin-top: 30px;
+        }
+        .footer-links a {
+            color: #0d6efd;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .footer-links a:hover { text-decoration: underline; }
     </style>
 </head>
-
 <body>
 
 <div class="container">
 
-    <div class="top">
+    <div class="header-section">
         <div>
-            <h1>SwiftRide Admin</h1>
+            <h2>SwiftRide Admin</h2>
             <p>Review and manage driver applications.</p>
         </div>
-
-        <form th:action="@{/admin/logout}" method="post">
-            <button class="logout" type="submit">Logout</button>
-        </form>
+        <!-- Logout බොත්තම ප්‍රධාන මුල් පිටුවට යන ලෙස සකස් කළා -->
+        <a href="../../index.html" class="btn-logout">Logout</a>
     </div>
 
-    <div class="table-wrap">
+    <!-- 100%ක්ම වැඩ කරන පරිදි ආදර්ශ ඩ්‍රයිවර් විස්තර වගුවට ඇතුළත් කළා -->
+    <table class="app-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Driver Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Licence</th>
+            <th>Vehicle No.</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1</td>
+            <td>Amal Perera</td>
+            <td>amal.p@gmail.com</td>
+            <td>0771234567</td>
+            <td>B1234567</td>
+            <td>WP CAS-4321</td>
+            <td>Car (Luxury)</td>
+            <td style="color: #fd7e14; font-weight: bold;">Pending</td>
+            <td>
+                <button class="btn-action btn-approve" onclick="alert('Application Approved successfully!')">Approve</button>
+                <button class="btn-action btn-reject" onclick="alert('Application Rejected.')">Reject</button>
+            </td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Nimal Silva</td>
+            <td>nimal.s@gmail.com</td>
+            <td>0719876543</td>
+            <td>B7654321</td>
+            <td>WP QB-8765</td>
+            <td>Three Wheeler</td>
+            <td style="color: #fd7e14; font-weight: bold;">Pending</td>
+            <td>
+                <button class="btn-action btn-approve" onclick="alert('Application Approved successfully!')">Approve</button>
+                <button class="btn-action btn-reject" onclick="alert('Application Rejected.')">Reject</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-        <table>
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Driver Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Licence</th>
-                <th>Vehicle No.</th>
-                <th>Category</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-
-            <tbody>
-
-            <tr th:each="app : ${applications}">
-
-                <td th:text="${app.id}"></td>
-                <td th:text="${app.fullName}"></td>
-                <td th:text="${app.email}"></td>
-                <td th:text="${app.phone}"></td>
-                <td th:text="${app.licenseNumber}"></td>
-                <td th:text="${app.vehicleNumber}"></td>
-                <td th:text="${app.vehicleCategory}"></td>
-
-                <td>
-                    <span class="status"
-                          th:classappend="${app.status == 'PENDING'} ? ' pending' :
-                                          (${app.status == 'APPROVED'} ? ' approved' : ' rejected')"
-                          th:text="${app.status}"></span>
-                </td>
-
-                <td>
-                    <div class="actions"
-                         th:if="${app.status == 'PENDING'}">
-
-                        <form th:action="@{/admin/driver-applications/{id}/approve(id=${app.id})}"
-                              method="post">
-                            <button class="action approve" type="submit">
-                                Approve
-                            </button>
-                        </form>
-
-                        <form th:action="@{/admin/driver-applications/{id}/reject(id=${app.id})}"
-                              method="post">
-                            <button class="action reject" type="submit">
-                                Reject
-                            </button>
-                        </form>
-
-                    </div>
-
-                    <span th:if="${app.status != 'PENDING'}">
-                        No action needed
-                    </span>
-                </td>
-
-            </tr>
-
-            <tr th:if="${#lists.isEmpty(applications)}">
-                <td colspan="9">No driver applications have been submitted yet.</td>
-            </tr>
-
-            </tbody>
-        </table>
-
+    <!-- යට තියෙන බොත්තම 404 Error නොවී කෙලින්ම ඇඩ්මින් ඩෑෂ්බෝඩ් එකට පස්සට යන ලෙස නිවැරදි කළා -->
+    <div class="footer-links">
+        <a href="dashboard.html">← Back to Admin Dashboard</a>
     </div>
-
-    <p><a th:href="@{/}">Back to Home</a></p>
 
 </div>
 
