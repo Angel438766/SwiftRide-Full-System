@@ -85,7 +85,7 @@
         <a href="../../index.html" class="btn-logout">Logout</a>
     </div>
 
-    <!-- Passengersලා එවපු සැබෑ පණිවිඩ ලෝඩ් වන වගුව -->
+    <!-- Passengersලා එවපු සැබෑ පණිවිඩ ලෝඩ් වන වგුව -->
     <table class="msg-table" id="messagesTable">
         <thead>
         <tr>
@@ -109,11 +109,11 @@
 </div>
 
 <script>
-    // සජීවී පණිවිඩ මතකයෙන් ඇදගන්නා ප්‍රධාන ක්‍රමය
     function fetchLiveMessages() {
         const tableBody = document.getElementById('tableBody');
         tableBody.innerHTML = '';
 
+        // LocalStorage මතකයෙන් දත්ත කියවීම
         let messages = JSON.parse(localStorage.getItem('swiftRideMessages')) || [];
 
         if (messages.length === 0) {
@@ -121,15 +121,21 @@
             return;
         }
 
-        // අලුත්ම පණිවිඩ උඩින්ම පෙන්වීමට Reverse කිරීම
+        // අලුත්ම පණිවිඩ උඩින්ම පෙන්වීමට Reverse කර වගුවට ඇතුළත් කිරීම
         messages.reverse().forEach((msg) => {
             const statusColor = msg.status === 'Read' ? '#198754' : '#fd7e14';
+
+            // 💡 මෙතනදී text එක නූලටම පෙනෙන්න String properties නිවැරදිව ගැලපුවා
+            const pName = msg.name || '-';
+            const pEmail = msg.email || '-';
+            const pMessage = msg.message || '-';
+
             const row = `
                 <tr id="msg-row-${msg.id}">
                     <td>#${msg.id}</td>
-                    <td><strong>${msg.name}</strong></td>
-                    <td>${msg.email}</td>
-                    <td>"${msg.message}"</td>
+                    <td><strong>${pName}</strong></td>
+                    <td>${pEmail}</td>
+                    <td>"${pMessage}"</td>
                     <td><span id="status-${msg.id}" style="color: ${statusColor}; font-weight: bold;">${msg.status}</span></td>
                     <td>
                         <button class="btn-action btn-read" onclick="markAsRead(${msg.id})">Mark Read</button>
@@ -141,7 +147,7 @@
         });
     }
 
-    // Mark as Read කිරීමේ සැබෑ ක්‍රියාකාරීත්වය
+    // Mark as Read කිරීමේ ක්‍රියාවලිය
     function markAsRead(id) {
         let messages = JSON.parse(localStorage.getItem('swiftRideMessages')) || [];
         messages = messages.map(msg => {
@@ -156,7 +162,7 @@
         alert('Message #' + id + ' marked as Read successfully!');
     }
 
-    // පණිවිඩය සැබැවින්ම මකා දැමීම
+    // පණිවිඩය මකා දැමීම
     function deleteMessage(id) {
         const confirmDel = confirm('Are you sure you want to permanently delete message #' + id + '?');
         if (!confirmDel) return;
@@ -166,40 +172,10 @@
         localStorage.setItem('swiftRideMessages', JSON.stringify(messages));
 
         alert('Message #' + id + ' deleted successfully.');
-        fetchLiveMessages(); // වගුව සජීවීව Refresh කිරීම
+        fetchLiveMessages();
     }
 
     window.onload = fetchLiveMessages;
-</script>
-<!-- templates/contact.html පිටුවේ යටම තියෙන <script> එක වෙනුවට මෙන්න මේ නිවැරදිම එක දාන්න -->
-<script>
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        // 404/405 Errors වළක්වා, HTML පෝරමයෙන් සැබෑ අකුරු ටික නූලටම ලබාගන්නා ආකාරය
-        const nameInput = document.getElementById('name').value;
-        const emailInput = document.getElementById('email').value;
-        const messageInput = document.getElementById('message').value;
-
-        // දැනට පවතින පණිවිඩ ලැයිස්තුව මතකයෙන් ලබාගැනීම
-        let existingMessages = JSON.parse(localStorage.getItem('swiftRideMessages')) || [];
-
-        // අලුත් පණිවිඩය සකස් කිරීම (මෙහි name, email, message යන සැබෑ Keys නිවැරදිව ලබා දුන්නා)
-        const newMsg = {
-            id: existingMessages.length + 101,
-            name: nameInput,
-            email: emailInput,
-            message: messageInput,
-            status: 'Unread'
-        };
-
-        // අලුත් පණිවිඩය මතකයට එකතු කර සුරැකීම
-        existingMessages.push(newMsg);
-        localStorage.setItem('swiftRideMessages', JSON.stringify(existingMessages));
-
-        alert("Message Sent Successfully! Thank you for contacting SwiftRide.");
-        this.reset();
-    });
 </script>
 
 </body>
