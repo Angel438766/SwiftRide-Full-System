@@ -126,14 +126,6 @@
 
         button:hover { background: #ffdb70; }
 
-        .notice {
-            background: #e5f6ed;
-            color: #17663a;
-            padding: 12px;
-            border-radius: 7px;
-            overflow-wrap: anywhere;
-        }
-
         .buttons {
             text-align: center;
             margin: 25px 0 40px;
@@ -173,7 +165,6 @@
         <div style="color: #ccc; font-size: 12px; margin-top: 2px;">Your Journey, Our Priority</div>
     </div>
 
-    <!-- 100%ක්ම වැඩ කරන පරිදි ඉහළ මෙනු තීරුව (Navbar) සකස් කළා -->
     <nav>
         <a href="/SwiftRide-Full-System/index.html">Home</a>
         <a href="about.html">About Us</a>
@@ -192,52 +183,30 @@
 
     <section class="card">
         <h2>Contact Information</h2>
-
-        <p>
-            <strong>Email:</strong><br>
-            <a href="mailto:swiftride145@gmail.com">
-                swiftride145@gmail.com
-            </a>
-        </p>
-
-        <p>
-            <strong>Customer Support</strong><br>
-            Please contact us by email for assistance.
-        </p>
-
-        <p>
-            We welcome your questions, suggestions and feedback
-            about our taxi booking platform.
-        </p>
+        <p><strong>Email:</strong><br><a href="mailto:swiftride145@gmail.com">swiftride145@gmail.com</a></p>
+        <p><strong>Customer Support</strong><br>Please contact us by email for assistance.</p>
+        <p>We welcome your questions, suggestions and feedback about our taxi booking platform.</p>
     </section>
 
     <section class="card">
         <h2>Send Us a Message</h2>
 
-        <!-- ID එක නිවැරදි කර 405 Error එක වළක්වන පරිදි සකස් කළ පෝරමය -->
         <form id="contactForm">
-
             <label for="name">Your Name</label>
-            <input type="text" id="name" name="name"
-                   maxlength="100" required>
+            <input type="text" id="name" name="name" maxlength="100" required>
 
             <label for="email">Your Email</label>
-            <input type="email" id="email" name="email"
-                   maxlength="150" required>
+            <input type="email" id="email" name="email" maxlength="150" required>
 
             <label for="message">Your Message</label>
-            <textarea id="message" name="message"
-                      maxlength="2000" required></textarea>
+            <textarea id="message" name="message" maxlength="2000" required></textarea>
 
             <button type="submit">Send Message</button>
-
         </form>
-
     </section>
 
 </main>
 
-<!-- යට තියෙන බොත්තම 404 Error නොවී කෙලින්ම මුල් පිටුවට පස්සට යන ලෙස නිවැරදි කළා -->
 <div class="buttons">
     <a href="/SwiftRide-Full-System/index.html">← Back to Home Dashboard</a>
 </div>
@@ -246,45 +215,7 @@
     <p><span>SwiftRide</span> — Your Journey, Our Priority</p>
 </footer>
 
-<!-- 405 Not Allowed Error එක වළක්වන ප්‍රධාන ජාවාස්ක්‍රිප්ට් (JavaScript) කේතය -->
-<script>
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-        e.preventDefault(); // 👈 405 Error එක එන එක සම්පූර්ණයෙන්ම වළක්වනවා!
-
-        alert("Message Sent Successfully! Thank you for contacting SwiftRide.");
-
-        this.reset(); // 👈 පෝරමයේ ලියා ඇති අකුරු ටික ඉබේම මකා පිරිසිදු කරයි
-    });
-</script>
-<!-- templates/contact.html පිටුවේ යටම තියෙන <script> එක වෙනුවට මෙන්න මේක දාන්න -->
-<script src="https://jsdelivr.net"></script>
-<script>
-    const SUPABASE_URL = "https://supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_TSPXFTGaeIMHzvvUpPpGkQ_ZHN-sgwx";
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    document.getElementById('contactForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        const nameInput = document.getElementById('name').value;
-        const emailInput = document.getElementById('email').value;
-        const messageInput = document.getElementById('message').value;
-
-        alert("Sending message to admin dashboard. Please wait...");
-
-        // Supabase Database එකට සජීවීව දත්ත ඇතුළත් කිරීම (Insert)
-        const { error } = await supabase
-            .from('contacts')
-            .insert([{ name: nameInput, email: emailInput, message: messageInput, status: 'Unread' }]);
-
-        if (error) {
-            alert("Error sending message: " + error.message);
-        } else {
-            alert("Message Sent Successfully! Thank you for contacting SwiftRide.");
-            this.reset();
-        }
-    });
-</script>
+<!-- 405 Errors වළක්වා, අලුත් Cards වලට ගැළපෙන සේ මතකයට දත්ත දමන JavaScript කේතය -->
 <script>
     document.getElementById('contactForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -297,11 +228,13 @@
         let existingMessages = JSON.parse(localStorage.getItem('swiftRideMessages')) || [];
 
         // අලුත් පණිවිඩය සකස් කිරීම
+        const currentDateTime = new Date().toISOString().replace('T', ' ').substring(0, 19);
         const newMsg = {
             id: existingMessages.length + 101,
             name: nameInput,
             email: emailInput,
             message: messageInput,
+            time: currentDateTime,
             status: 'Unread'
         };
 
