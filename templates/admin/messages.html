@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Messages | SwiftRide Admin</title>
+    <style>
+        * { box-sizing: border-box; transition: all 0.2s ease; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f6fb;
+            margin: 0;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f3f6fb;
+            padding-bottom: 15px;
+        }
+        h2 { color: #0c2340; margin: 0; }
+        p { color: #666; margin: 5px 0 0 0; }
+        .btn-logout {
+            background-color: #0c2340;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .msg-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .msg-table th, .msg-table td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+        .msg-table th {
+            background-color: #0c2340;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-action {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 5px;
+            font-size: 12px;
+        }
+        .btn-read { background-color: #198754; color: white; }
+        .btn-delete { background-color: #dc3545; color: white; }
+        .btn-read:hover { background-color: #157347; }
+        .btn-delete:hover { background-color: #bb2d3b; }
+        .footer-links { margin-top: 30px; }
+        .footer-links a { color: #0d6efd; text-decoration: none; font-weight: bold; }
+        .footer-links a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header-section">
+        <div>
+            <h2>✉️ Customer Contact Messages</h2>
+            <p>View feedback, inquiries, and messages sent by passengers.</p>
+        </div>
+        <a href="../../index.html" class="btn-logout">Logout</a>
+    </div>
+
+    <!-- Passengersලා එවපු සැබෑ පණිවිඩ බලාගන්නා වගුව -->
+    <table class="msg-table">
+        <thead>
+        <tr>
+            <th>Msg ID</th>
+            <th>Passenger Name</th>
+            <th>Email</th>
+            <th>Message Content</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr id="msg-row-1">
+            <td>#101</td>
+            <td>Kamal Gunaratne</td>
+            <td>kamal99@gmail.com</td>
+            <td>"I faced a small delay while matching with a driver today morning near Colombo Fort. Please check the driver allocations algorithm."</td>
+            <td><span id="status-101" style="color: #fd7e14; font-weight: bold;">Unread</span></td>
+            <td>
+                <button class="btn-action btn-read" onclick="markAsRead(101)">Mark Read</button>
+                <button class="btn-action btn-delete" onclick="deleteMessage(101)">Delete</button>
+            </td>
+        </tr>
+        <tr id="msg-row-2">
+            <td>#102</td>
+            <td>Nisansala Silva</td>
+            <td>nisansala.s@outlook.com</td>
+            <td>"The user interface of SwiftRide is extremely smooth and lovely! Great job on the localhost dashboard layout."</td>
+            <td><span id="status-102" style="color: #fd7e14; font-weight: bold;">Unread</span></td>
+            <td>
+                <button class="btn-action btn-read" onclick="markAsRead(102)">Mark Read</button>
+                <button class="btn-action btn-delete" onclick="deleteMessage(102)">Delete</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- ඇඩ්මින් ඩෑෂ්බෝඩ් එකට ආපසු යන නිවැරදිම පාර -->
+    <div class="footer-links">
+        <a href="dashboard.html">← Back to Admin Dashboard</a>
+    </div>
+
+</div>
+
+<script>
+    // පණිවිඩය කියෙව්වා කියා සලකුණු කරන ක්‍රමය
+    function markAsRead(id) {
+        const statusEl = document.getElementById('status-' + id);
+        statusEl.innerText = 'Read';
+        statusEl.style.color = '#198754';
+        alert('Message #' + id + ' marked as Read successfully!');
+    }
+
+    // පණිවිඩය මකා දමන ක්‍රමය
+    function deleteMessage(id) {
+        const confirmDel = confirm('Are you sure you want to delete message #' + id + '?');
+        if (confirmDel) {
+            document.getElementById('msg-row-' + id).remove();
+            alert('Message #' + id + ' deleted.');
+        }
+    }
+</script>
+
+</body>
+</html>
