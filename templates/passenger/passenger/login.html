@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Passenger Login</title>
+    <title>Passenger Login | SwiftRide</title>
     <style>
         * { box-sizing: border-box; transition: all 0.2s ease; }
         body { margin: 0; font-family: Arial, sans-serif; background: #f3f6fb; color: #102a43; }
@@ -17,7 +17,6 @@
         button { width: 100%; margin-top: 22px; padding: 13px; border: none; border-radius: 6px; background: #ffc107; color: #102a43; font-weight: bold; cursor: pointer; font-size: 16px; }
         button:hover { background: #ffdb70; }
         a { color: #087f8c; text-decoration: none; font-weight: bold; }
-        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -32,7 +31,6 @@
 
 <div class="login-box">
     <h1>Passenger Login</h1>
-    <!-- 💡 405 වළක්වන්න form එක div එකක් කළා -->
     <div id="loginFormContainer">
         <label>Email</label>
         <input type="email" id="passEmail" placeholder="Enter your email" required>
@@ -53,7 +51,7 @@
         if(!email || !pass) { alert("Please fill in all fields!"); return; }
 
         alert("Login Successful! Welcome back to SwiftRide.");
-        window.location.href = "../../index.html"; // 👈 සාර්ථකව මුල් පිටුවට රීඩිරෙක්ට් කරයි
+        window.location.href = "../../index.html";
     }
 </script>
 </body>
