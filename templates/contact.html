@@ -256,6 +256,35 @@
         this.reset(); // 👈 පෝරමයේ ලියා ඇති අකුරු ටික ඉබේම මකා පිරිසිදු කරයි
     });
 </script>
+<!-- templates/contact.html පිටුවේ යටම තියෙන <script> එක වෙනුවට මෙන්න මේක දාන්න -->
+<script src="https://jsdelivr.net"></script>
+<script>
+    const SUPABASE_URL = "https://supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_TSPXFTGaeIMHzvvUpPpGkQ_ZHN-sgwx";
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const nameInput = document.getElementById('name').value;
+        const emailInput = document.getElementById('email').value;
+        const messageInput = document.getElementById('message').value;
+
+        alert("Sending message to admin dashboard. Please wait...");
+
+        // Supabase Database එකට සජීවීව දත්ත ඇතුළත් කිරීම (Insert)
+        const { error } = await supabase
+            .from('contacts')
+            .insert([{ name: nameInput, email: emailInput, message: messageInput, status: 'Unread' }]);
+
+        if (error) {
+            alert("Error sending message: " + error.message);
+        } else {
+            alert("Message Sent Successfully! Thank you for contacting SwiftRide.");
+            this.reset();
+        }
+    });
+</script>
 
 </body>
 </html>
